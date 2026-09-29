@@ -1,0 +1,13 @@
+# REGIONAL MARKET BRIEF: REGION X PRICING PRESSURES & COMPETITIVE MATCHING
+# Document ID: NOTE-2025-REGION-X
+# Category: Regional Note for Region X
+# Date: February 2, 2025
+
+Summary of Regional Market Conditions:
+Region X (Midwest Industrial Corridor) is experiencing aggressive discounting from regional entrant Apex Supplies, who have introduced price cuts of 8.0% to 12.0% across select logistics supplies.
+
+Competitor Matching Impact:
+Field representatives in Region X have increasingly granted unauthorized discretionary match discounts to prevent client migration. Centralized ERP tables do not currently log competitor quote identifiers or formal competitor price benchmarks, creating an unmonitored blind spot in regional price elasticity models.
+
+Recommendation Constraint:
+Any broad discount adjustment in Region X carries higher volume flight risk unless accompanied by localized field retention monitoring.

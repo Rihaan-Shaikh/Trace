@@ -1,0 +1,13 @@
+# MASTER SERVICES AGREEMENT: TIER 1 ENTERPRISE ACCOUNT
+# Document ID: DOC-2024-MSA-GLOBEX
+# Customer: Globex Logistics Corp (Account ID: CUST-00003)
+# Category: Contract Summary
+
+Section 1.1 - Parties & Scope:
+This Agreement governs supply chain wholesale fulfillment services between NovaMart Commercial Wholesale Inc. ("NovaMart") and Globex Logistics Corp ("Customer").
+
+Section 3.4 - Volume Pricing & Tier Schedule:
+Customer is designated a Strategic Enterprise Partner. NovaMart covenants to maintain a standard 15.0% contract discount across fleet maintenance, packaging, and logistics supply lines.
+
+Section 5.2 - Early Cancellation & Remedies:
+Neither party may terminate or alter the commercial terms without mutual written consent. Any unilateral discount clawback or price schedule upward adjustment prior to October 31, 2026 constitutes material breach triggering liquidated damages of $62,500 payable within thirty (30) business days.

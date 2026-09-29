@@ -1,0 +1,64 @@
+/* TRACE Design Tokens
+   Authoritative source: Project Bible Section 24
+   "Executive-grade calm. Numbers before prose. Not confidence. Coverage."
+*/
+
+:root {
+  /* Color Palette — Executive Luxury Financial (TRACE Project Bible Section 24) */
+  --bg-primary: #0C0E12;
+  --bg-surface: #141820;
+  --bg-surface-elevated: #1C222E;
+  --bg-subtle: #141820;
+  --bg-card: #141820;
+
+  --border-dim: #1E2532;
+  --border-subtle: #2A3344;
+  --border-focus: #C9A84C;
+
+  --text-primary: #F3F1EC;
+  --text-secondary: #9DA3AF;
+  --text-muted: #6B7280;
+  --text-inverse: #0C0E12;
+
+  --accent-gold: #C9A84C;
+  --accent-gold-light: #DFC477;
+  --accent-gold-dim: #8B7230;
+  --accent-gold-bg: rgba(201, 168, 76, 0.08);
+
+  /* Signature Pixel-Strip Accent Motif */
+  --strip-cream: #F3F1EC;
+  --strip-gold: #C9A84C;
+  --strip-blue: #3B82F6;
+  --strip-grey: #6B7280;
+
+  /* Underwriting Verdict Colors */
+  --verdict-recommended: #10B981;
+  --verdict-recommended-bg: rgba(16, 185, 129, 0.12);
+  --verdict-recommended-border: rgba(16, 185, 129, 0.3);
+
+  --verdict-conditions: #F2B632;
+  --verdict-conditions-bg: rgba(242, 182, 50, 0.12);
+  --verdict-conditions-border: rgba(242, 182, 50, 0.3);
+
+  --verdict-refer: #F59E0B;
+  --verdict-refer-bg: rgba(245, 158, 11, 0.12);
+  --verdict-refer-border: rgba(245, 158, 11, 0.3);
+
+  --verdict-decline: #EF4444;
+  --verdict-decline-bg: rgba(239, 68, 68, 0.12);
+  --verdict-decline-border: rgba(239, 68, 68, 0.3);
+
+  /* Typography */
+  --font-headline: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
+
+  /* Radii & Shadows */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-full: 9999px;
+
+  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 30px rgba(242, 182, 50, 0.06);
+}

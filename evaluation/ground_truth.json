@@ -1,0 +1,120 @@
+{
+  "metadata": {
+    "benchmark_name": "NovaMart Synthetic Benchmark",
+    "scale": "Full 25k/100k Locked Specification",
+    "generated_at": "2026-09-28T15:56:29.008060+00:00",
+    "seed": 42,
+    "project_bible_reference": "Section 22",
+    "intended_use": "Evaluation framework only. Must NEVER be ingested into TRACE live underwriting."
+  },
+  "scale_metrics": {
+    "customer_count": 25008,
+    "transaction_count": 100000,
+    "product_count": 500,
+    "region_count": 6,
+    "time_span_days": 730
+  },
+  "planted_issue_catalog": {
+    "fuzzy_duplicates": {
+      "count": 925,
+      "percentage": 0.037,
+      "sample_pairs": [
+        {
+          "customer_id": 30979,
+          "original_pattern": "Nexus Industries #30979",
+          "variant_name": "Nexus Ind Ltd #30979",
+          "is_key_account": false
+        },
+        {
+          "customer_id": 33419,
+          "original_pattern": "Apex Logistics #33419",
+          "variant_name": "Apex Logistics Group #33419",
+          "is_key_account": false
+        },
+        {
+          "customer_id": 32218,
+          "original_pattern": "Omega Enterprises #32218",
+          "variant_name": "Omega Ent LLC #32218",
+          "is_key_account": false
+        },
+        {
+          "customer_id": 21505,
+          "original_pattern": "Global Retail Group #21505",
+          "variant_name": "Global Retail Group #21505 Co.",
+          "is_key_account": false
+        },
+        {
+          "customer_id": 31840,
+          "original_pattern": "Insignia Partners #31840",
+          "variant_name": "Insignia Partners #31840 Co.",
+          "is_key_account": false
+        }
+      ],
+      "key_account_involvement": 37
+    },
+    "missing_industry": {
+      "count": 1885,
+      "percentage": 0.0754,
+      "concentrated_in_segment": "SMB"
+    },
+    "stale_records": {
+      "count": 1548,
+      "threshold_days": 365
+    },
+    "format_inconsistencies": {
+      "mixed_date_formats_count": 500,
+      "currency_string_prices_count": 2
+    },
+    "outliers": {
+      "bulk_order_count": 1237,
+      "bulk_order_threshold": 400
+    },
+    "impossible_values": {
+      "negative_quantities_count": 2,
+      "negative_prices_count": 1,
+      "below_cost_prices_count": 1
+    },
+    "orphan_transactions": {
+      "count": 24,
+      "target_customer_id": 99999
+    },
+    "revenue_concentration": {
+      "top_10_percent_revenue_share": 0.5793,
+      "threshold": 0.5
+    },
+    "contracted_discounts": {
+      "account_ids": [
+        10012,
+        10162,
+        10170
+      ],
+      "notice_periods": "90 days fixed notice requirement"
+    },
+    "seasonality": {
+      "peak_period": "Q4 November-December",
+      "surge_multiplier": 2.2
+    },
+    "missing_competitor_data": true,
+    "unanswerable_decision": {
+      "sparse_territory": "Region X - Pilot Territory",
+      "reason": "Launched 2024-04; insufficient historical trend for long-horizon causal models"
+    }
+  },
+  "true_causal_parameters": {
+    "segment_churn_elasticities": {
+      "SMB": 0.42,
+      "Mid-market": 0.26,
+      "Enterprise": 0.11
+    },
+    "aggregation_trap_subsegment": {
+      "subsegment": "SMB-Manufacturing",
+      "true_response": "negative_churn",
+      "explanation": "High switching cost prevents churn despite discount removal"
+    }
+  },
+  "held_out_period": {
+    "start_date": "2025-07-01",
+    "end_date": "2025-12-31",
+    "purpose": "Evaluating lapse condition breach points and sandbox sensitivity precision"
+  }
+}

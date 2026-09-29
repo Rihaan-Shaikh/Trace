@@ -1,0 +1,6 @@
+discount_id,customer_id,discount_pct,start_date,end_date,approved_by
+1,10012,0.22,2024-01-01,2026-12-31,VP Commercial
+2,10162,0.25,2024-01-01,2026-12-31,VP Commercial
+3,10170,0.2,2024-01-01,2026-12-31,VP Commercial
+4,SMB_Standard,0.1,2024-01-01,2025-12-31,Pricing Lead
+5,Mid_Market_Growth,0.15,2024-01-01,2025-12-31,Pricing Lead

@@ -1,0 +1,21 @@
+# NOVAMART COMMERCIAL CONTRACTS & DISCOUNT POLICIES
+# REFERENCE CORPUS (PROJECT BIBLE SECTION 13, 17, 22)
+
+## 1. Master Services Agreement: Enterprise Key Accounts (Ref: MSA-2024-ENT01)
+Section 4.2 - Pricing & Discounting Structure:
+"Client shall receive a guaranteed Tier 1 commercial discount of not less than 15.0% across all catalog purchases, contingent on maintaining an annual purchase volume exceeding $100,000. In the event NovaMart unilaterally terminates or alters discretionary pricing discounts prior to contract expiration (December 31, 2026), NovaMart shall be liable for liquidated damages equal to $187,500 or the total discount delta for the remaining contract term, whichever is greater, unless ninety (90) days prior written notice and mutually agreed renegotiation is completed."
+
+Section 4.3 - Protected Accounts Schedule:
+"The following high-value enterprise accounts are designated Protected Tier 1 Accounts subject to Section 4.2:
+- Account ID: CUST-00001 (Acme Industrial Solutions)
+- Account ID: CUST-00003 (Globex Logistics Corp)
+- Account ID: CUST-00007 (Initech Commercial Systems)
+- Account ID: CUST-00012 (Umbrella Regional Holdings)
+- Account ID: CUST-00018 (Soylent Wholesale)"
+
+## 2. NovaMart Commercial Policy: Discretionary Discounts (Ref: POL-2025-DISC)
+Section 2.1 - Non-Contracted / Discretionary Accounts:
+"For standard, non-contracted SMB and Mid-Market commercial accounts whose account gross margin falls below 15.0% over two consecutive quarters, NovaMart sales representatives have discretionary authority to terminate promotional and volume discount allowances upon thirty (30) days notice. No contractual penalties or liquidated damages apply to non-contracted accounts."
+
+Section 2.4 - Competitor Matching Guideline:
+"Field representatives may apply temporary competitive match discounts up to 8.0% for regional accounts facing direct pricing pressure. Note: Competitor pricing benchmarks are currently unmonitored in centralized CRM tables."

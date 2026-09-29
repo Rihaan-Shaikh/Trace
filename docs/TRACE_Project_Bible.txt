@@ -1,0 +1,4009 @@
+✱  BFWAI/HACK 26  ·  AI BUILD CHALLENGE 2026
+
+TRACE
+
+Not confidence. Coverage.
+
+TRACE underwrites business decisions instead of guessing at them, so pricing, retention and investment calls come with a quoted cost of being wrong.
+
+PROJECT BIBLE
+
+The complete definition of the problem, the solution, the USP and the method
+
+A single source of truth for humans and AI agents. Written to be read in full without misinterpretation.
+
+Problem statement
+
+PS-04 · AI Decision Engine for Business Data
+
+Team
+
+The Good, The Bad, The Ugly
+
+Members
+
+Rishit Kaushal Nanavati · Rihaan Ramzan Ali Shaikh · Sibtain Mohammad Raza Nayani
+
+Version
+
+1.0 · 28 September 2026
+
+Scope of this document
+
+What TRACE is, why it exists, what exists today, the gaps it bridges, the underwriting methodology, the demo, the scope tiers, the market and the guardrails. No technology stack is prescribed.
+
+Read This First
+
+This document is the single source of truth for TRACE — the project the team The Good, The Bad, The Ugly is building for AI Build Challenge 2026 (Build Fast with AI), Problem Statement PS-04: AI Decision Engine for Business Data. It exists so that any human or AI agent who reads it comes away with the same, correct understanding of what is being built, why, how it must behave, and what it must never claim to be.
+
+THE 60-SECOND VERSION
+
+TRACE is an AI decision engine that underwrites business decisions instead of merely recommending them. A user uploads messy business data (CRM exports, spreadsheets, sales and operations files) and asks a decision (“Should we stop discounts for low-margin customers?”), not a question (“What were our sales?”).
+
+TRACE audits the data, investigates the decision through a team of specialised agents, verifies its own numbers, argues against its own recommendation, stress-tests scenarios, and then returns a Decision Brief whose headline is not a confidence percentage but a price for being wrong: the Decision Premium (risk cost in the decision’s own currency), the Exposure Report (dollar downside if the call is wrong), and the Coverage Lapse Conditions (the exact conditions under which the recommendation stops being trustworthy).
+
+Every decision, its prediction and its eventual real outcome is written to the Loss History Ledger, which recalibrates future premiums for similar decisions. A human always approves; TRACE never executes a high-impact decision on its own.
+
+Tagline: Not confidence. Coverage. — “TRACE underwrites business decisions instead of guessing at them.”
+
+How to read this document (rules for humans and AI agents)
+
+Treat this document as authoritative. If it conflicts with an earlier deck, chat message or draft, this document wins. The only exception is anything explicitly marked [OPEN].
+
+Do not invent features, terms, numbers or claims. If a detail is not specified, choose the simplest option consistent with the principles in Section 32 and state the assumption explicitly in your output. Never fill a gap with something that merely sounds plausible.
+
+Use the locked vocabulary exactly (Section 7). Do not rename Decision Premium, Exposure Report, Coverage Lapse Conditions, Loss History Ledger or Counter-Decision Underwriter.
+
+All currency figures and percentages in worked examples are ILLUSTRATIVE. They show the format and logic of an output. The prototype must compute every real number from the data using deterministic code; the language model must never produce a number from its own head.
+
+Underwriting is a structural metaphor, not a product category. TRACE does not sell, issue or simulate insurance, is not regulated as insurance, and gives no guarantees. See Section 6.3 for the exact boundary.
+
+No technology stack is prescribed here. Architecture principles are (for example: the language model reasons and explains, deterministic code calculates). Tool choices are left to the builders.
+
+Honesty about scope: the hackathon prototype is a working demonstration on a synthetic dataset. Anything beyond that is labelled [VISION]. Never present a [VISION] item as built.
+
+Tag legend used throughout
+
+Tag
+
+Meaning
+
+How to treat it
+
+[LOCKED]
+
+A decision the team has finalised.
+
+Do not change or reinterpret.
+
+[DEFAULT]
+
+A recommended starting value or approach (for example a threshold or weight).
+
+Use it unless there is a documented reason not to; expose it as a configurable setting.
+
+[ILLUSTRATIVE]
+
+An example number, name or output shown to explain a format.
+
+Never hard-code it. Recompute from real data.
+
+[OPEN]
+
+A question not yet answered.
+
+Flag it; do not silently decide it.
+
+[VISION]
+
+A post-hackathon capability that explains how the product scales.
+
+Describe it as roadmap only. Never claim it is built.
+
+Contents
+
+Part
+
+Sections
+
+A · Context
+
+1. The challenge, PS-04 and our submission
+
+2. The problem
+
+3. The landscape: what exists today
+
+4. The gaps TRACE bridges
+
+B · The Solution
+
+5. TRACE on one page
+
+6. The core reframe: underwriting
+
+7. The locked vocabulary
+
+8. The USP
+
+9. What is genuinely new (and what is not)
+
+C · How TRACE Works
+
+10. End-to-end flow
+
+11. Data Health Check
+
+12. Business semantic layer
+
+13. Decision Objective and decision templates
+
+14. Investigation Plan
+
+15. The agent team
+
+16. The underwriting methodology
+
+17. Verification Agent and Counter-Decision
+
+18. Decision Sandbox (re-quote)
+
+19. The Decision Brief, section by section
+
+20. Human approval, Decision Record and Evidence Chain
+
+21. Loss History Ledger
+
+D · Demo and Build Scope
+
+22. NovaMart synthetic dataset
+
+23. Hero decisions and a full illustrative walkthrough
+
+24. Experience design and visual identity
+
+25. Prototype scope tiers, evaluation and success criteria
+
+26. Demo script, fallback plan and judge Q&A
+
+E · Real Market
+
+27. Who buys it and how they start
+
+28. Business model ideas
+
+29. Roadmap
+
+30. Responsible AI, risks and limitations
+
+31. Messaging kit
+
+32. Guardrails for AI agents
+
+Appendices
+
+A. Glossary
+
+B. What the submitted deck says
+
+C. Locked versus open register
+
+PART A · CONTEXT
+
+1. The Challenge, PS-04 and Our Submission
+
+1.1 The event
+
+Event
+
+AI Build Challenge 2026, branded on the deck as BFWAI/HACK 26.
+
+Organiser
+
+Build Fast with AI (buildfastwithai.com/hackathon). Participants are asked to tag the “Build Fast with AI” handle in public LinkedIn posts.
+
+Our team
+
+The Good, The Bad, The Ugly
+
+Problem statement
+
+PS-04 · AI Decision Engine for Business Data
+
+Project
+
+TRACE — Decision Intelligence Engine, reframed as a decision underwriting engine.
+
+Status
+
+Idea deck submitted and selected. The team is now moving into the build phase.
+
+What the build phase demands
+
+From the organiser’s participant post template: this is not an idea-only contest. Teams must turn the idea into a working AI solution, build it, test it, deploy it and be ready to demo it.
+
+Target date
+
+The deck’s Key Features slide is titled “What it will do by 1 Oct”. Treat 1 October 2026 as the prototype target. [OPEN: confirm the organiser’s exact deadline and demo format.]
+
+This document’s date
+
+28 September 2026 (Version 1.0).
+
+1.2 What PS-04 is asking
+
+Companies already own their data: CRM records, sales pipelines, spreadsheets, operational reports. But having data is not the same as making decisions from it. Today the chain is:
+
+Data → Reports → a human interprets → a human decides.
+
+PS-04 points toward closing that gap with a system where the chain becomes:
+
+Business data → AI understands → AI investigates → AI recommends → a human approves → action.
+
+The focus areas the team identified inside PS-04 are RAG over business data, analytics agents and decision-making agents. TRACE touches all three: retrieval over structured data and business documents, a team of analytics agents, and a decision-making pipeline whose output is a full Decision Brief.
+
+NOTE ON THE PROBLEM STATEMENT TEXT
+
+The official PS-04 wording was not reproduced in full when this document was written. The reading above is the team’s interpretation from the challenge materials. [OPEN: if the organiser’s PS-04 text adds requirements, append them here.]
+
+1.3 The obvious answer, and why TRACE deliberately is not it
+
+The obvious response to PS-04, and the one the team expects a large share of submissions to take, is: upload a CSV, ask a question, get a chart — “chat with your data”. It is easy to build, easy to demo and easy to forget. TRACE deliberately refuses that shape. It is decision-centric, not chat-centric; it investigates rather than answers; and it prices the risk of being wrong instead of asserting confidence.
+
+1.4 The team
+
+Member
+
+Full name
+
+Provisional role label
+
+Notes
+
+01
+
+Rishit Kaushal Nanavati
+
+Product & Systems Architecture
+
+3rd year B.Tech, Artificial Intelligence & Machine Learning, D J Sanghvi College of Engineering, Mumbai. GitHub: bitbyrizbit.
+
+02
+
+Rihaan Ramzan Ali Shaikh
+
+Data & Analytics Engineering
+
+3rd year, Dwarkadas J. Sanghvi College of Engineering.
+
+03
+
+Sibtain Mohammad Raza Nayani
+
+Agent Design & Orchestration
+
+3rd year, Dwarkadas J. Sanghvi College of Engineering.
+
+ABOUT THE ROLE LABELS
+
+The three role labels were assigned before any building began and exist only to fill the deck’s Team slide. They are not a division of labour and not a hierarchy. Do not treat them as binding. The team decides real ownership during the build.
+
+1.5 Artifacts already produced
+
+A 10-slide idea deck in the organiser’s exact template (dark theme, cream and gold accents). Slides: 1 Title, 2 The problem, 3 Solution overview, 4 Technical approach, 5 System architecture (with diagram), 6 Key features, 7 Differentiation at a glance, 8 Baseline & evaluation, 9 Team, 10 Thank you. A summary of its content is in Appendix B.
+
+A system architecture diagram (transparent PNG) showing the agent pipeline: Data → Analytics → Verification → Reasoning → Scenario → Risk / Counter-Decision → Underwriting → Decision Brief → Human sign-off → Action.
+
+Three LinkedIn posts (one per member, generic and role-neutral), each tagging Build Fast with AI, linked from the deck’s final slide.
+
+The earlier ‘decision intelligence’ idea document, which this document supersedes wherever the two differ. Its mechanics survive; its vocabulary was replaced by the underwriting frame.
+
+1.6 Decisions already locked
+
+Decision
+
+Status
+
+Project name: TRACE (Decision Intelligence Engine)
+
+[LOCKED]
+
+Core frame: TRACE underwrites decisions; it does not merely recommend them
+
+[LOCKED]
+
+Tagline: Not confidence. Coverage.
+
+[LOCKED]
+
+Five signature features: Decision Premium, Exposure Report, Coverage Lapse Conditions, Counter-Decision Underwriter, Loss History Ledger
+
+[LOCKED]
+
+Demo company and data: NovaMart, a synthetic retail business (~25,000 customers, ~100,000 transactions, 500 products, multiple regions)
+
+[LOCKED]
+
+Humans approve; TRACE never silently executes a high-impact decision
+
+[LOCKED]
+
+Language model reasons and explains; deterministic code does all arithmetic, scoring and verification
+
+[LOCKED]
+
+Data-agnostic, starting from CSV/XLSX so any team can pilot without integration work
+
+[LOCKED]
+
+2. The Problem
+
+2.1 The data-to-decision gap
+
+Businesses do not have a shortage of data. They have a shortage of decision-ready intelligence. A pricing lead has a spreadsheet, a dashboard and an opinion. What she does not have is an honest answer to the only question that matters before committing: “If I am wrong, what does it cost, and how would I know I was wrong before it is too late?”
+
+Dashboards describe the past. Copilots answer questions about it. Neither prices the future, and neither tells the decision-maker when to stop trusting the answer. The result is a specific, expensive failure mode: confident-looking bad decisions — decisions that come with charts, numbers and fluent explanations, and are still wrong.
+
+2.2 How confident-looking bad decisions get made
+
+These are the recurring mechanisms. TRACE is designed so that each one has a named counter-measure (Section 4 maps them).
+
+#
+
+Failure mode
+
+What it looks like in practice
+
+1
+
+Unaudited data
+
+Duplicated customers, stale records, missing fields and inconsistent formats silently distort every downstream number. Nobody checks before analysing.
+
+2
+
+Definition drift
+
+“Revenue”, “active customer” or “churn” means different things in different files or teams. The answer is precise and wrong.
+
+3
+
+Correlation read as cause
+
+Sales rose after a price change, so the price change ‘worked’ — ignoring seasonality, mix shift or a one-off large order.
+
+4
+
+Averages hiding concentration
+
+A 13% revenue decline looks like a broad trend; in reality three accounts explain most of it. The decision built on the average fails when those accounts move.
+
+5
+
+Point estimates
+
+One number (“+10% margin”) is presented with no range, so nobody sees the tail where the decision loses money.
+
+6
+
+Confirmation bias
+
+The analyst assembles evidence for the answer the boss already prefers. Nobody is assigned to argue the other side.
+
+7
+
+Unknown unknowns
+
+Missing data (for example competitor pricing) is ignored rather than treated as a risk with a potential magnitude.
+
+8
+
+Unverified math
+
+A key figure is computed once, in one way, and never independently re-checked before it drives a decision.
+
+9
+
+Unitless confidence
+
+“82% confident” cannot be compared across decisions, has no currency, and does not say what happens in the other 18%.
+
+10
+
+No memory
+
+Decisions are made, outcomes happen, and nobody records how predictions compared with reality — so the organisation never learns how good its judgement is.
+
+2.3 Who feels it
+
+Person
+
+The decision they own
+
+What they have today
+
+What keeps them up
+
+Pricing lead / category manager
+
+Raise, hold or cut the price of a product or tier
+
+BI dashboard, spreadsheet models, opinions
+
+Raising price and losing the top accounts.
+
+Revenue operations / regional head
+
+Keep funding a region, shift budget, change territory
+
+CRM reports, pipeline exports
+
+Defending a budget call with no audit trail.
+
+Customer success lead
+
+Where to spend limited retention effort
+
+Health scores, account lists
+
+Spending on the wrong accounts; missing the ones about to churn.
+
+Marketing lead
+
+Which campaign gets more budget
+
+Attribution reports
+
+Reallocating on noisy or dirty data.
+
+Operations / inventory planner
+
+Where stock or resources should shift
+
+ERP exports, spreadsheets
+
+Stockouts on one side, dead stock on the other.
+
+CFO / executive sponsor
+
+Sign off on any of the above
+
+Slides from their teams
+
+Approving something no one can defend after it goes wrong.
+
+2.4 The cost
+
+The cost is real but the team has no measured figure, and this document must not invent one. What can be stated honestly:
+
+Time: manual investigation across spreadsheets, dashboards and email typically takes hours per decision. The deck’s baseline of “3–6 hours” is the team’s working estimate, not a measured statistic. Present it as such. [OPEN: validate with at least one real practitioner conversation before quoting it externally.]
+
+Money: the cost of a wrong pricing, discount or investment decision is the decision’s own downside. This varies enormously by company; TRACE’s job is to quantify it per decision, not to claim a universal figure.
+
+Trust and accountability: when a decision fails, there is often no evidence chain — “just a Slack thread and someone’s memory of ‘the numbers looked fine.’” That line from the deck is the problem in one sentence.
+
+2.5 The missing primitive: a price for being wrong
+
+Other disciplines solved this long ago. An insurer will not commit to a risk without pricing it. A bank does not lend without a view of expected loss. A trading desk sizes positions against how much it can lose. In each case the commitment is preceded by a quantified, currency-denominated statement of the cost of being wrong, with explicit conditions under which the commitment is void.
+
+Ordinary business decisions have no equivalent. What they have instead is a confidence score — a percentage with no unit, no currency and no stated conditions. That is the gap TRACE exists to close: it brings the discipline of pricing risk before commitment to everyday business decisions.
+
+3. The Landscape: What Exists in the Real World Today
+
+TRACE does not enter an empty field. This section maps what already exists so that TRACE’s claims stay honest and its positioning stays sharp. Product capabilities change quickly; the descriptions below are the team’s understanding at the time of writing and are deliberately phrased in terms of what each category is typically centred on. Re-verify any specific competitor claim before using it publicly.
+
+3.1 The map
+
+Category
+
+Representative examples
+
+What they do well
+
+Where they typically stop
+
+BI platforms with AI copilots
+
+Power BI + Copilot, Tableau’s AI features, ThoughtSpot, Looker with AI assistants
+
+Data exploration, natural-language questions, reporting, visualisation, governed semantic models.
+
+Anchored to the report / semantic-model experience. Answer “what does the data say”, not “what should we do and what does being wrong cost”. No priced downside, no adversarial review, no outcome ledger as a core primitive.
+
+CRM-native AI agents
+
+Salesforce Agentforce, other CRM-embedded assistants
+
+Strong automation and assistance inside the CRM’s own objects and workflows.
+
+Bounded by that platform’s data and workflows. Not designed as a data-agnostic decision investigator across spreadsheets and mixed exports.
+
+Enterprise decision intelligence platforms
+
+Aera Technology, Pyramid Analytics, and similar vendors; “decision intelligence” is a recognised analyst category (for example, tracked by Gartner)
+
+Recommending and sometimes automating decisions at enterprise scale; deep integration; governance.
+
+Enterprise-scale deployments with integration effort. Not something a small team can pilot from a CSV in an afternoon. Their core framing is decision automation and recommendation, not decision underwriting.
+
+General-purpose ‘chat with your data’ / code-interpreter tools
+
+Assistants with data-analysis features; CSV chat tools
+
+Fast, flexible answers and charts from an uploaded file.
+
+Answer the question asked; do not challenge it. No data-health gate, no independent verification, no scenario pricing, no lapse conditions, no memory.
+
+RAG over business documents
+
+Enterprise search and document Q&A
+
+Retrieve and summarise what documents say.
+
+What documents say is not what a decision implies. Generic RAG answers; it does not decide.
+
+Automated analytics / insight tools
+
+Auto-insight and anomaly detection products
+
+Surface correlations and anomalies at scale.
+
+Correlations, not decisions. No consequence pricing.
+
+3.2 Adjacent disciplines that already price or test risk
+
+The strongest honest positioning acknowledges that pieces of TRACE’s workflow exist as separate practices. TRACE’s contribution is to unify them into one automated, auditable workflow driven by an underwriting structure.
+
+Existing practice
+
+What it does
+
+Relationship to TRACE
+
+Monte Carlo risk-analysis add-ins (spreadsheet tools such as @RISK or Crystal Ball)
+
+Let an analyst build a model and simulate uncertainty.
+
+Closest prior art to “pricing risk”. They require an expert to build the model by hand. TRACE builds the investigation and scenario model automatically from messy data and wraps it with verification, adversarial review and a ledger.
+
+A/B testing and experimentation platforms
+
+Measure the real effect of a change after running an experiment.
+
+Complementary. They need the change to be run first. TRACE informs the decision before commitment, from existing data, and can point to where an experiment is warranted.
+
+Causal inference libraries and methods
+
+Estimate causal effects from observational data with explicit assumptions.
+
+The rigorous end of the same problem. The hackathon prototype uses simpler, transparent methods and labels causal claims as modelled scenarios, never as observed fact.
+
+Pre-mortems and red-teaming
+
+Ask a group to imagine the decision failed and explain why.
+
+TRACE’s Counter-Decision Underwriter is an automated, data-grounded pre-mortem that must quantify what it argues.
+
+Decision journals and forecast calibration (for example calibration scoring of predictions)
+
+Record predictions and check them against outcomes to improve judgement.
+
+TRACE’s Loss History Ledger productises this at the level of the business and feeds the result back into pricing.
+
+FP&A scenario planning
+
+Best / base / worst cases in financial models.
+
+TRACE automates scenarios, attaches probabilities and dollar exposure, and searches for the conditions that flip the answer.
+
+Insurance and actuarial underwriting
+
+Price risk before committing: expected loss plus a risk load, conditions, exclusions, and experience-based recalibration.
+
+TRACE’s structural template. To the team’s knowledge, this discipline is not normally applied as the organising frame for everyday business-decision tooling.
+
+3.3 The honest reading
+
+WHAT THIS MEANS FOR OUR CLAIMS
+
+TRACE does not claim that risk quantification, adversarial review, sensitivity analysis or decision journals are new inventions.
+
+TRACE does claim that combining them into a single automated, data-agnostic workflow, expressed in an underwriting structure that executives already understand, with a compounding outcome ledger, is not what typical AI data tools offer today.
+
+Never say a competitor “cannot” do something. Say what a category is typically centred on and what TRACE makes central.
+
+4. The Gaps TRACE Bridges
+
+Each gap below pairs a recognised weakness in today’s tooling and practice with the specific TRACE mechanism that addresses it. It also maps back to the failure modes in Section 2.2.
+
+#
+
+Gap in today’s tools and practice
+
+TRACE mechanism
+
+Failure mode addressed
+
+G1
+
+Tools assume the data is trustworthy and proceed with confidence on dirty inputs.
+
+Data Health Check runs first and its findings raise or lower the premium and may restrict what can be recommended.
+
+1, 2
+
+G2
+
+Users ask questions, not decisions; the tool answers narrowly and stops.
+
+Decision Objective converts a decision into a structured objective (decision, decision-maker, objective, constraints, horizon) and an investigation plan.
+
+3, 6
+
+G3
+
+One number, no range.
+
+Scenario engine produces a distribution of outcomes, not a point estimate.
+
+5
+
+G4
+
+Confidence has no unit or currency.
+
+Decision Premium expresses the cost of risk in the decision’s own currency, as a rate against the projected upside.
+
+9
+
+G5
+
+Nobody quantifies the downside if the call is wrong.
+
+Exposure Report states the dollar downside, tail loss and concentration exposure.
+
+4, 5, 9
+
+G6
+
+No one knows when to stop trusting the answer.
+
+Coverage Lapse Conditions state the exact thresholds and missing-data conditions that void the recommendation. Flagship feature.
+
+5, 7, 9
+
+G7
+
+The system supports its own answer.
+
+Counter-Decision Underwriter argues against the recommendation before it ships and must quantify what it argues.
+
+6, 7
+
+G8
+
+The system trusts its own math.
+
+Verification Agent independently recomputes key numbers by a second method before they enter the evidence.
+
+8
+
+G9
+
+Missing data is ignored.
+
+Missing data becomes a priced risk and a lapse condition, not a footnote.
+
+7
+
+G10
+
+Tools can’t say “no”.
+
+TRACE can return Refer or Decline when data is insufficient. An underwriter that can decline is more credible than one that always answers.
+
+1, 7, 9
+
+G11
+
+Nothing is remembered; predictions are never compared with outcomes.
+
+Loss History Ledger records predicted-versus-actual and recalibrates premiums for similar decisions.
+
+10
+
+G12
+
+AI output can’t be audited.
+
+Evidence Chain: every claim traces to metrics, source records, assumptions and data-quality flags — a compliance-ready audit log.
+
+1, 8
+
+G13
+
+Enterprise decision platforms need integration; small teams can’t start.
+
+CSV/XLSX-first adoption path, then connectors.
+
+—
+
+G14
+
+AI that acts on its own is a governance risk.
+
+Human approval is mandatory. TRACE recommends and prices; a person binds.
+
+—
+
+PART B · THE SOLUTION
+
+5. TRACE on One Page
+
+5.1 Definition
+
+DEFINITION [LOCKED]
+
+TRACE is a decision underwriting engine for business data. It takes messy CRM records, spreadsheets and operational files, investigates a business decision the way an underwriter investigates a risk, and returns a Decision Brief that states the recommendation, the price of being wrong, the dollar exposure if it is wrong, and the exact conditions under which the recommendation should no longer be trusted. It then learns from what actually happens.
+
+5.2 The unit of work is a decision, not a query
+
+A query (what other tools answer)
+
+A decision (what TRACE underwrites)
+
+“What are my sales?”
+
+“Should we increase the price of Product A?”
+
+“Show revenue by region.”
+
+“Should we keep investing in Region X?”
+
+“Which customers churned?”
+
+“Should we stop discounts for low-margin customers?”
+
+Answer: a number or a chart.
+
+Answer: a conditional, evidence-backed, priced verdict.
+
+5.3 What goes in, what comes out
+
+Input
+
+4–5 files (for example customers, products, transactions, regions, campaigns), optional business documents (contracts, policies, memos), and a decision typed in plain language.
+
+Process
+
+Data Health Check → structured Decision Objective → Investigation Plan → multi-agent analysis with independent verification → scenario modelling → adversarial Counter-Decision review → underwriting (premium, exposure, lapse conditions, verdict).
+
+Output
+
+A Decision Brief: recommendation and Underwriting Verdict, Decision Premium, Exposure Report, Coverage Lapse Conditions, Cost of Inaction, data-quality findings, counter-evidence, scenarios, and the full Evidence Chain.
+
+Interaction
+
+A live Decision Sandbox: the user changes an assumption (price change, churn rate, discount level) and TRACE re-quotes instantly — premium, exposure and verdict update in real time.
+
+Human step
+
+A person approves, modifies or rejects. Approval produces a signed Decision Record. Nothing executes without it.
+
+After the decision
+
+The predicted premium, exposure and lapse conditions are stored in the Loss History Ledger. When the real outcome is known it is logged against the prediction, and future premiums for similar decisions are recalibrated.
+
+5.4 What TRACE is, and what it is not
+
+TRACE is
+
+TRACE is not
+
+A decision underwriting engine that prices the risk of a business decision
+
+A dashboard, a BI tool or a chart generator
+
+Decision-centric: begins with a decision and ends with a priced verdict
+
+A “chat with your CSV” assistant
+
+Data-agnostic: works on spreadsheets and CRM exports
+
+Tied to one vertical, one CRM or one industry
+
+An advisor with mandatory human sign-off
+
+An autonomous agent that acts on its own
+
+Honest about uncertainty and able to say Refer or Decline
+
+A system that always produces a confident answer
+
+A structured metaphor drawn from insurance underwriting
+
+An insurance product, an insurer, or a regulated financial service
+
+A language model for reasoning and explanation plus deterministic code for numbers
+
+A language model producing numbers from its own generation
+
+5.5 Three versions of the pitch
+
+Length
+
+Text
+
+10 seconds
+
+“Every AI data tool shows you a confidence score. TRACE shows you coverage: the price of being wrong, before you commit.”
+
+30 seconds
+
+“Businesses don’t have a shortage of data. They have a shortage of decisions they can defend. TRACE is an AI decision engine that underwrites business decisions. It audits the data, investigates the decision, verifies its own math, argues against itself, and then quotes you a Decision Premium — the price of being wrong — plus the exact conditions under which its recommendation lapses. It doesn’t ask you to trust it. It shows you what it costs if you shouldn’t.”
+
+60 seconds
+
+The 30-second pitch, followed by: “Underwriting is the one discipline built entirely around pricing the cost of being wrong before you commit. We borrowed its structure: a premium in the decision’s own currency instead of an unexplained percentage; an exposure report in dollars; lapse conditions that tell you when to stop trusting the answer; and a loss ledger that compares every prediction with what actually happened, so the pricing gets sharper the longer a company uses it. Anyone can add a confidence score to an AI tool. Nobody can fake a ledger that compounds.”
+
+6. The Core Reframe: Underwriting
+
+6.1 Why this reframe exists
+
+The original TRACE idea was a “decision intelligence” engine: AI investigates a decision, shows evidence, tests scenarios and states what would change the answer. That is strong, but it lands in a crowded space: any team can describe “AI recommends, shows evidence, tests scenarios”, and the differentiation blurs.
+
+The reframe does not add another feature. It changes the structure of the product by borrowing from a mature discipline nobody else in this field is likely to borrow from. TRACE does not recommend decisions. It underwrites them.
+
+6.2 What underwriting actually is
+
+In insurance, underwriting is the process of evaluating a proposed risk before committing to it. A competent underwriter does the following, in roughly this order:
+
+Collects the submission and checks its quality. Incomplete or inconsistent submissions are queried or rejected.
+
+Investigates the risk using the file, external data and experience.
+
+Estimates the expected loss — the probability-weighted cost of things going wrong.
+
+Sets a price that covers expected loss plus a loading for uncertainty, expenses and margin. More uncertain risks carry a higher loading.
+
+Sets terms: conditions the client must meet, exclusions (what is not covered), and the circumstances under which cover lapses.
+
+Reaches a decision: accept, accept with conditions, refer to someone more senior, or decline.
+
+Learns from claims: actual losses are compared with predicted ones, and pricing for similar risks is adjusted — in proportion to how much experience exists (the actuarial idea of credibility).
+
+That sequence is exactly what a business decision needs and almost never gets.
+
+6.3 The mapping
+
+Underwriting concept
+
+TRACE concept
+
+What it means in TRACE
+
+Submission / application
+
+Data upload + Decision Objective
+
+The files and the structured statement of the decision.
+
+Submission quality check
+
+Data Health Check
+
+Audit of data trustworthiness before any analysis.
+
+Underwriting file
+
+Evidence Chain
+
+Every claim traceable to metrics, records, assumptions and quality flags.
+
+Expected loss
+
+Expected loss of the decision
+
+Probability-weighted downside from the scenario distribution.
+
+Premium (expected loss + loading)
+
+Decision Premium
+
+Risk cost in the decision’s currency: expected loss plus a risk load, shown as a rate against projected upside.
+
+Exposure / amount at risk
+
+Exposure Report
+
+Dollar downside if the call is wrong, including tail and concentration exposure.
+
+Conditions, warranties and lapse of cover
+
+Coverage Lapse Conditions
+
+The exact conditions under which the recommendation is no longer ‘covered’.
+
+Exclusions
+
+Exclusions
+
+What TRACE did not or could not model (for example a competitor’s reaction).
+
+Looking for adverse factors
+
+Counter-Decision Underwriter
+
+A dedicated agent that argues against the recommendation with quantified evidence.
+
+Accept / accept with conditions / refer / decline
+
+Underwriting Verdict
+
+Recommended · Recommended with Conditions · Refer · Decline.
+
+Binding cover
+
+Human approval → Decision Record
+
+A person signs. TRACE never binds on its own.
+
+Policy period
+
+Validity window
+
+How long the verdict stays valid given data age and assumptions.
+
+Claims record
+
+Loss History Ledger
+
+Predicted-versus-actual outcomes for each decision.
+
+Experience rating and credibility
+
+Premium recalibration
+
+Future premiums for similar decisions adjust in proportion to how much history exists.
+
+6.4 The exact boundary of the metaphor
+
+WHAT THE UNDERWRITING FRAME DOES NOT MEAN
+
+TRACE does not sell insurance, issue policies, guarantee outcomes, or reimburse losses.
+
+“Premium” is not a fee the user pays. It is a calculated risk cost expressed in the decision’s currency. (Any business model that charges for TRACE is separate; see Section 28.)
+
+“Coverage” means “the recommendation is currently supported by the evidence and assumptions”. It does not mean anyone will pay out if the decision fails.
+
+Do not use insurance language in a way that could be read as an actual insurance offer. Use phrases such as “as if underwritten”, “underwriting-style”, or “priced for risk”.
+
+Do not build insurance features (claims payments, policy issuance, regulatory filings).
+
+6.5 Why the reframe wins
+
+It gives a coherent vocabulary instead of a feature list. Every feature has a natural name that explains itself to an executive.
+
+It speaks a language the C-suite already trusts. Executives understand premium, exposure, conditions and loss history. They do not understand “confidence: 82%”.
+
+It cannot be bolted on overnight. Copying it needs a scoring methodology (Section 16), not a prompt. A team can copy a tagline; it cannot copy a working risk-pricing and lapse-condition engine plus a ledger.
+
+It creates a compounding moat. The Loss History Ledger gets more valuable the longer a company runs decisions through it. No 24-hour prototype can fake that.
+
+It makes the demo memorable. “Not confidence. Coverage.” is a line judges can repeat.
+
+7. The Locked Vocabulary
+
+Consistency of language is part of the product. Use these terms exactly, in the UI, the demo, the writing and any generated content.
+
+7.1 The five locked signature terms
+
+Term
+
+Replaces
+
+Definition
+
+Format of the output
+
+Illustrative example
+
+Decision Premium [LOCKED]
+
+The vague confidence score
+
+The calculated cost of the risk of the recommendation being wrong: expected loss plus a risk load, expressed in the decision’s own currency and as a rate against projected upside.
+
+Currency amount + percentage rate + breakdown of drivers.
+
+“This recommendation carries an 8.0% Decision Premium ($96K) against a $1.2M projected upside.”
+
+Exposure Report [LOCKED]
+
+Unquantified ‘risks’ lists
+
+The dollar-value downside if the recommendation is wrong, computed from scenario and counter-evidence data: tail loss, concentration exposure, data exposure.
+
+A short table in currency, with the drivers named.
+
+“Probability of net loss ≈ 10%. Average of the worst 10% of outcomes: −$0.47M. Concentration: top 3 accounts = 41% of affected volume.”
+
+Coverage Lapse Conditions [LOCKED]
+
+‘Decision Boundary’ (earlier name)
+
+The exact conditions under which the recommendation is no longer ‘insured’ — thresholds, concentration events, missing-data outcomes and time limits that would flip the verdict.
+
+A ranked list of conditions with current value, lapse threshold and distance to lapse.
+
+“Coverage lapses if segment churn exceeds 6.2% (modelled: 3.1%), if two of the top three accounts leave, or if the missing competitor-price gap exceeds 15%.”
+
+Counter-Decision Underwriter [LOCKED]
+
+‘Risk Agent’ / ‘Counter-Decision agent’
+
+A dedicated agent whose only job is to argue against the recommendation before it ships, using data. It must quantify what it claims.
+
+A list of adverse findings with size and evidence links.
+
+“Three key accounts have contracted discount terms; ignoring them overstates upside by ≈ $210K.”
+
+Loss History Ledger [LOCKED]
+
+‘Decision Memory’ (earlier name)
+
+The actuarial-style record of every decision: predicted premium, exposure and conditions versus the actual outcome, used to recalibrate future premiums for similar decisions.
+
+A ledger table and calibration view.
+
+“Pricing decisions of this class: 6 logged; realised loss exceeded predicted exposure in 1 of 6; premium adjusted +4%.”
+
+7.2 Carry-over terms from the earlier idea (unchanged)
+
+Term
+
+Definition
+
+Decision Brief
+
+The complete output document for a decision. Contains everything in Section 19.
+
+Decision Sandbox
+
+The live what-if surface. The user changes an assumption and TRACE re-quotes. Full spec in Section 18.
+
+Evidence Chain
+
+The traceable path from every recommendation back through key factors, calculated metrics, source records, assumptions, data-quality flags and contradicting evidence. Doubles as an audit log.
+
+Data Health Check
+
+The pre-analysis audit of missing values, duplicates, stale records, inconsistent formats and outliers.
+
+Cost of Inaction
+
+The estimated cost of delaying or doing nothing, computed on the same evidence, shown beside every scenario.
+
+Verification Agent
+
+The agent that independently recomputes key numbers by a second method before they enter the evidence.
+
+7.3 Supporting terms introduced in this document [DEFAULT]
+
+These extend the frame consistently. They are recommended, not sacred; keep them unless there is a good reason to change them.
+
+Term
+
+Definition
+
+Underwriting Verdict
+
+TRACE’s categorical outcome: Recommended, Recommended with Conditions, Refer (needs a human or more data), or Decline (TRACE will not recommend on this evidence).
+
+Conditions
+
+Actions or data fixes that must happen for the recommendation to stand (for example “resolve duplicate customers before rollout”).
+
+Exclusions
+
+Factors that are outside the model’s scope and therefore not covered (for example competitor response when no competitor data exists).
+
+Rate Card
+
+The visible, configurable set of weights and thresholds that turn risk drivers into premium loads and verdict bands. Shown to the user, never hidden.
+
+Re-quote
+
+Recalculation of premium, exposure, lapse conditions and verdict after the user changes an assumption in the sandbox.
+
+Tripwire
+
+A Coverage Lapse Condition expressed as a watch-metric with an alert threshold, to be monitored after the decision is made. Displayed in the prototype; automated alerting is [VISION].
+
+Validity window
+
+The period for which the verdict is considered valid, based on data recency and the decision horizon.
+
+Decision Record
+
+The signed output of human approval: the brief, the approver, the timestamp, any modifications, and the Evidence Chain.
+
+Claim (ledger sense)
+
+A ledger entry where the actual outcome fell outside the predicted range or a lapse condition was triggered. Not an insurance claim.
+
+7.4 Retired names
+
+IF AN OLDER DOCUMENT USES THESE, TRANSLATE
+
+“Decision Boundary” → Coverage Lapse Conditions
+
+“Decision Memory” → Loss History Ledger
+
+“Confidence score” as a headline metric → Decision Premium (its ingredients — data completeness, evidence agreement and scenario stability — now appear as premium drivers, not as a standalone percentage)
+
+“Risk Agent” → part of the Counter-Decision Underwriter and the Exposure Report inputs
+
+8. The USP
+
+THE USP IN ONE SENTENCE [LOCKED]
+
+Every other AI tool tells you what it thinks and how sure it feels. TRACE tells you what it costs if it is wrong, and exactly when to stop believing it.
+
+8.1 The four pillars
+
+Pillar
+
+What it is
+
+Why it wins
+
+1. A price for being wrong
+
+Decision Premium and Exposure Report replace unitless confidence with currency.
+
+It is the language of executives and it makes decisions comparable. An 8% premium on $1.2M upside versus a 41% premium on $0.4M upside is a real conversation; “82% versus 76% confident” is not.
+
+2. Knowing when to stop trusting it
+
+Coverage Lapse Conditions state the flip-points in advance. This is the flagship demo moment.
+
+Businesses do not only need to know what to do. They need to know when the answer stops being safe. Almost no AI output states this.
+
+3. A system that attacks and audits itself
+
+Data Health Check, independent Verification Agent, Counter-Decision Underwriter, and the ability to Refer or Decline.
+
+The system’s credibility comes from visibly trying to break its own answer, and from being willing to say no.
+
+4. A moat that compounds
+
+The Loss History Ledger compares every prediction with reality and sharpens future premiums.
+
+The product gets better and harder to leave the longer it is used. This answers “why does this scale?” and “where is the moat?”.
+
+8.2 The line judges should walk out repeating
+
+“Not confidence. Coverage.” Build the whole pitch around the Coverage Lapse Conditions moment. Everything else — the evidence chain, the counter-decision, the sandbox, the ledger — supports that moment instead of competing with it for attention.
+
+8.3 Typical AI data tool versus TRACE
+
+A typical AI data tool
+
+TRACE
+
+Answers questions
+
+Underwrites decisions
+
+Reports a confidence score
+
+Quotes a Decision Premium in the decision’s currency
+
+Shows a chart
+
+Prices an Exposure Report
+
+Assumes its data is clean
+
+Audits and flags its own inputs, and prices the data risk
+
+Trusts its own math
+
+Verifies its own math independently
+
+Supports its own answer
+
+Employs an agent to argue against it
+
+Stops at “here is what to do”
+
+States the Coverage Lapse Conditions
+
+Always answers
+
+Can Refer or Decline
+
+Forgets the outcome
+
+Keeps a Loss History Ledger that reprices future calls
+
+Chat-centric
+
+Decision-centric
+
+8.4 Why it is hard to copy
+
+It needs a methodology, not a prompt. Producing a defensible premium, exposure and set of lapse conditions requires a scenario engine, a rate card, root-finding for thresholds and independent verification. A competitor that only re-labels its confidence score as a “premium” will be exposed by a single follow-up question (“how was that calculated?”).
+
+It needs a coherent frame from end to end. The vocabulary, the workflow, the UI and the demo all have to agree. That is a design and product discipline, not a feature toggle.
+
+It needs time to compound. A ledger of predicted-versus-actual outcomes cannot be shortcut.
+
+It needs the courage to say no. Most tools are built to always answer. Refer and Decline require the system to be designed around honesty.
+
+8.5 Name and acronym
+
+TRACE is short, professional and not tied to one industry. It doubles as the workflow: Trust the data · Retrieve the evidence · Analyze the decision · Challenge the conclusion · Explain the outcome. Tagline: Not confidence. Coverage. Every decision leaves a trail — TRACE prices it.
+
+Acronym letter
+
+Stage
+
+Where it lives
+
+T — Trust the data
+
+Data Health Check and semantic layer
+
+Sections 11, 12
+
+R — Retrieve the evidence
+
+Investigation Plan, retrieval over data and documents
+
+Section 14
+
+A — Analyze the decision
+
+Analytics, Verification, Reasoning and Scenario agents; underwriting math
+
+Sections 15, 16
+
+C — Challenge the conclusion
+
+Counter-Decision Underwriter, Coverage Lapse Conditions, Sandbox
+
+Sections 17, 18
+
+E — Explain the outcome
+
+Decision Brief, Evidence Chain, Decision Record, Ledger
+
+Sections 19–21
+
+9. What Is Genuinely New — and What Is Not
+
+A winning idea is defended by claims that survive hostile questioning. This section separates what TRACE can claim from what it must not.
+
+9.1 Claims TRACE can defend
+
+Claim
+
+Why it holds
+
+How to say it
+
+Using underwriting as the organising structure for business-decision tooling
+
+To the team’s knowledge, everyday business-decision tools are not built around premium, exposure, lapse conditions and a loss ledger as one coherent frame.
+
+“We borrowed the structure of the one discipline built around pricing the cost of being wrong.”
+
+Coverage Lapse Conditions as a first-class output
+
+Sensitivity analysis exists; presenting ranked, threshold-based conditions under which the recommendation is void as the headline of every brief is a product choice few tools make.
+
+“Every recommendation ships with the exact conditions that void it.”
+
+Refer and Decline as legitimate AI outcomes
+
+Most data tools always produce an answer.
+
+“Our system is allowed to say no.”
+
+Priced data risk
+
+Data-quality findings and missing data change the premium and create lapse conditions, rather than living in a footnote.
+
+“Bad data doesn’t get ignored. It gets priced.”
+
+A self-verifying, self-attacking pipeline feeding one priced output
+
+Independent recomputation plus an adversarial agent whose findings must be quantified and flow into exposure.
+
+“It checks its own math and argues against itself before it speaks.”
+
+A Loss History Ledger that recalibrates premiums
+
+Combines decision journals, calibration and experience rating into one product primitive tied to pricing.
+
+“It learns how your business makes decisions, and how wrong it tends to be.”
+
+Data-agnostic, CSV-first
+
+Enterprise decision platforms typically require integration.
+
+“Any team can pilot it in an afternoon.”
+
+9.2 Claims TRACE must NOT make
+
+NEVER CLAIM
+
+That risk quantification, sensitivity analysis, red-teaming, decision journals or Monte Carlo simulation are TRACE inventions.
+
+That “decision intelligence” as a category is new. It exists (analyst firms track it). TRACE’s claim is about the mechanics and structure inside it and about buildability at small scale.
+
+That TRACE’s outputs are guarantees, or that a low premium means a decision is safe.
+
+That the prototype has been validated on real companies. It runs on a synthetic dataset; results are illustrative until validated.
+
+That the Loss History Ledger has already been proven to improve accuracy. In the prototype it demonstrates the mechanism; the compounding benefit is a [VISION] that real usage would confirm.
+
+Any accuracy percentage, time saving or cost saving that has not been measured.
+
+PART C · HOW TRACE WORKS
+
+10. End-to-End Flow
+
+This is the full journey from upload to ledger. Each stage is specified in the sections that follow.
+
+Stage
+
+Name
+
+What happens
+
+Output
+
+Section
+
+0
+
+Ingest
+
+User uploads files (and optional documents). Files are parsed and profiled.
+
+Parsed tables and documents
+
+11
+
+1
+
+Data Health Check
+
+Audit of missing values, duplicates, stale records, format inconsistencies and outliers.
+
+Data Health Report and data-quality load
+
+11
+
+2
+
+Semantic layer
+
+Entities, relationships and metric definitions are inferred and shown for confirmation.
+
+Business semantic layer
+
+12
+
+3
+
+Decision Objective
+
+The typed decision becomes a structured objective.
+
+Decision Objective object
+
+13
+
+4
+
+Investigation Plan
+
+TRACE builds a visible mini-investigation for this decision and checks whether the data is sufficient.
+
+Investigation Plan and sufficiency verdict
+
+14
+
+5
+
+Analysis
+
+Analytics Agent computes; Verification Agent re-checks key numbers by a second method; Reasoning Agent links validated evidence to the decision.
+
+Validated evidence set
+
+15, 17
+
+6
+
+Scenario modelling
+
+Scenario Agent builds the outcome distribution and best / expected / worst cases.
+
+Scenario distribution
+
+16
+
+7
+
+Counter-Decision
+
+The Counter-Decision Underwriter argues against the recommendation; findings are quantified.
+
+Adverse findings
+
+17
+
+8
+
+Underwriting
+
+Decision Agent computes Decision Premium, Exposure Report, Coverage Lapse Conditions, Cost of Inaction and the Underwriting Verdict.
+
+The Decision Brief
+
+16, 19
+
+9
+
+Sandbox
+
+The user challenges assumptions; TRACE re-quotes live.
+
+Updated brief
+
+18
+
+10
+
+Human approval
+
+The user approves, modifies or rejects. Approval creates a Decision Record.
+
+Decision Record
+
+20
+
+11
+
+Ledger
+
+The prediction is stored; the real outcome is logged later; premiums are recalibrated.
+
+Loss History entry
+
+21
+
+THE VISIBLE INVESTIGATION
+
+During stages 1–8 the interface must show the investigation progressing: data check → segmentation → margin analysis → churn analysis → scenario simulation → contradiction check → underwriting. The visible stages are part of the product: they show the user the system is investigating, not guessing. They must reflect real work being done, not a cosmetic animation.
+
+11. Data Health Check
+
+Principle: bad data plus a confident AI produces confident-looking bad decisions. TRACE checks whether the data can be trusted before any recommendation, surfaces the problems instead of hiding them, and lets them change the price of the decision.
+
+11.1 Checks
+
+Check
+
+What it looks for
+
+Severity logic [DEFAULT]
+
+Effect downstream
+
+Missing values
+
+Null or blank fields, by column and by segment. Especially concentration of missingness in the segment under decision.
+
+Higher severity when a field the decision depends on is missing, or when missingness is concentrated in the affected segment.
+
+Data-quality load on the premium; possible Condition; possible Exclusion.
+
+Duplicates
+
+Exact and fuzzy duplicate entities (for example the same customer under variant names).
+
+Higher severity when duplicates touch high-value or key accounts.
+
+Load; Condition to resolve; deduplicated view used for analysis with the change logged.
+
+Stale records
+
+Records not updated within a defined window; data ending earlier than the decision horizon requires.
+
+Severity rises with age relative to the horizon.
+
+Shortens the validity window; load.
+
+Inconsistent formats
+
+Mixed date formats, currency symbols, units, casing, category spellings.
+
+Severity by share of rows affected and whether it can be auto-normalised.
+
+Normalisation logged in the Evidence Chain.
+
+Outliers
+
+Extreme values by robust statistics; impossible values (negative quantities, prices below cost).
+
+Severity by count and by influence on key metrics.
+
+Flag; sensitivity run with and without outliers.
+
+Referential integrity
+
+Transactions pointing to non-existent customers or products; orphan records.
+
+Any orphan share above a small tolerance is flagged.
+
+Rows excluded and counted.
+
+Coverage and sufficiency
+
+Enough rows, time span and segment size to support the decision.
+
+Below minimum thresholds the verdict cannot be better than Refer.
+
+Sufficiency verdict in the Investigation Plan.
+
+Definition conflicts
+
+The same metric implied differently in different files.
+
+Any unresolved conflict is flagged.
+
+User asked to confirm the definition (Section 12).
+
+11.2 Output: the Data Health Report
+
+A concise list of concrete, quantified warnings (for example “3.7% of customer records appear to be duplicates”, “8.4% of industry values are missing”). These example figures are the intended NovaMart plant values (Section 22), shown to establish credibility before the AI answers anything.
+
+A data-quality score by dimension and an overall data-quality load that feeds the Decision Premium (Section 16.4).
+
+For each finding: what was done (kept, normalised, deduplicated, excluded), and the effect on the row count. Nothing is changed silently.
+
+A clear statement of which findings limit the decision (for example “competitor price data is absent; competitor response is an Exclusion”).
+
+RULE
+
+TRACE never silently cleans. Every transformation is recorded in the Evidence Chain with before/after counts, so a reviewer can reproduce the cleaned dataset.
+
+12. Business Semantic Layer
+
+The semantic layer is the lightweight model of the business that lets TRACE reason about entities and metrics instead of raw columns. It is built automatically and confirmed by the user in one screen.
+
+Entities: customer, product, transaction, region, campaign/discount, and (optionally) account owner or contract.
+
+Relationships: transactions link customers and products; customers belong to regions; discounts attach to transactions or customers.
+
+Metric definitions: revenue, gross margin, margin %, discount depth, active customer, churn, order frequency, average order value, account concentration. Each definition is shown in plain language and can be corrected by the user.
+
+Segments: derived groupings (for example low-margin customers, key accounts, high-discount customers) with the exact rule that defines them.
+
+Business glossary: synonyms between the user’s words and the fields (for example “top accounts” → the highest revenue customers).
+
+Why it matters: a decision like “stop discounts for low-margin customers” is only meaningful once “low-margin” has a precise, auditable definition. TRACE proposes one (for example “gross margin below a stated percentage over the trailing period”) and shows it. The definition becomes part of the Evidence Chain and part of the Coverage Lapse Conditions if the conclusion is sensitive to it.
+
+UNSTRUCTURED DOCUMENTS
+
+Business documents (contracts, pricing policies, discount memos, regional notes) are indexed for retrieval so that the Counter-Decision Underwriter and Reasoning Agent can find constraints the numbers do not contain — for example a key account with a contractually fixed discount. This is where RAG over business data applies. In the prototype the document set is small and synthetic (Section 22.5).
+
+13. Decision Objective and Decision Templates
+
+13.1 The Decision Objective
+
+The user’s question becomes a structured object before any analysis begins. The user can edit it.
+
+Decision
+
+The action being considered, stated precisely. Example [ILLUSTRATIVE]: “Stop discounts for customers whose gross margin is below X%.”
+
+Decision-maker
+
+The role that owns the decision and will approve it.
+
+Business objective
+
+What success means (for example increase gross profit) and the primary metric M.
+
+Constraints
+
+Things that must not be violated (for example “do not lose key accounts”, “contracted discounts must be honoured”).
+
+Time horizon
+
+The period over which outcomes are evaluated (for example 90 days).
+
+Baseline
+
+The alternative outcome: status quo (do nothing) unless the user specifies otherwise.
+
+Scope
+
+Which segments, regions or products the decision covers.
+
+13.2 Decision templates
+
+TRACE is data-agnostic and decision-generic, but each class of decision has a template that defines what must be computed. A template is a reusable investigation and scenario model. The prototype implements the templates below in priority order (Section 25).
+
+Template
+
+Typical decision
+
+Key quantities the template must compute
+
+Typical data needed
+
+T1 · Discount policy [prototype priority 1]
+
+“Should we stop discounts for low-margin customers?”
+
+Margin by discount depth and segment; volume response to discount removal (sensitivity); churn linkage; concentration of discounted revenue in top accounts; contracted discount constraints.
+
+Transactions with price, discount, cost; customers with segment and tenure; contract terms (documents).
+
+T2 · Price change [prototype priority 2]
+
+“Should we increase the price of Product A?”
+
+Current demand and margin; observed price sensitivity (flagged as observational); at-risk segments; account concentration; cross-product effects; competitor price gap (often missing).
+
+Transactions over time with price variation; product costs; customer segments; competitor data if any.
+
+T3 · Regional investment [prototype priority 3]
+
+“Should we keep investing in Region X?”
+
+Contribution trend and margin by region; return on spend; concentration of regional revenue in a few accounts; seasonality; cost of exit or reduction; cost of inaction.
+
+Transactions and costs by region; regional spend; time span covering seasonality.
+
+T4 · Retention spend [VISION]
+
+“Which accounts get retention effort?”
+
+Churn risk by account and value at stake; expected saved value per unit of effort.
+
+Account history and activity.
+
+T5 · Campaign budget [VISION]
+
+“Which campaign gets more budget?”
+
+Incremental return by campaign with uncertainty; overlap.
+
+Spend and outcomes per campaign.
+
+T6 · Inventory / resource shift [VISION]
+
+“Where should stock shift?”
+
+Demand forecast uncertainty by location; cost of stockout versus overstock.
+
+Sales and stock by location.
+
+GENERIC DECISIONS
+
+For a decision that matches no template, TRACE builds a generic investigation (segment the affected population, estimate outcome ranges, test concentration, run the same underwriting) and marks the verdict Refer if the data cannot support a defensible scenario model. It must never pretend a generic answer is template-grade.
+
+14. The Investigation Plan
+
+TRACE does not answer immediately. It builds a visible mini-investigation tailored to the decision and checks whether it can be answered responsibly at all.
+
+14.1 Contents of the plan
+
+The questions to be answered (for T1: current margin structure, price/discount sensitivity, at-risk segments, concentration, contractual constraints, scenario outcomes).
+
+The data required for each question and whether it is present, partial or absent.
+
+The sufficiency verdict: whether there is enough data to underwrite. Possible results: Sufficient, Sufficient with limits (limits become Exclusions or Conditions), Insufficient (verdict capped at Refer).
+
+The analyses to run and the second method the Verification Agent will use for each key number.
+
+The missing information that would matter most, ranked by how much it could move the outcome. This feeds Coverage Lapse Conditions.
+
+14.2 Why a visible plan
+
+It shows the reasoning process before the answer, which builds trust and lets the user redirect the investigation.
+
+It makes the system’s limits visible early, so “insufficient data” is a designed outcome rather than a failure.
+
+It creates natural pauses for the user to confirm definitions.
+
+15. The Agent Team
+
+Architectural principle [LOCKED]: specialised agents implemented as structured tool-use over one language model plus a deterministic analytics layer — not multiple autonomous models. This keeps the system controllable, testable and buildable by a student team. Sophistication comes from the decision methodology, not from stacking frameworks.
+
+15.1 The agents
+
+Agent
+
+Role
+
+Inputs
+
+Outputs
+
+Hard rules
+
+Data Agent
+
+Ingests and validates CSV/XLSX/CRM exports; runs the Data Health Check; builds the semantic layer.
+
+Uploaded files
+
+Cleaned tables, Data Health Report, semantic layer
+
+Never cleans silently; logs every change.
+
+Analytics Agent
+
+Runs aggregations, segmentation, correlation and statistical analysis via code.
+
+Cleaned tables, Investigation Plan
+
+Calculated metrics and tables
+
+All numbers come from executed code, never from model text.
+
+Verification Agent
+
+Independently re-checks the Analytics Agent’s key numbers by a second method before they enter the evidence.
+
+Key metrics and the data
+
+Pass / discrepancy per number
+
+A failed check blocks the number or raises the Verification Load. Never rubber-stamps.
+
+Reasoning Agent
+
+Connects validated evidence to the stated decision; drafts the narrative.
+
+Validated evidence, Decision Objective
+
+Draft reasoning and recommendation
+
+May only cite validated evidence and retrieved documents.
+
+Scenario Agent
+
+Builds best / expected / worst cases and the outcome distribution; runs user-adjusted assumptions.
+
+Validated evidence, assumption ranges
+
+Scenario set and distribution
+
+Assumption ranges derive from data, not from the model’s guess; every assumption is named.
+
+Counter-Decision Underwriter
+
+Argues against the recommendation; finds concentration risk, contract constraints, data gaps and contradictory evidence.
+
+Recommendation, evidence, documents
+
+Adverse findings with size and evidence links
+
+Every claim must be testable against data or a document and must carry a magnitude where possible.
+
+Decision Agent (Underwriter)
+
+Synthesises everything into the Decision Brief: premium, exposure, lapse conditions, cost of inaction, Underwriting Verdict.
+
+All of the above
+
+Decision Brief
+
+Computes premium from the Rate Card deterministically; the model writes explanation only.
+
+15.2 What the language model does and what deterministic code does
+
+Language model (reasoning and explanation)
+
+Deterministic code (numbers and rules)
+
+Interprets the typed decision into a structured objective
+
+Cleaning, deduplication, normalisation
+
+Proposes the investigation plan
+
+All aggregations and statistics
+
+Proposes metric definitions for the user to confirm
+
+Scenario distribution and simulation
+
+Drafts reasoning connecting evidence to the decision
+
+Independent verification recomputation
+
+Retrieves and summarises relevant document passages
+
+Premium, exposure and lapse-threshold calculations
+
+Writes the counter-argument, tied to testable claims
+
+Verdict banding from the Rate Card
+
+Explains the brief in plain, executive language
+
+Ledger writes and recalibration
+
+NON-NEGOTIABLE
+
+The language model never produces a figure that appears in the brief. It can request a computation and describe its result. If a number is not in the tool output, it does not appear. This is what prevents the model from “hallucinating a number that ends up in a boardroom”.
+
+16. The Underwriting Methodology
+
+This section is the heart of what makes TRACE hard to copy. It specifies how a premium, an exposure and a set of lapse conditions are actually produced. Numeric parameters are [DEFAULT] starting values, exposed on the Rate Card and adjustable. Formulas are given at the level a builder needs; exact statistical methods may be chosen by the builders provided the definitions are honoured.
+
+16.1 Setting up the decision as an outcome model
+
+Let M be the decision’s primary outcome metric over the horizon (for example gross profit in the next 90 days).
+
+Let ΔM be the change in M caused by taking the recommended action, compared with the baseline (do nothing).
+
+ΔM depends on a small set of named assumptions θ (for example “volume retained after discount removal”, “segment churn rate”, “price sensitivity”, “share of top accounts retained”). Each assumption has a range estimated from the data (for example a confidence interval from bootstrapping or a plausible range from observed variation). Where data cannot estimate a range, the assumption is labelled a judgement assumption and given a wide, explicit range.
+
+TRACE builds a transparent outcome model ΔM = f(θ) for the decision template. It must be simple enough to explain in a sentence and to recompute independently.
+
+16.2 The scenario distribution
+
+Sample θ from its ranges (simulation with a fixed random seed for reproducibility) to produce a distribution of ΔM.
+
+Report best / expected / worst cases as named points on this distribution (for example P90 / mean / P10) plus the user-adjusted case from the sandbox.
+
+Correlated assumptions (for example churn and volume) are sampled jointly where the data supports it; otherwise the independence assumption is stated.
+
+The distribution is a modelled scenario, never presented as an observed fact or a forecast guarantee.
+
+16.3 Projected upside and expected loss
+
+Quantity
+
+Definition
+
+Notes
+
+Projected Upside (U)
+
+The expected value of ΔM: E[ΔM].
+
+The headline benefit, in currency, over the horizon.
+
+Expected Loss (EL)
+
+E[max(0, −ΔM)] — the probability-weighted average shortfall in the scenarios where the decision loses money.
+
+The actuarial “pure premium” of the decision.
+
+Probability of net loss
+
+P(ΔM < 0).
+
+Shown in the Exposure Report.
+
+16.4 The Decision Premium
+
+FORMULA [LOCKED STRUCTURE, DEFAULT PARAMETERS]
+
+Decision Premium = Expected Loss + Risk Load
+
+Premium Rate = Decision Premium ÷ Projected Upside
+
+Risk Load = Data-Quality Load + Verification Load + Contradiction Load + Model-Uncertainty Load
+
+This mirrors real pricing: premium equals expected loss plus a loading for uncertainty. The loads exist because the scenario distribution understates risk when the inputs are shaky.
+
+Load
+
+What drives it
+
+How it is calculated [DEFAULT]
+
+Data-Quality Load
+
+Findings from the Data Health Check that touch the decision (missingness in the affected segment, duplicates among key accounts, staleness, outliers).
+
+A score between 0 and 1 from the Data Health Report multiplied by a weight on the Rate Card and by the Projected Upside.
+
+Verification Load
+
+Discrepancies between the Analytics Agent’s figures and the Verification Agent’s recomputation, and the number of key figures that could not be verified.
+
+Increases with the size and number of unresolved discrepancies; zero when every key figure is verified within tolerance.
+
+Contradiction Load
+
+The magnitude of adverse findings from the Counter-Decision Underwriter that could not be fully absorbed into the scenario model (for example a contract constraint affecting part of the segment).
+
+The quantified size of unabsorbed adverse findings, scaled by a weight.
+
+Model-Uncertainty Load
+
+Width and stability of the scenario distribution; reliance on judgement assumptions; small sample sizes; and the experience factor from the Loss History Ledger for this decision class.
+
+Grows with the share of ΔM variance attributable to judgement assumptions and small samples; multiplied by the ledger experience factor (Section 21.4).
+
+16.5 The Rate Card
+
+All weights and thresholds sit in a visible Rate Card. The user can read it, and an administrator can change it. Illustrative starting values (all [DEFAULT] and configurable):
+
+Setting
+
+Starting value [DEFAULT]
+
+Purpose
+
+Weight on Data-Quality Load
+
+Up to about 10% of Projected Upside at a data-quality score of 1
+
+Turns data problems into currency.
+
+Weight on Verification Load
+
+Up to about 5% of Projected Upside
+
+Prices unverified numbers.
+
+Weight on Contradiction Load
+
+100% of the quantified unabsorbed adverse finding
+
+Prices what the counter-argument found.
+
+Verdict band: Recommended
+
+Premium Rate below about 10% and no lapse condition already breached
+
+Clear go.
+
+Verdict band: Recommended with Conditions
+
+About 10% to 25%, or Conditions required
+
+Go, but only if conditions are met.
+
+Verdict band: Refer
+
+About 25% to 50%, or data sufficiency is limited, or a critical number failed verification
+
+A human must weigh in or more data is needed.
+
+Verdict band: Decline
+
+Above about 50%, or probability of net loss above a stated cap, or data insufficient
+
+TRACE will not recommend on this evidence.
+
+Tail definition
+
+Worst 10% of outcomes
+
+Basis of tail exposure.
+
+Lapse tolerance
+
+Decision lapses where Expected Net Benefit (U − Decision Premium) reaches zero or the verdict changes band
+
+Defines what “lapse” means.
+
+HONESTY ABOUT THE RATE CARD
+
+The bands and weights are product policy, not laws of nature. They are not claimed to be industry standards. They are shown to the user precisely so the premium can be challenged. If a judge asks “where did 10% come from?” the correct answer is: “It’s a configurable starting policy on the Rate Card; the point is that the premium is calculated, decomposed and inspectable — not asserted.”
+
+16.6 The Exposure Report
+
+Component
+
+Definition
+
+Format
+
+Probability of net loss
+
+P(ΔM < 0)
+
+Percentage
+
+Downside at the tail
+
+The P10 outcome and the average of the worst 10% of outcomes (tail average)
+
+Currency
+
+Worst plausible case
+
+The named worst scenario (assumptions at the adverse end of their ranges)
+
+Currency and the assumptions that define it
+
+Concentration exposure
+
+Share of the affected outcome carried by the top N accounts, and the effect on ΔM if the top accounts behave adversely
+
+Percentage and currency
+
+Data exposure
+
+Outcome sensitivity to the missing or dirty data (for example if the missing values were all unfavourable)
+
+Currency range
+
+Adverse-finding exposure
+
+Quantified impact of each Counter-Decision finding
+
+Currency per finding
+
+Cost of Inaction
+
+The expected cost of delay or doing nothing on the same evidence, shown alongside
+
+Currency over the horizon
+
+16.7 Coverage Lapse Conditions
+
+This is the flagship output. It states, for each important assumption and condition, the point at which the recommendation stops being supported.
+
+How lapse thresholds are computed
+
+Identify the assumptions and conditions that move Expected Net Benefit the most (ranked sensitivity).
+
+For each, hold the others at their expected values and solve for the value at which the verdict changes band or Expected Net Benefit reaches zero (root-finding on the outcome model). This is the lapse threshold.
+
+Compute the distance to lapse: how far the current estimate sits from the threshold, as a percentage and in standard-error terms where possible.
+
+Also test combinations (two adverse assumptions together) where a single one does not lapse coverage.
+
+Add structural conditions that are not single-parameter thresholds (below).
+
+Rank conditions by proximity to lapse and present the top few.
+
+Type of condition
+
+Definition
+
+Illustrative wording [ILLUSTRATIVE]
+
+Threshold lapse
+
+An assumption crossing its solved threshold.
+
+“Coverage lapses if segment churn exceeds 6.2% (modelled: 3.1%).”
+
+Concentration lapse
+
+Loss or adverse behaviour of the largest accounts.
+
+“Coverage lapses if any two of the top three accounts leave.”
+
+Data lapse
+
+Missing or uncertain data resolving unfavourably beyond a solved level.
+
+“Coverage lapses if the missing competitor-price gap exceeds 15%.”
+
+Definition lapse
+
+A conclusion that flips under an alternative reasonable definition (for example ‘low margin’ defined differently).
+
+“Coverage lapses if ‘low-margin’ is redefined above the current cut-off by more than 3 points.”
+
+Time lapse
+
+The validity window ending.
+
+“Verdict valid for 60 days from the data cut-off.”
+
+Combination lapse
+
+Two moderate adverse moves together.
+
+“Coverage lapses if churn exceeds 4.5% and volume retention falls below 88%.”
+
+Tripwires
+
+Each lapse condition is expressed as a Tripwire: a metric to watch, its current value, its alert threshold and a suggested review cadence. Post-decision monitoring is shown as a checklist in the prototype; live alerting is [VISION].
+
+16.8 Underwriting Verdict logic
+
+If the data sufficiency verdict is Insufficient → Decline (or Refer if a specific missing item could be supplied).
+
+If a critical key number failed verification and cannot be repaired → Refer.
+
+Otherwise apply the Premium Rate bands from the Rate Card.
+
+If any lapse condition is already breached by current data → Decline or Refer as the bands dictate.
+
+Attach Conditions (must-do actions, for example resolve duplicates, honour contracted discounts) and Exclusions (unmodelled factors).
+
+State the verdict in one sentence a decision-maker can act on, and always in conditional form when conditions exist.
+
+16.9 Cost of Inaction
+
+Beside every scenario TRACE estimates what delaying or doing nothing costs on the same evidence: the expected value forgone by not acting, plus any adverse drift already visible in the baseline (for example a margin trend that continues to erode). It is computed with the same outcome model and shown for the same horizon. It keeps the brief honest in both directions: acting has a price, and so does standing still.
+
+16.10 Confidence, explained rather than asserted
+
+TRACE does not show a headline confidence percentage. The ideas behind confidence remain as premium drivers that are visible and explained:
+
+Data completeness → Data-Quality Load
+
+Evidence agreement (do independent methods agree?) → Verification Load and Contradiction Load
+
+Scenario stability (does the verdict survive plausible assumption changes?) → Model-Uncertainty Load and distance to lapse
+
+16.11 Separation of fact, calculation, model and recommendation
+
+Every brief separates four kinds of statement, labelled as such:
+
+Level
+
+Meaning
+
+Example [ILLUSTRATIVE]
+
+Observed fact
+
+Directly in the data.
+
+“Revenue in the segment declined 13% over the last two quarters.”
+
+Calculated result
+
+Deterministically derived from facts.
+
+“68% of the decline is attributable to three accounts.”
+
+Modelled scenario
+
+Outcome under stated assumptions.
+
+“Removing discounts could raise gross profit by about $1.2M over 90 days if volume retention stays between 90% and 96%.”
+
+Recommendation
+
+The Underwriting Verdict and its conditions.
+
+“Recommended with Conditions: stop blanket discounts for the segment except contracted accounts.”
+
+17. Verification Agent and Counter-Decision Underwriter
+
+17.1 Verification Agent: trusting nothing it hasn’t re-checked
+
+Every key figure that will appear in the brief is recomputed by a second, independent method before it enters the Evidence Chain. The goal is to catch errors in logic, joins and filters, not just typos.
+
+Key figure
+
+Primary method
+
+Independent second method (examples)
+
+Segment revenue or margin
+
+Aggregation over the cleaned table
+
+Recompute from raw transactions with a different grouping path, or via a query-based total reconciled to the raw file
+
+Churn or retention rate
+
+Cohort calculation
+
+Direct customer-level flag count and an alternative window definition
+
+Concentration share (top accounts)
+
+Sorted contribution
+
+Independent cumulative-share computation and a reconciliation to the total
+
+Price / discount sensitivity
+
+Estimated relationship
+
+A second estimation approach (for example a different specification or a resampling check) with a stability comparison
+
+Scenario expected value
+
+Simulation
+
+Analytical or re-seeded re-run; results should agree within tolerance
+
+Outcome states: Verified · Verified with tolerance note · Discrepancy (blocked or repaired, and priced via the Verification Load).
+
+The verification results are visible in the Evidence Chain and summarised in the brief (“12 of 12 key figures independently verified”).
+
+In evaluation, the Verification Agent’s own accuracy is scored (Section 25.3).
+
+17.2 Counter-Decision Underwriter: argue before you ship
+
+A dedicated agent argues against the recommendation before it is shown. It is given the recommendation, the evidence and the document set and told to find the strongest data-grounded case that the decision is wrong.
+
+What it looks for
+
+Concentration risk: a few accounts, products or regions carrying the result.
+
+Contract and policy constraints: terms in documents that limit the action (retrieved through RAG).
+
+Data gaps: missing data that could reverse the answer, with a sized potential effect.
+
+Segment reversals: sub-segments where the effect is opposite to the average (aggregation traps).
+
+Timing and seasonality: whether the evidence period is unrepresentative.
+
+Second-order effects: cannibalisation, customer migration, cross-product impacts, where the data supports testing them.
+
+Alternative explanations: other reasons for the pattern the recommendation relies on.
+
+Rules that stop it being theatre
+
+Every adverse finding must be testable: tied to a query, a record set or a retrieved passage.
+
+Every adverse finding must carry a magnitude in the decision’s currency where possible.
+
+Findings that the scenario model already absorbs are marked absorbed; findings that are not are passed to the Contradiction Load and Exposure Report.
+
+The user sees the adverse findings and how the recommendation changed as a result (“the initial recommendation was blanket removal; the counter-analysis narrowed it to the non-contracted segment”).
+
+WHY THIS MATTERS
+
+Most AI tools will produce an argument for whatever they are asked. An agent that is explicitly rewarded for attacking its own conclusion, and forced to quantify the attack, is what turns “here is what the data says” into “here is what survived scrutiny”. It is also the source of the most persuasive moments in the demo.
+
+18. Decision Sandbox (Re-quote)
+
+The sandbox answers the question every sceptical judge or executive will ask: “If this assumption changes, does my decision change?”
+
+18.1 Behaviour
+
+The user changes an assumption (for example price change, discount level, segment churn, volume retention, the number of top accounts lost) with sliders or typed values.
+
+TRACE re-quotes: it recomputes the scenario distribution, Decision Premium, Exposure Report, Coverage Lapse Conditions and Underwriting Verdict.
+
+The update is live (interactive speed) and shows a before/after comparison.
+
+Any change that crosses a lapse threshold is highlighted immediately (for example the verdict moving from Recommended with Conditions to Refer).
+
+The Evidence Chain records the user-adjusted assumption as a user-supplied input, clearly separated from data-derived assumptions.
+
+18.2 The design centre of the demo
+
+The moment a judge says “what if churn rises 5%?” and TRACE re-quotes in front of them is the moment the whole demo is designed around. It proves that the premium is calculated, not asserted, and that the lapse conditions are real.
+
+REQUIREMENT
+
+Re-quoting must be fast enough to feel instant. To achieve this the outcome model and simulation are deterministic and lightweight, and the language model is used only to re-word the explanation (which can be shown after the numbers). Numbers must never wait on model text.
+
+18.3 Illustrative re-quote [ILLUSTRATIVE]
+
+Before
+
+After “churn +5 points”
+
+Projected Upside
+
+$1.20M
+
+$0.81M
+
+Decision Premium
+
+$96K (8.0%)
+
+$293K (36.2%)
+
+Probability of net loss
+
+≈ 10%
+
+≈ 29%
+
+Underwriting Verdict
+
+Recommended with Conditions
+
+Refer
+
+Lapse status
+
+Covered, churn threshold 6.2% (current 3.1%)
+
+Churn threshold breached — coverage lapsed
+
+19. The Decision Brief, Section by Section
+
+The Decision Brief is TRACE’s core deliverable. It must read like an underwriting summary a board could act on, and remain fully explainable. Order below is the intended reading order.
+
+#
+
+Section
+
+Content
+
+Notes
+
+1
+
+Decision and Verdict
+
+The decision restated; the Underwriting Verdict; one plain-language sentence a decision-maker can act on (conditional where conditions exist).
+
+The top of the page. No jargon.
+
+2
+
+Decision Premium
+
+Premium in currency; premium rate against projected upside; breakdown of the four loads.
+
+Shows the price of being wrong. Replaces the confidence score.
+
+3
+
+Exposure Report
+
+Probability of net loss, tail downside, worst plausible case, concentration and data exposure, adverse-finding exposure.
+
+All in currency.
+
+4
+
+Coverage Lapse Conditions
+
+Ranked conditions with current value, lapse threshold and distance; Tripwires.
+
+Flagship. Visually prominent.
+
+5
+
+Conditions and Exclusions
+
+What must happen for the recommendation to stand; what was not modelled.
+
+Explicit and short.
+
+6
+
+Scenarios and Cost of Inaction
+
+Best / expected / worst and user-adjusted scenarios; cost of doing nothing.
+
+Compact table plus a distribution visual.
+
+7
+
+What survived scrutiny
+
+Counter-Decision findings and how the recommendation changed because of them.
+
+Shows the system attacking itself.
+
+8
+
+Data Health summary
+
+Key data warnings and their effect on the premium.
+
+Links to the full Data Health Report.
+
+9
+
+Verification summary
+
+Number of key figures independently verified; any discrepancies.
+
+One line plus a link.
+
+10
+
+Evidence Chain
+
+Expandable trace from any statement to metrics, source records, assumptions, data-quality flags and contradictions.
+
+The audit log.
+
+11
+
+Approval controls
+
+Approve · Modify (opens sandbox) · Reject; note field.
+
+The human step.
+
+19.1 Language and tone of the brief
+
+Executive plain language. Short sentences. No unexplained statistics.
+
+Currency and percentages before technical terms. Technical detail is available on expansion, never forced.
+
+Always conditional where conditions exist. Never “TRACE guarantees”.
+
+The four levels of statement (fact, calculation, model, recommendation) are visibly distinguished.
+
+20. Human Approval, Decision Record and Evidence Chain
+
+20.1 Human approval [LOCKED]
+
+TRACE recommends and prices; a person binds. It never silently executes a high-impact decision. The approval step offers three choices:
+
+Action
+
+What happens
+
+Approve
+
+Creates a signed Decision Record: the brief, the approver’s identity and timestamp, any note, and the Evidence Chain. The prediction is written to the Loss History Ledger.
+
+Modify
+
+Opens the sandbox to adjust assumptions or scope; TRACE re-quotes; the user can then approve the modified version. Both versions are kept.
+
+Reject
+
+Records the rejection and an optional reason. The rejection is also written to the ledger (a rejected recommendation is itself learnable data).
+
+20.2 “Action”
+
+In the deck, the pipeline ends at “Human sign-off → Action”. In the prototype, Action means producing the signed Decision Record and an exportable summary that the human then carries out. Automated execution through connectors (for example writing a price change back to a system) is [VISION] and, if ever built, must remain behind human approval.
+
+20.3 The Evidence Chain
+
+Every recommendation traces back through the following links, and each link is inspectable:
+
+The statement in the brief (for example “68% of the decline is three accounts”).
+
+The calculated metric behind it and how it was computed.
+
+The verification result for that metric.
+
+The source records (row sets) it draws on.
+
+The assumptions used, each labelled data-derived, judgement or user-supplied.
+
+The data-quality flags affecting those records.
+
+Contradicting evidence found by the Counter-Decision Underwriter.
+
+The documents retrieved and the passages relied on.
+
+This doubles as a compliance-ready audit log for regulated industries: a reviewer can reconstruct why a decision was recommended and on what basis.
+
+21. Loss History Ledger
+
+The Loss History Ledger turns TRACE from an AI that makes decisions into one that learns how a business makes them and how wrong its predictions tend to be. It is the source of the compounding moat.
+
+21.1 What is recorded
+
+Field
+
+Content
+
+Decision ID and class
+
+Which template or decision class (for example discount policy, price change, regional investment).
+
+Date and validity window
+
+When it was underwritten; how long it was valid.
+
+Prediction
+
+Projected Upside, Decision Premium, Exposure Report values, Coverage Lapse Conditions, Underwriting Verdict.
+
+Human action
+
+Approved, modified (with what), or rejected.
+
+Actual outcome
+
+The realised value of the primary metric over the horizon, entered manually or linked to data in the prototype; automated collection is [VISION].
+
+Variance
+
+Actual versus predicted upside; whether the outcome fell inside the predicted range (for example above the P10 tail).
+
+Lapse events
+
+Whether any lapse condition was triggered during the horizon.
+
+Claim flag
+
+Set when the outcome fell outside the predicted range or a lapse condition was triggered.
+
+21.2 What it shows
+
+A ledger table of past decisions with predicted-versus-actual.
+
+A calibration view: does the predicted worst-10% threshold get breached roughly 10% of the time? Systematic optimism or pessimism is visible by decision class.
+
+The effect on pricing: the experience factor applied to new premiums for similar decisions.
+
+21.3 Why this is the moat
+
+The ledger produces a proprietary dataset per organisation: what decisions it makes, how wrong TRACE tends to be for that business, and where its assumptions systematically fail. The longer a company uses TRACE, the better calibrated its premiums become and the more costly it is to leave. It is also the strongest answer to “why does this scale?”.
+
+21.4 Recalibration [DEFAULT method]
+
+For each decision class, compute a realised-to-predicted error ratio from logged outcomes (for example realised shortfall relative to predicted exposure, and tail-breach frequency versus expected).
+
+Blend the class experience with the default assumption using credibility weighting: the more logged decisions in the class, the more weight experience gets (a common form is Z = n ÷ (n + k), with k a tuning constant; Z is capped).
+
+The result is an experience factor that scales the Model-Uncertainty Load for new decisions of that class. With no history the factor is neutral (1.0).
+
+The factor and the number of decisions behind it are shown so the adjustment is explainable (“based on 6 similar decisions”).
+
+PROTOTYPE HONESTY [LOCKED]
+
+A new deployment has no history. In the demo the ledger is seeded with simulated prior decisions on NovaMart, clearly labelled as simulated, so that the mechanism (logging, variance, calibration, recalibrated premium) can be shown working.
+
+The demo must never imply that the ledger has already proven accuracy gains on real usage. The claim is the mechanism and the compounding logic.
+
+The prototype must also allow a user to log an actual outcome for a decision to show the loop closing.
+
+PART D · DEMO AND BUILD SCOPE
+
+22. NovaMart: The Synthetic Dataset
+
+22.1 Why a synthetic company
+
+A decision engine’s credibility should not rest on a toy dataset such as Titanic.csv. NovaMart is a fictional mid-sized retail company with realistic scale, realistic mess and known ground truth. Because the team generates it, it can plant specific problems (to prove the Data Health Check works) and specific true behaviours (to prove lapse thresholds and verification are correct). NovaMart is entirely synthetic; nothing in it represents a real company or person.
+
+22.2 Scale [LOCKED]
+
+Customers
+
+~25,000
+
+Transactions
+
+~100,000
+
+Products
+
+500
+
+Regions
+
+Multiple (for example six), including one designated Region X for the regional-investment decision.
+
+Files
+
+4–5 uploaded files, so the demo begins with “upload 4–5 files and TRACE maps entities and relationships”.
+
+Time span
+
+Long enough to cover seasonality and to hold out a later period for testing lapse thresholds (for example 24+ months, with the final months held out).
+
+22.3 Files and fields [DEFAULT]
+
+File
+
+Purpose
+
+Suggested fields
+
+customers.csv
+
+Who buys
+
+customer_id, customer_name, industry, segment (for example SMB / Mid-market / Enterprise), region_id, signup_date, account_owner, is_key_account, last_updated
+
+products.csv
+
+What is sold
+
+product_id, product_name, category, list_price, unit_cost, launch_date
+
+transactions.csv
+
+What happened
+
+transaction_id, customer_id, product_id, transaction_date, quantity, unit_price, discount_pct, region_id, channel
+
+regions.csv
+
+Where
+
+region_id, region_name, launch_date, quarterly_spend (regional investment)
+
+discounts.csv
+
+Discount policy history
+
+discount_id, customer_id or segment, discount_pct, start_date, end_date, approved_by
+
+22.4 Planted characteristics (the ground truth)
+
+The generator uses a fixed random seed and writes a separate ground-truth file (true elasticities, true churn response, true concentration) that is used only by the evaluation harness, never shown to the agents. This lets the team measure whether TRACE recovers the truth.
+
+Planted feature
+
+Purpose
+
+Intended value / behaviour
+
+Duplicate customers
+
+Test the Data Health Check and its priced effect.
+
+About 3.7% of customer records are fuzzy duplicates (name variants), some among high-value accounts.
+
+Missing industry values
+
+Test missing-data handling and data exposure.
+
+About 8.4% of industry values missing, with some concentration in the low-margin segment.
+
+Stale records
+
+Test staleness and validity window.
+
+A share of customers with old last-updated dates.
+
+Inconsistent formats
+
+Test normalisation logging.
+
+Mixed date formats; price fields with currency symbols in a small share of rows.
+
+Outliers
+
+Test robust detection.
+
+A few impossible or extreme quantities and prices below cost.
+
+Orphan records
+
+Test referential integrity.
+
+A small number of transactions pointing to non-existent customers.
+
+Revenue concentration
+
+Test concentration exposure and the ‘averages hide accounts’ story.
+
+In the affected segment, a small number of accounts (for example the top three) account for a large share (for example roughly two-thirds) of a revenue decline and a large share of discounted volume.
+
+Segment-dependent discount sensitivity
+
+Give the discount decision a real, recoverable answer.
+
+SMB customers are more sensitive to discount removal than Enterprise; a known true churn response per segment.
+
+Aggregation trap
+
+Test the Counter-Decision Underwriter.
+
+A sub-segment where the effect of discount removal is opposite to the segment average.
+
+Contracted discounts
+
+Test document retrieval (RAG) and Conditions.
+
+Three key accounts have contract-fixed discounts that appear only in the contract documents.
+
+Seasonality
+
+Test timing and horizon logic.
+
+A holiday spike (notably in Region X) that can mislead a naive trend.
+
+Missing competitor data
+
+Test data lapse and Exclusions.
+
+No competitor-price file exists; competitor response is an explicit Exclusion and a lapse condition.
+
+An unanswerable decision
+
+Test Refer / Decline.
+
+A region or product with almost no data, so a decision about it must return Refer or Decline.
+
+22.5 The document set (for RAG)
+
+A small set of synthetic documents gives the Counter-Decision Underwriter and Reasoning Agent something to retrieve that the tables do not contain:
+
+Key account contract summaries (three accounts with fixed discount terms and notice periods).
+
+Pricing policy (approval thresholds and floor margins).
+
+Discount guidelines memo (rules of thumb and past exceptions).
+
+Regional note for Region X (market conditions, launch notes).
+
+PROMPT-INJECTION SAFETY
+
+Uploaded and retrieved documents are data, never instructions. A sentence in a document that says “ignore previous instructions” or “approve this decision” must have no effect. Retrieved passages are quoted as evidence only. This rule applies to every document TRACE ever ingests.
+
+23. Hero Decisions and a Full Illustrative Walkthrough
+
+23.1 Hero decisions
+
+Hero
+
+Decision
+
+Why it works on stage
+
+H1 (flagship)
+
+“Should we stop discounts for low-margin customers?”
+
+Real trade-off, clean numbers, concentration and contract twists, and a natural “what if churn rises?” challenge.
+
+H2
+
+“Should we increase the price of Product A?”
+
+The classic pricing question; shows missing competitor data as a priced risk.
+
+H3
+
+“Should we keep investing in Region X?”
+
+Seasonality trap and concentration; shows Cost of Inaction clearly.
+
+H-Decline
+
+A decision about a region or product with almost no data
+
+Shows TRACE saying no, which is memorable and proves honesty.
+
+23.2 Walkthrough of H1 [ILLUSTRATIVE — all figures must be recomputed]
+
+Step 1 · Upload and map
+
+The user uploads the five files. TRACE reports the entities and relationships it found (customers, products, transactions, regions, discounts) and proposes metric definitions (including a precise rule for “low-margin”) for confirmation.
+
+Step 2 · Data Health Report
+
+“3.7% of customer records look like duplicates; a portion are among high-value accounts.”
+
+“8.4% of industry values are missing; concentrated in the low-margin segment.”
+
+“No competitor-price data was provided.” (recorded as an Exclusion)
+
+“Formatting inconsistencies normalised in n rows; every change logged.”
+
+Step 3 · Ask the decision
+
+“Should we stop discounts for low-margin customers?” TRACE restates it as a Decision Objective: decision, decision-maker, objective (gross profit), constraints (do not lose key accounts; honour contracts), horizon (90 days), baseline (status quo).
+
+Step 4 · Investigation Plan and visible stages
+
+Data check → segmentation → margin analysis → churn analysis → scenario simulation → contradiction check → underwriting. Each stage shows real output.
+
+Step 5 · The Decision Brief
+
+Decision and Verdict
+
+Recommended with Conditions. Stop blanket discounts for the low-margin segment, excluding the three contracted key accounts, after resolving duplicate records.
+
+Decision Premium
+
+$96K (8.0%) against a $1.20M projected upside. Drivers: expected loss $47K · data-quality load $21K · verification load $6K · contradiction load $14K · model-uncertainty load $8K.
+
+Exposure Report
+
+Probability of net loss ≈ 10%. P10 outcome −$18K. Average of worst 10% of outcomes −$0.47M. Worst plausible case −$0.62M. Concentration: top three accounts = 41% of discounted volume in the segment. Data exposure: if the missing industry values are unfavourable, a further −$40K.
+
+Coverage Lapse Conditions
+
+1. Segment churn above 6.2% (modelled 3.1%).
+
+2. Any two of the top three accounts leaving.
+
+3. Missing competitor-price gap above 15%.
+
+4. ‘Low-margin’ redefined more than 3 points above the current cut-off.
+
+5. Validity: 60 days from the data cut-off.
+
+Conditions and Exclusions
+
+Conditions: resolve duplicate records among key accounts; honour contracted discounts. Exclusions: competitor response; cross-product substitution not testable with this data.
+
+Cost of Inaction
+
+Doing nothing forgoes the projected upside and lets margin erosion continue at the trailing trend (about $0.18M over the horizon).
+
+What survived scrutiny
+
+The initial recommendation was blanket removal. The Counter-Decision Underwriter found three contracted accounts (about $210K of the original upside is unachievable) and two large discounted accounts with falling order frequency. The recommendation was narrowed accordingly; the second finding is priced through the contradiction load.
+
+Verification
+
+10 of 11 key figures independently verified; 1 verified with a tolerance note.
+
+Step 6 · The judge’s challenge
+
+“What if churn rises 5 points?” The sandbox re-quotes live: premium rises to about $293K (36%), probability of net loss to about 29%, the churn condition is breached, and the verdict moves to Refer. The room sees the premium is computed, the lapse condition is real and the verdict responds.
+
+Step 7 · Decline case
+
+Ask about a region with almost no data. TRACE returns Decline (or Refer): “insufficient evidence to underwrite; here is the data that would change this.”
+
+Step 8 · Approve and log
+
+The user approves; a signed Decision Record is created and the prediction is written to the ledger. A seeded (clearly labelled simulated) history shows how earlier decisions compared with reality and how the premium for this class was recalibrated.
+
+24. Experience Design and Visual Identity
+
+24.1 Design principles
+
+Decision-centric, not chat-centric. The primary surface is the investigation and the brief, not a chat window. A conversational input exists only to state the decision.
+
+Numbers before prose. Premium, exposure and lapse status come first, in currency.
+
+Every number is clickable into the Evidence Chain.
+
+Uncertainty is visible. Ranges, distributions and distance-to-lapse are drawn, not buried.
+
+The system’s limits are features. Refer and Decline are designed screens, not error states.
+
+A visible investigation. Stages animate only when real work completes.
+
+Executive-grade calm. It should look like something a board would take seriously: restrained, precise, distinctive.
+
+24.2 Screens
+
+Screen
+
+Purpose
+
+Key elements
+
+Upload and map
+
+Bring data in and confirm the semantic layer.
+
+Drop zone, detected entities and relationships, metric definitions to confirm, optional documents.
+
+Data Health Report
+
+Establish trust or lack of it before analysis.
+
+Quantified warnings, severity, what was changed, effect on premium.
+
+Ask a decision
+
+State the decision.
+
+Plain-language input, structured Decision Objective the user can edit, template suggestion.
+
+Investigation
+
+Show the work.
+
+Live stage timeline, sufficiency verdict, missing-information ranking.
+
+Decision Brief
+
+The core deliverable.
+
+Verdict, Decision Premium, Exposure Report, Coverage Lapse Conditions, Conditions and Exclusions, scenarios, Cost of Inaction, what survived scrutiny.
+
+Sandbox panel
+
+Challenge assumptions.
+
+Sliders and inputs, before/after, lapse highlights, verdict changes.
+
+Evidence Chain explorer
+
+Audit any statement.
+
+Drill from claim to metric to verification to records to assumptions to flags.
+
+Approval
+
+The human decision.
+
+Approve, Modify, Reject; note; Decision Record.
+
+Loss History Ledger
+
+Show learning.
+
+Ledger table, calibration view, experience factors, log-outcome action, ‘simulated’ labels where applicable.
+
+Rate Card
+
+Show the pricing policy openly.
+
+Weights, bands, defaults; read-only for users, editable for an administrator.
+
+24.3 Signature visual ideas
+
+Coverage bars: for each lapse condition, a horizontal bar with a marker for the current value and a threshold line; the gap is the distance to lapse. Conditions closest to lapse are visually louder.
+
+Premium breakdown: a stacked bar showing expected loss and the four loads so the premium reads as a composition, not a number.
+
+Underwriting-summary aesthetic: the brief’s top block reads like an underwriting schedule (verdict, premium, limits, conditions) in a modern, restrained style — borrowing the structure and gravitas without pretending to be an insurance document.
+
+Outcome distribution: a simple distribution chart with the loss region shaded, P10 and the tail average marked.
+
+Verdict states (Recommended, Recommended with Conditions, Refer, Decline) each have a distinct, unmistakable treatment.
+
+24.4 Visual identity (matches the submitted deck)
+
+The deck used the organiser’s template (BFWAI/HACK 26). The product should feel like the same family while being its own thing. The team values distinctive, trend-setting interface work — new layouts, themes and typographic ideas rather than a re-skin of a familiar dashboard — so the product is encouraged to push beyond generic BI styling.
+
+Element
+
+Value from the deck
+
+Background
+
+Near-black (a very dark warm black); cards a slightly lighter warm dark (#17130E).
+
+Primary text
+
+Cream #F4EFE6.
+
+Accent
+
+Gold #F2B632; lighter gold #FFD27A for emphasised words and italics.
+
+Muted text
+
+Warm greys around #757068 and #9E988E.
+
+Headline typeface
+
+Instrument Serif (large, with an italic gold second phrase).
+
+Body typeface
+
+Space Grotesk.
+
+Label / data typeface
+
+JetBrains Mono (small caps labels, numbers, kickers).
+
+Motif
+
+A pixel-block strip along the top edge in cream, gold, blue and grey; a radial glow in the background.
+
+Headline pattern
+
+“Plain phrase italic gold phrase” — for example “How it works”.
+
+25. Prototype Scope Tiers, Evaluation and Success Criteria
+
+The deck promises a working prototype by about 1 October 2026. The build window is short, so scope is tiered. Build P0 completely and to a high standard before touching P1. A polished, honest P0 beats a sprawling half-working P2.
+
+25.1 Scope tiers
+
+Tier
+
+Content
+
+P0 · Must exist for the demo
+
+Upload of the five NovaMart files and parsing.
+
+Data Health Check with quantified, priced warnings.
+
+Lightweight semantic layer with metric-definition confirmation.
+
+Decision Objective (structured, editable).
+
+Template T1 (discount policy) end to end.
+
+Verification Agent for key figures with visible results.
+
+Counter-Decision Underwriter including retrieval of contract documents.
+
+Scenario engine, Decision Premium, Exposure Report, Coverage Lapse Conditions, Underwriting Verdict.
+
+Decision Brief screen.
+
+Live sandbox re-quote.
+
+Approval and signed Decision Record.
+
+Loss History Ledger view with clearly labelled simulated history and a log-outcome action.
+
+P1 · Strongly desirable
+
+Decline / Refer demonstration on an unanswerable decision.
+
+Template T2 (price change).
+
+Rate Card screen.
+
+Evidence Chain explorer polish (click any number).
+
+Exportable Decision Record.
+
+Evaluation harness runs and a results panel.
+
+P2 · If time allows
+
+Template T3 (regional investment).
+
+User-uploaded documents beyond the seeded set.
+
+Generic-decision fallback.
+
+Tripwire checklist page.
+
+[VISION] · Not built in the hackathon
+
+Live connectors (CRM, BI datasets).
+
+Automated outcome collection and alerting.
+
+Multi-user roles, approvals workflows and organisation-wide ledgers.
+
+Automated execution behind approval.
+
+25.2 What ‘deployed and demo-ready’ requires
+
+The prototype runs from a public or otherwise accessible deployment, not only on a developer machine.
+
+A cached, pre-computed run of each hero decision exists as a fallback so the demo survives a service failure.
+
+The demo dataset and seeds are fixed so results are repeatable.
+
+[OPEN] Confirm the organiser’s requirements for deployment, submission format (repository, video, live demo) and any restrictions on which language models may be used.
+
+25.3 Evaluation plan
+
+The deck committed to a set of about 15–20 scripted decision scenarios on NovaMart with known ‘correct’ thresholds. The evaluation harness uses the ground-truth file (Section 22.4) to score TRACE.
+
+Metric
+
+How it is measured
+
+Why it matters
+
+Verification accuracy
+
+Deliberately inject errors (for example a wrong join or filter) into the Analytics Agent’s figures and measure how many the Verification Agent catches; also compare verified figures with independently recomputed ones.
+
+Proves ‘verifies its own math’ is real.
+
+Sandbox correctness
+
+Compare live re-quotes with an independent calculation of the same assumption changes.
+
+Proves the sandbox is computing, not decorating.
+
+Lapse-threshold accuracy
+
+Compare stated thresholds with the actual breakpoints in the ground-truth model and the held-out period.
+
+Proves the flagship feature is correct.
+
+Data Health recall
+
+Fraction of planted data problems detected and quantified accurately.
+
+Proves the audit works.
+
+Premium coherence tests
+
+Monotonicity checks: worse data quality → higher premium; wider uncertainty → higher premium; a breached lapse condition → verdict cannot improve.
+
+Proves the premium behaves like a real price.
+
+Refer/Decline correctness
+
+On unanswerable decisions, TRACE must not return Recommended.
+
+Proves the system says no when it should.
+
+No unsupported numbers
+
+An automated check that every number in a brief appears in a computed tool output.
+
+Proves the language model is not generating figures.
+
+Re-quote latency
+
+Time from an assumption change to updated numbers.
+
+Supports the live-challenge moment.
+
+Time to brief
+
+Time from typed decision to a complete brief on NovaMart.
+
+Supports the ‘under 10 minutes’ target.
+
+BASELINE HONESTY
+
+The deck’s baseline (“3–6 hours” of manual investigation) is an estimate, not a measurement. The TRACE side of the comparison (time to brief) is measured by the harness. Present the comparison accordingly, and never present unmeasured figures as results.
+
+25.4 Definition of done for the hackathon
+
+A judge can upload NovaMart, ask the flagship decision, and receive a Decision Brief with a computed premium, exposure and lapse conditions.
+
+A judge can change an assumption and watch TRACE re-quote and change the verdict.
+
+TRACE can visibly say Refer or Decline.
+
+Every number in the brief is clickable into an Evidence Chain and comes from executed code.
+
+The ledger shows the loop (predicted, logged outcome, recalibrated) and is honestly labelled as simulated in the demo.
+
+The team can explain the premium formula, the Rate Card and the lapse computation without notes.
+
+26. Demo Script, Fallback Plan and Judge Q&A
+
+26.1 The four-minute demo [DEFAULT]
+
+Time
+
+Beat
+
+What the audience sees
+
+Line to land
+
+0:00
+
+Hook
+
+Title, then straight into the product.
+
+“Every AI data tool shows you a confidence score. We built the one that shows you coverage.”
+
+0:20
+
+Upload and health
+
+Five files in; Data Health Report with concrete warnings.
+
+“Before it answers anything, it tells you what it doesn’t trust.”
+
+0:50
+
+Ask a decision
+
+Type the flagship decision; the structured objective appears.
+
+“Not a question. A decision.”
+
+1:00
+
+Investigation
+
+Live stages complete with real outputs.
+
+“It’s investigating. It checks its own math and argues against itself.”
+
+1:30
+
+The brief
+
+Verdict, Decision Premium, Exposure Report.
+
+“An 8% premium on $1.2M of upside. That’s the price of being wrong.”
+
+2:00
+
+Coverage Lapse Conditions
+
+Coverage bars with distance to lapse. Flagship moment.
+
+“And here is when to stop trusting it.”
+
+2:30
+
+The judge’s challenge
+
+Judge picks an assumption; live re-quote; verdict moves to Refer.
+
+“It’s not asserted. It’s calculated.”
+
+3:15
+
+The no
+
+A decision the data can’t support; TRACE declines.
+
+“It’s allowed to say no.”
+
+3:30
+
+The ledger
+
+Predicted-versus-actual; recalibrated premium (labelled simulated).
+
+“The longer you use it, the better it prices. That’s the moat.”
+
+3:50
+
+Close
+
+Tagline.
+
+“Not confidence. Coverage.”
+
+26.2 Fallback plan
+
+Pre-computed, cached run of each hero decision that can be loaded instantly.
+
+Deterministic seeds so live and cached runs match.
+
+A short recorded screen capture of the full flow.
+
+If the language model service is slow or fails, the numbers still display (they never depend on it); only the explanation text falls back to a template.
+
+A printed or PDF Decision Brief of the flagship decision.
+
+26.3 Judge questions and honest answers
+
+Question
+
+Answer (truthful and defensible)
+
+“Isn’t this just decision intelligence?”
+
+The category exists and we say so. Its typical framing is recommendation and automation at enterprise scale. Our contribution is the structure inside it: a priced risk, lapse conditions, a self-attacking and self-verifying pipeline, and a ledger, in something a team can pilot from a CSV.
+
+“Isn’t the premium made up?”
+
+No. Expected loss comes from the scenario distribution; the risk loads come from measured data-quality, verification and contradiction findings. The weights and bands sit on a visible Rate Card. The policy is configurable; the calculation is inspectable.
+
+“How do you know your probabilities are right?”
+
+We don’t claim certainty. They are modelled scenarios. We test them against the synthetic ground truth, and in real use the Loss History Ledger measures calibration and recalibrates.
+
+“What stops the language model hallucinating numbers?”
+
+It never generates a figure. Numbers come from executed code and are independently re-verified. We run an automated check that every number in a brief traces to a computed output.
+
+“Are these causal claims?”
+
+No. They are modelled scenarios under stated assumptions, labelled as such. Observational estimates are flagged as observational.
+
+“What if the data is too small or too dirty?”
+
+Dirty data raises the premium and can add conditions. Insufficient data yields Refer or Decline. We designed the system to say no.
+
+“How is this different from Power BI Copilot or Agentforce?”
+
+Those are excellent at exploration, reporting and in-platform automation. We are not a reporting layer or a CRM feature; we start from a decision and finish with a priced verdict and lapse conditions, across mixed data.
+
+“Is this an insurance product?”
+
+No. Underwriting is a structural metaphor. There is no policy, payout or guarantee. ‘Premium’ is a calculated risk cost.
+
+“Where’s the moat?”
+
+Methodology that can’t be bolted on, plus a ledger that compounds with use.
+
+“Who would buy it and how would they start?”
+
+Pricing, revenue-operations, customer-success and finance leaders. They start with a CSV pilot, ideally by back-testing their last few decisions, then add connectors.
+
+“Is it safe with our data?”
+
+The prototype uses synthetic data. For real deployments, data handling, retention and access controls are a requirement; see Section 30.
+
+“What did you actually build this week?”
+
+Answer precisely from the scope tiers in Section 25: what is built, what is simulated and what is roadmap. Never overclaim.
+
+“What if users game the assumptions to get an approval?”
+
+Every modification is recorded in the Evidence Chain and the Decision Record, user-supplied assumptions are labelled as such, and the Rate Card prices judgement assumptions with wider uncertainty.
+
+“Why should we believe the lapse thresholds?”
+
+They are solved from the outcome model, and we test them against the ground-truth breakpoints and held-out data.
+
+PART E · REAL MARKET
+
+27. Who Buys It and How They Start
+
+27.1 Buyers and users
+
+Role
+
+Why they care
+
+Typical first decision
+
+Pricing and category leaders
+
+Price changes carry asymmetric downside and must be defended.
+
+Change price on a product or tier.
+
+Revenue operations / sales leadership
+
+Territory, discount and investment calls across messy CRM data.
+
+Discount policy; region investment; which leads or accounts deserve attention.
+
+Customer success leaders
+
+Limited retention effort; want to know where it pays.
+
+Which accounts to prioritise.
+
+Marketing leaders
+
+Budget allocation on noisy attribution.
+
+Which campaign gets more budget.
+
+Operations and inventory planners
+
+Resource and stock shifts under uncertainty.
+
+Where to move stock or capacity.
+
+Finance and executive sponsors
+
+Sign-off accountability and audit trail.
+
+Approving any of the above with a documented basis.
+
+Risk, audit and compliance functions
+
+Need a reviewable evidence trail for AI-assisted decisions.
+
+Auditing how a decision was reached.
+
+27.2 Use cases the one engine supports
+
+Domain
+
+Decision
+
+Sales
+
+Which leads or accounts deserve attention.
+
+Marketing
+
+Which campaign should get more budget.
+
+Pricing
+
+Should we change prices, and where.
+
+Customer success
+
+Which accounts are at risk and where to spend effort.
+
+Operations and inventory
+
+Where should resources or stock shift.
+
+One engine, data-agnostic across spreadsheets, CRM exports and databases, supports all of them, because the underwriting structure is the same: define the decision, audit the data, model outcomes, price the risk, state the lapse conditions, learn.
+
+27.3 Adoption path
+
+Start on CSV/XLSX. Any team can pilot without integration work or procurement of a data platform.
+
+Back-test first. Ask a pilot team for their last three to five real decisions and outcomes. TRACE ‘retro-underwrites’ them and shows what it would have priced, flagged and lapsed. This produces credible value on day one and seeds the Loss History Ledger with real history. [VISION]
+
+Live use. The team runs new decisions through TRACE alongside their current process.
+
+Connectors. Expand into CRM systems, BI datasets and databases as the product matures. [VISION]
+
+Governance. Organisation-wide ledger, roles, approval workflows and audit exports. [VISION]
+
+27.4 Why the market timing is right
+
+Organisations are being urged to put AI into decisions but leaders remain responsible for the outcome; trust and auditability are the bottleneck, not raw capability.
+
+Executives already understand risk pricing; TRACE translates AI output into that language.
+
+Regulated and audit-sensitive teams need traceable reasoning for AI-assisted decisions.
+
+28. Business Model Ideas
+
+STATUS
+
+Everything in this section is an idea for discussion, not a commitment and not part of the hackathon build. [OPEN]
+
+Idea
+
+Description
+
+Seat-based subscription
+
+For decision-makers and analysts, with a bundle of underwritten decisions per month.
+
+Per-decision underwriting fee
+
+A usage element per completed Decision Brief, aligned with value: the more consequential the decision, the more it is worth underwriting.
+
+Governance tier
+
+Organisation-wide ledger, roles, approval workflows, audit exports and Rate Card administration.
+
+Calibration insights
+
+Analytics on how well an organisation’s decisions and TRACE’s predictions compare, by decision class and team.
+
+Pilot offer
+
+A fixed-scope back-test of a customer’s recent decisions as an entry product.
+
+Note again: any fee charged for TRACE is a software fee. It is unrelated to the calculated Decision Premium, which is a risk metric, not a price the customer pays.
+
+29. Roadmap
+
+Phase
+
+Scope
+
+Status
+
+Phase 0 · Hackathon prototype
+
+P0 and as much of P1/P2 as time allows: NovaMart, the underwriting pipeline, sandbox, ledger mechanism, evaluation harness.
+
+In progress
+
+Phase 1 · CSV/XLSX pilot product
+
+Robust ingestion for real messy files, more decision templates, user-defined Rate Card, back-test workflow, export of Decision Records.
+
+[VISION]
+
+Phase 2 · Connectors and monitoring
+
+CRM and BI connectors, automated outcome collection, Tripwire alerting, scheduled re-underwriting when data changes.
+
+[VISION]
+
+Phase 3 · Organisational memory
+
+Team and organisation ledgers, calibration dashboards, cross-decision portfolio view (aggregate exposure across decisions).
+
+[VISION]
+
+Phase 4 · Governance and integration
+
+Approval workflows, role-based access, audit exports, execution behind approval, sector-specific templates.
+
+[VISION]
+
+Long-term vision: messy data → AI investigation → priced Decision Brief → human approval → action → actual outcome → ledger → continuous learning → better-priced decisions. The end state is not an AI analyst; it is a business’s decision memory: what it knew, what it decided, why, what happened, and what it should learn from that.
+
+30. Responsible AI, Risks and Limitations
+
+30.1 Principles [LOCKED]
+
+TRACE recommends and prices; the human approves. It never silently executes a high-impact decision.
+
+Fact, calculation, model and recommendation are always separated and labelled.
+
+Confidence is explained, not asserted: its ingredients are visible as premium drivers.
+
+Uncertainty is surfaced, not hidden: ranges, tails, missing data and contradictions are shown.
+
+Everything is auditable through the Evidence Chain.
+
+30.2 Risks and mitigations
+
+Risk
+
+Why it matters
+
+Mitigation
+
+False precision
+
+A premium in dollars can look more certain than it is.
+
+Show ranges and tails with the premium; label modelled scenarios; show the Rate Card and assumptions; state Exclusions.
+
+Over-reliance
+
+Users may treat “Recommended” as a guarantee.
+
+Always conditional wording; lapse conditions and Tripwires; mandatory human approval; clear non-guarantee statement.
+
+Gaming the assumptions
+
+A user might adjust assumptions until the verdict says yes.
+
+Log every modification; label user-supplied assumptions; keep the original quote alongside; price judgement assumptions with wide ranges.
+
+Causal over-claiming
+
+Observational data cannot prove cause.
+
+Label estimates as observational and scenarios as modelled; flag where an experiment would be needed.
+
+Model hallucination
+
+A model could invent numbers or evidence.
+
+Numbers only from executed code; independent verification; automated unsupported-number check; retrieved passages quoted, not paraphrased into new facts.
+
+Prompt injection via documents
+
+Uploaded documents could contain instructions.
+
+Treat documents as data only; never let retrieved text alter the agents’ instructions or the verdict.
+
+Data privacy and security
+
+Business data can be sensitive.
+
+The prototype uses synthetic data only. Real deployments require minimisation, access control, retention limits and clear handling of any personal data. [VISION]
+
+Biased or unrepresentative data
+
+Garbage in, confident out.
+
+Data Health Check; priced data risk; Exclusions; segment-level checks for aggregation traps.
+
+Misreading the metaphor
+
+“Premium” or “coverage” could be taken literally as insurance.
+
+State plainly in the product and demo that this is decision underwriting, not insurance; avoid promises of payout or guarantee.
+
+Small-sample fragility
+
+Little history makes estimates unstable.
+
+Sufficiency checks; wider uncertainty; Refer or Decline; credibility weighting in the ledger.
+
+Synthetic-data limits
+
+Results on NovaMart do not prove real-world accuracy.
+
+Say so. Treat NovaMart as a controlled testbed with known truth, not as validation on real companies.
+
+30.3 Known limitations of the hackathon prototype
+
+Runs on synthetic data; not validated on real organisations.
+
+Outcome models are deliberately simple and transparent, not state-of-the-art causal models.
+
+Rate Card defaults are starting policy, not calibrated to any industry.
+
+The ledger begins with simulated history; real compounding requires real usage.
+
+Only a subset of decision templates is implemented.
+
+No live connectors or automated outcome collection.
+
+31. Messaging Kit
+
+31.1 Taglines
+
+Line
+
+Use
+
+Not confidence. Coverage. [LOCKED]
+
+Primary tagline. Subline: “TRACE underwrites business decisions instead of guessing at them.”
+
+“Every decision, priced for risk.”
+
+Backup.
+
+“We don’t predict outcomes. We price what it costs to be wrong.”
+
+Backup, for spoken pitches.
+
+“Every decision leaves a trail.”
+
+The Evidence Chain and Ledger angle.
+
+“Everyone else is building a slightly better dashboard. We’re building the actuary.”
+
+Differentiation line (used on the deck).
+
+31.2 One-line descriptions
+
+Form-field title: TRACE — an AI decision engine that underwrites business calls instead of guessing at them.
+
+Short form: The AI that prices the risk of a business decision before you make it.
+
+Deck subtitle: Underwrites business decisions instead of guessing at them, so pricing, retention and investment calls come with a quoted cost of being wrong.
+
+31.3 Words to use and avoid
+
+Use
+
+Avoid
+
+underwrite, price the risk, cost of being wrong, exposure, coverage, lapse, verdict, evidence, audit
+
+“AI-powered insights”, “leverage”, “revolutionary”, “game-changing”, “synergy”
+
+“decision”, “decision-maker”, “defensible”
+
+“chatbot”, “chat with your data”
+
+“modelled scenario”, “illustrative”, “under these assumptions”
+
+“guaranteed”, “certain”, “proven” (unless measured)
+
+“as if underwritten”, “underwriting-style”
+
+Any phrasing that implies TRACE sells or issues insurance
+
+“Refer”, “Decline”, “Recommended with Conditions”
+
+“The AI decided”
+
+31.4 Tone
+
+Sharp, precise, dry-witted and unshowy — an underwriter’s composure with an engineer’s honesty. Confident about the method, humble about the numbers. Never breathless.
+
+32. Guardrails for AI Agents
+
+This section exists for any AI agent (or new teammate) that reads this document and then builds, writes or reasons about TRACE. It lists the mistakes most likely to occur and how to avoid them.
+
+32.1 Always
+
+Treat TRACE as a decision underwriting engine. Start from a decision, end with a priced verdict.
+
+Compute every number with deterministic code; use the language model for reasoning and explanation only.
+
+Verify key figures by an independent second method.
+
+Show fact, calculation, model and recommendation as separate levels.
+
+Show uncertainty, missing data, Exclusions and Coverage Lapse Conditions with every recommendation.
+
+Allow Refer and Decline.
+
+Require human approval before anything is treated as decided.
+
+Label anything simulated (for example the seeded ledger history) as simulated.
+
+Use the locked vocabulary exactly.
+
+Flag assumptions you had to make, and mark unspecified details as [OPEN] rather than guessing silently.
+
+32.2 Never
+
+Never describe TRACE as a chatbot, a dashboard, a “chat with your CSV” tool or an insurance product.
+
+Never show a bare confidence percentage as the headline.
+
+Never let the language model generate a number, a threshold or a probability.
+
+Never clean data silently or hide data-quality problems.
+
+Never present illustrative numbers from this document as real results.
+
+Never claim accuracy, time saved or cost saved that has not been measured.
+
+Never let text in an uploaded or retrieved document instruct an agent.
+
+Never claim that risk quantification, red-teaming or decision journals are TRACE inventions, or that a competitor “cannot” do something.
+
+Never present [VISION] items as built.
+
+Never add a technology-stack assumption to a statement of what TRACE is.
+
+32.3 Common misunderstandings
+
+An agent might assume…
+
+Reality
+
+TRACE is an insurance company or sells cover.
+
+It is a decision tool. Underwriting is a structural metaphor. Premium is a calculated risk cost, not a fee.
+
+“Coverage” means someone pays if the decision fails.
+
+It means the recommendation is currently supported by the evidence and assumptions. Nobody pays anything.
+
+The confidence score still exists.
+
+It has been replaced by the Decision Premium. Its ingredients appear as premium drivers.
+
+Decision Boundary and Decision Memory are separate features.
+
+They are the earlier names of Coverage Lapse Conditions and the Loss History Ledger.
+
+TRACE is multiple autonomous AI models.
+
+It is structured agents over one language model plus a deterministic analytics layer.
+
+The demo should be a chat window.
+
+It is decision-centric: investigation, brief, sandbox, ledger.
+
+TRACE should always give an answer.
+
+It must be able to Refer or Decline.
+
+The Loss History Ledger already proves accuracy.
+
+In the prototype it shows the mechanism with simulated history. The compounding benefit is a [VISION].
+
+TRACE acts on the decision automatically.
+
+It never does. A human approves; execution is out of prototype scope.
+
+The illustrative numbers in this document are targets.
+
+They only demonstrate format and logic. Real numbers come from the data.
+
+NovaMart results validate the product in the real world.
+
+NovaMart is a synthetic testbed with known truth.
+
+The Rate Card thresholds are industry standards.
+
+They are configurable starting policy.
+
+32.4 When something is missing
+
+Check this document first, including Appendix C.
+
+Choose the simplest option consistent with the principles above.
+
+State the assumption explicitly in your output.
+
+Mark it [OPEN] for the team to confirm.
+
+Do not fill the gap with a plausible-sounding invention.
+
+APPENDICES
+
+Appendix A · Glossary
+
+Term
+
+Meaning
+
+Baseline
+
+The alternative to the recommended action, normally the status quo.
+
+ΔM
+
+The change in the primary outcome metric caused by the recommended action versus the baseline.
+
+Expected Loss (EL)
+
+The probability-weighted average shortfall, E[max(0, −ΔM)].
+
+Projected Upside (U)
+
+The expected value of ΔM.
+
+P10 / tail average
+
+The 10th percentile outcome, and the average of the worst 10% of outcomes.
+
+Risk Load
+
+The additional amount added to expected loss to reflect data, verification, contradiction and model uncertainty.
+
+Premium Rate
+
+Decision Premium divided by Projected Upside.
+
+Credibility
+
+The weight given to accumulated experience versus a default assumption; grows with the number of similar past decisions.
+
+Experience factor
+
+The ledger-derived multiplier applied to the Model-Uncertainty Load for a decision class.
+
+Distance to lapse
+
+How far the current value of an assumption sits from the threshold at which coverage lapses.
+
+Judgement assumption
+
+An assumption the data cannot estimate; given an explicit wide range and priced accordingly.
+
+RAG
+
+Retrieval-augmented generation: retrieving relevant documents or records to ground the model’s reasoning.
+
+NovaMart
+
+The synthetic retail company used for the demo.
+
+PS-04
+
+Problem Statement 4 of the challenge: AI Decision Engine for Business Data.
+
+Appendix B · What the Submitted Deck Says
+
+The deck follows the organiser’s exact 10-slide template. Content summary, for consistency checks:
+
+Slide
+
+Title / kicker
+
+Core content
+
+1
+
+TRACE — “Not confidence. Coverage.”
+
+Subtitle: underwrites business decisions instead of guessing at them, so pricing, retention and investment calls come with a quoted cost of being wrong. Team: The Good, The Bad, The Ugly. PS-04 · AI Decision Engine for Business Data. Members: Rishit Nanavati, Rihaan Shaikh, Sibtain Nayani.
+
+2
+
+The problem we’re solving
+
+Every company can generate a chart; none can tell you what it costs to be wrong. Who faces it: pricing lead, RevOps head, CS lead. Cost: hours lost stitching exports and decisions with no evidence chain.
+
+3
+
+What we’re building
+
+TRACE underwrites decisions. User uploads exports and states a decision; gets a Decision Brief: recommendation, Decision Premium, Exposure Report, Coverage Lapse Conditions and a live sandbox.
+
+4
+
+How it works
+
+One LLM for reasoning, orchestration and explanation only; deterministic code for scoring. Multi-agent pipeline; RAG; pandas/NumPy/SciPy for the math (as stated on the slide). NovaMart data. Human approval: TRACE never binds the policy.
+
+5
+
+Under the hood
+
+System architecture diagram: Data → Analytics → Verification → Reasoning → Scenario → Risk/Counter-Decision → Underwriting → Decision Brief → Human sign-off → Action. Line: “Every stage exists to make the next one harder to fool — including the one that argues against itself.”
+
+6
+
+What it will do by 1 Oct
+
+Five features: Decision Premium, Exposure Report, Coverage Lapse Conditions, Counter-Decision Underwriter, Loss History Ledger.
+
+7
+
+Why this isn’t decision intelligence with new paint
+
+Comparison table (typical AI data tool versus TRACE). Line: “Everyone else is building a slightly better dashboard. We’re building the actuary.”
+
+8
+
+How we’ll prove it works
+
+Today: 3–6 hours; target: under 10 minutes to a priced Decision Brief. Evaluation: ~15–20 scripted scenarios on NovaMart scoring Verification accuracy, sandbox correctness and lapse-condition accuracy against held-out data.
+
+9
+
+The Good, The Bad, The Ugly
+
+Three members, all 3rd year at Dwarkadas J. Sanghvi College; role labels as in Section 1.3.
+
+10
+
+Thank you
+
+“Not confidence. Coverage.” and three public LinkedIn post links.
+
+NOTE
+
+The deck mentions specific libraries in a Technical Approach line. This document deliberately prescribes no stack; treat those as the deck’s stated intent, not a requirement.
+
+Appendix C · Locked versus Open Register
+
+C.1 Locked
+
+Item
+
+Decision
+
+Name and frame
+
+TRACE; decision underwriting; “Not confidence. Coverage.”
+
+Signature terms
+
+Decision Premium, Exposure Report, Coverage Lapse Conditions, Counter-Decision Underwriter, Loss History Ledger.
+
+Architecture principle
+
+Structured agents over one model plus deterministic analytics; the model never produces numbers.
+
+Human approval
+
+Mandatory.
+
+Demo data
+
+NovaMart (synthetic; ~25K customers, ~100K transactions, 500 products, multiple regions).
+
+Adoption
+
+CSV/XLSX first, data-agnostic.
+
+Honesty rules
+
+Illustrative numbers are illustrative; simulated history is labelled; [VISION] is never presented as built.
+
+C.2 Open
+
+#
+
+Open question
+
+Why it matters
+
+O1
+
+Exact organiser deadline, demo format (live, video, repository) and deployment requirements.
+
+Determines scope and fallback plans.
+
+O2
+
+Which language models the challenge permits.
+
+Constrains agent implementation.
+
+O3
+
+Official PS-04 text and judging rubric.
+
+Ensures the build maps to the criteria.
+
+O4
+
+Validation of the 3–6 hour manual baseline.
+
+The number is an estimate.
+
+O5
+
+Final Rate Card default values.
+
+Starting policy; needs a sensible, defensible set.
+
+O6
+
+How many decision templates make the demo (T1 required; T2 desirable; T3 optional).
+
+Scope tiering.
+
+O7
+
+Whether user-uploaded documents are supported beyond the seeded set.
+
+Scope of the RAG feature.
+
+O8
+
+Real division of labour across the three members.
+
+Role labels on the deck were placeholders.
+
+O9
+
+Business model choices.
+
+Section 28 is ideas only.

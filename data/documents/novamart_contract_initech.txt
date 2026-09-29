@@ -1,0 +1,13 @@
+# MASTER SERVICES AGREEMENT: TIER 1 ENTERPRISE ACCOUNT
+# Document ID: DOC-2024-MSA-INITECH
+# Customer: Initech Commercial Systems (Account ID: CUST-00007)
+# Category: Contract Summary
+
+Section 1.1 - Background:
+Initech Commercial Systems ("Customer") purchases commercial equipment and operating inventory from NovaMart Commercial Wholesale Inc. ("NovaMart").
+
+Section 4.2 - Guaranteed Commercial Pricing:
+Customer maintains a negotiated flat 15.5% discount tier on bulk procurement.
+
+Section 4.5 - Default & Penalty Stipulation:
+If NovaMart alters the agreed discount rates prior to contract expiration (December 31, 2026), Customer may terminate the Agreement for cause and claim contractual liquidated damages of $50,000.

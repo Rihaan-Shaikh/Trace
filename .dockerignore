@@ -1,0 +1,37 @@
+# Version control
+.git
+.gitignore
+
+# Dependencies & Environments
+node_modules
+.venv
+venv
+env
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Build & Test Caches
+.next
+out
+build
+dist
+.pytest_cache
+.coverage
+htmlcov
+.mypy_cache
+.ruff_cache
+
+# Local Environments & Secrets
+.env
+.env.local
+.env.*.local
+*.log
+*.tmp
+*.bak
+
+# Documentation & Assets not needed in images
+TRACE_Project_Bible.docx
+scratch/
+data/uploads/

@@ -1,0 +1,16 @@
+# MASTER SERVICES AGREEMENT: TIER 1 ENTERPRISE ACCOUNT
+# Document ID: DOC-2024-MSA-ACME
+# Customer: Acme Industrial Solutions (Account ID: CUST-00001)
+# Category: Contract Summary
+
+Section 1.1 - Parties & Scope:
+This Master Services Agreement ("Agreement") is entered into by and between NovaMart Commercial Wholesale Inc. ("NovaMart") and Acme Industrial Solutions ("Customer").
+
+Section 4.1 - Term & Commitment:
+The term of this Agreement shall commence on January 1, 2024 and expire on December 31, 2026. Customer covenants to maintain minimum annual purchases of $250,000 across industrial product categories.
+
+Section 4.2 - Guaranteed Commercial Discount:
+Customer shall receive a guaranteed Tier 1 commercial discount of 16.5% on all wholesale catalog orders. This pricing is fixed for the duration of the 3-year term.
+
+Section 4.3 - Unilateral Termination & Liquidated Damages:
+In the event NovaMart unilaterally modifies, suspends, or terminates Customer's guaranteed discount schedule prior to contract expiration without ninety (90) days prior written notice and formal renegotiation, NovaMart shall immediately become liable to Customer for liquidated damages in the amount of $75,000, representing liquidated contractual consideration for breach.

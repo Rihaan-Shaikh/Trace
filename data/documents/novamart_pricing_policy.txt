@@ -1,0 +1,13 @@
+# NOVAMART CORPORATE PRICING POLICY
+# Document ID: POL-2025-PRICING-CORP
+# Category: Pricing Policy
+# Effective Date: January 15, 2025
+
+Section 1 - Objective:
+To establish baseline wholesale pricing rules, floor margins, and executive approval requirements for commercial discounts across all product lines.
+
+Section 2 - Gross Margin Floor:
+The standard target gross margin for all catalog items is 25.0%. No sales representative or account executive may quote pricing yielding an account-level gross margin below 12.0% without written approval from the Chief Commercial Officer.
+
+Section 3 - Contract vs Non-Contract Accounts:
+Enterprise accounts governed by active bilateral Master Services Agreements (MSAs) are subject to contractual terms that supersede discretionary pricing guidelines. Standard non-contracted SMB and Mid-Market accounts are subject to discretionary review and quarterly margin optimization.

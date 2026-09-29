@@ -1,0 +1,28 @@
+{
+  "name": "Standard Commercial Underwriting Policy",
+  "version": "1.0.0",
+  "description": "Locked default weights and verdict bands from TRACE Project Bible Section 16.5",
+  "weights": {
+    "weight_data_quality": 0.10,
+    "weight_verification": 0.05,
+    "weight_contradiction": 1.00,
+    "base_model_uncertainty_weight": 0.05
+  },
+  "verdict_bands": {
+    "recommended_max_rate": 0.10,
+    "recommended_with_conditions_max_rate": 0.25,
+    "refer_max_rate": 0.50
+  },
+  "risk_parameters": {
+    "tail_definition_percentile": 0.10,
+    "scenario_simulations": 1000,
+    "default_random_seed": 42,
+    "default_validity_window_days": 60,
+    "lapse_tolerance": "Expected Net Benefit <= 0 or verdict band shift"
+  },
+  "credibility_recalibration": {
+    "formula": "Z = n / (n + k)",
+    "k_constant": 10.0,
+    "max_credibility_z": 0.85
+  }
+}

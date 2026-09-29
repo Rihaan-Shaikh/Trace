@@ -1,0 +1,7 @@
+region_id,region_name,launch_date,quarterly_spend
+R-NA-EAST,North America - East,2020-01-15,240000.0
+R-NA-WEST,North America - West,2020-03-01,280000.0
+R-EMEA-N,EMEA - North,2021-06-10,190000.0
+R-EMEA-S,EMEA - South,2021-09-20,160000.0
+R-APAC,APAC - Core,2022-02-01,310000.0
+R-REGION-X,Region X - Pilot Territory,2024-04-01,85000.0

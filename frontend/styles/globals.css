@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import './tokens.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Background radial glow motif */
+body {
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(242, 182, 50, 0.04) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.02) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+/* Signature Pixel Strip Header */
+.trace-pixel-strip {
+  height: 4px;
+  width: 100%;
+  display: flex;
+  background-color: var(--border-dim);
+}
+
+.trace-pixel-strip span {
+  height: 100%;
+  flex: 1;
+}
+
+.trace-pixel-strip .strip-cream { background-color: var(--strip-cream); }
+.trace-pixel-strip .strip-gold { background-color: var(--strip-gold); }
+.trace-pixel-strip .strip-blue { background-color: var(--strip-blue); }
+.trace-pixel-strip .strip-grey { background-color: var(--strip-grey); }
+
+/* Editorial Headline Typography: Plain phrase + italic gold phrase */
+.editorial-headline {
+  font-family: var(--font-headline);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.editorial-headline em {
+  font-family: var(--font-headline);
+  font-style: italic;
+  color: var(--accent-gold-light);
+  padding-left: 0.2em;
+}
+
+/* Mono Kicker / Meta Labels */
+.trace-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.trace-mono-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Containers & Cards */
+.trace-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-subtle);
+}
+
+.trace-card:hover {
+  border-color: var(--border-focus);
+}
+
+/* Executive Action Buttons (Project Bible Section 24) */
+.trace-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.trace-btn-primary {
+  background-color: var(--accent-gold);
+  color: #0C0E12;
+  border: 1px solid var(--accent-gold-light);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.trace-btn-primary:hover:not(:disabled) {
+  background-color: var(--accent-gold-light);
+  color: #0C0E12;
+  box-shadow: 0 0 12px rgba(201, 168, 76, 0.35);
+}
+
+.trace-btn-secondary {
+  background-color: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.trace-btn-secondary:hover:not(:disabled) {
+  background-color: #242B3A;
+  border-color: var(--accent-gold-dim);
+  color: var(--text-primary);
+}
+
+.trace-btn:disabled,
+.trace-btn[disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.5);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: var(--radius-sm);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

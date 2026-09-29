@@ -1,0 +1,48 @@
+# Dependencies & Environments
+node_modules/
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Next.js & Frontend Build Outputs
+.next/
+out/
+build/
+dist/
+coverage/
+
+# Testing & Cache
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Local Environment & Secrets
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Local Uploads & Runtime Artifacts
+data/uploads/
+*.log
+*.tmp
+*.bak
+scratch/
