@@ -35,7 +35,7 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 w-full pb-32 relative z-10">
+      <main className={`flex-1 w-full relative z-10 ${isHome ? '' : 'pb-32'}`}>
         {children}
       </main>
 
@@ -66,4 +66,5 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
     </div>
   );
 }
+
 

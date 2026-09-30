@@ -14,43 +14,41 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row relative bg-parchment-100">
+    <div className="h-screen flex flex-col md:flex-row relative bg-parchment-100 overflow-hidden">
       
       {/* Left Block (Dark) - 50% width */}
-      <div className="md:w-1/2 bg-[#0A0A0C] relative flex flex-col justify-between overflow-hidden p-12 md:p-16">
+      <div className="md:w-1/2 bg-[#0A0A0C] relative flex flex-col justify-center overflow-hidden p-12 md:p-16">
         
-        {/* Abstract subtle texture/grid */}
+        {/* Subtle texture/grid */}
         <div className="absolute inset-0 opacity-[0.03]" 
              style={{ backgroundImage: 'radial-gradient(#F5F5F3 1px, transparent 1px)', backgroundSize: '32px 32px' }} 
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0A0C]/50 to-[#0A0A0C]" />
         
-        {/* Content */}
-        <div className="relative z-10 mt-auto pointer-events-none mb-12">
-          
-          {/* TRACE signature logo */}
-          <div className="mb-16 transform -rotate-6 origin-bottom-left mix-blend-difference">
-            <h1 className="font-serif text-[12vw] leading-none tracking-tighter text-parchment-100/90 italic">
-              TRACE
-            </h1>
-          </div>
-
-          <h2 className="font-serif text-5xl md:text-6xl text-parchment-100 leading-[1.1] tracking-tight opacity-90">
+        {/* Background MASSIVE TRACE text */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.07] select-none">
+          <h1 className="font-serif text-[28vw] md:text-[18vw] leading-none tracking-tighter text-parchment-100">
+            TRACE
+          </h1>
+        </div>
+        
+        {/* Foreground Tagline placed ON TOP of TRACE */}
+        <div className="relative z-10 pointer-events-none w-full flex flex-col justify-center h-full">
+          <h2 className="font-serif text-5xl md:text-7xl text-parchment-100 leading-[1.1] tracking-tight opacity-90 text-left">
             Not confidence. <br/>
-            <span className="text-vermilion-500 italic block text-right mt-4 pr-8">Coverage.</span>
+            <span className="text-vermilion-500 italic block mt-2">Coverage.</span>
           </h2>
         </div>
       </div>
 
       {/* Right Block (Input) - 50% width */}
-      <div className="md:w-1/2 p-12 md:p-32 flex flex-col justify-center relative bg-parchment-100">
-        <div className="max-w-xl w-full mx-auto">
+      <div className="md:w-1/2 p-12 md:p-24 flex flex-col justify-center relative bg-parchment-100">
+        <div className="w-full">
           
-          <h2 className="font-serif text-4xl md:text-5xl text-ink-900 mb-16 leading-tight">
+          <h2 className="font-serif text-5xl md:text-6xl text-ink-900 mb-12 leading-[1.1] tracking-tight">
             What are you willing to be wrong about?
           </h2>
 
-          <div className="relative group">
+          <div className="relative group w-full">
             <textarea
               value={decisionText}
               onChange={(e) => onSetDecision(e.target.value)}

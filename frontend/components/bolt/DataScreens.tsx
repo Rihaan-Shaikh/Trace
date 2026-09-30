@@ -40,7 +40,7 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">NovaMart &#183; evidence</div>
           <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance">Bring the evidence.</h1>
-          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
+          <p className="mt-3 text-ink-500 text-lg w-full pr-8 leading-relaxed">
             Upload the files behind the decision. TRACE will map the business before it evaluates the call.
           </p>
         </div>
@@ -131,7 +131,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
           <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance">
             TRACE is making sure we mean the same thing.
           </h1>
-          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
+          <p className="mt-3 text-ink-500 text-lg w-full pr-8 leading-relaxed">
             Before reasoning begins, TRACE maps the business and confirms every metric definition.
           </p>
         </div>
@@ -247,6 +247,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
     </div>
   );
 }
+
 
 
 

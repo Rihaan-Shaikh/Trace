@@ -16,7 +16,7 @@ export function Section({ eyebrow, title, subtitle, children, className = '' }: 
       )}
       <h2 className="font-serif text-4xl md:text-5xl tracking-tight leading-none mb-4 text-ink-800 text-balance">{title}</h2>
       {subtitle && (
-        <p className="mt-2 text-ink-500 text-base max-w-prose-doc">{subtitle}</p>
+        <p className="mt-2 text-ink-500 text-base w-full pr-8">{subtitle}</p>
       )}
       <div className="mt-8">{children}</div>
     </section>
@@ -92,4 +92,5 @@ export function Footnote({ children }: FootnoteProps) {
     <p className="text-xs text-ink-400 mt-1 leading-relaxed">{children}</p>
   );
 }
+
 

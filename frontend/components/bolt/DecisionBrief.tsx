@@ -18,7 +18,6 @@ import { EvidenceDrawer, EvidenceLink } from './EvidenceDrawer';
 import { ThresholdTrack } from './ThresholdTrack';
 import { ScenarioDistribution } from './ScenarioDistribution';
 import { VerdictBadge, Divider, Section } from './ui/Section';
-import { CoverageRadar } from './CoverageRadar';
 
 interface DecisionBriefProps {
   onNavigate: (view: View) => void;
@@ -50,7 +49,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
           <div className="text-xs text-ink-400 font-medium mb-3">
             NovaMart · pricing decision
           </div>
-          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance leading-[1.05] max-w-4xl">
+          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance leading-[1.05] w-full pr-12">
             Stop blanket discounts for low-margin customers.
           </h1>
 
@@ -99,7 +98,6 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
               <div className="text-xs text-ink-400 mt-1">
                 over 4 quarters
         </div>
-        <CoverageRadar />
       </div>
     </div>
   </div>
@@ -205,7 +203,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
           title="What survived scrutiny"
           subtitle="How the recommendation changed after TRACE argued against itself."
         >
-          <div className="max-w-2xl">
+          <div className="w-full pr-12">
             {SCRUTINY_STEPS.map((step, idx) => (
               <div key={idx} className="flex items-start gap-5">
                 <div className="flex flex-col items-center">
@@ -318,6 +316,8 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
     </div>
   );
 }
+
+
 
 
 
