@@ -10,7 +10,7 @@ interface EvidenceDrawerProps {
 }
 
 const LEVEL_STYLES: Record<string, { color: string; bg: string; border: string }> = {
-  Fact: { color: 'text-ink-600', bg: 'bg-parchment-50', border: 'border-ink-200' },
+  Fact: { color: 'text-ink-200', bg: 'bg-base-800', border: 'border-base-600' },
   Calculation: { color: 'text-brass-600', bg: 'bg-brass-50', border: 'border-brass-200' },
   Model: { color: 'text-slate-600', bg: 'bg-slate-50', border: 'border-slate-200' },
   Recommendation: { color: 'text-vermilion-600', bg: 'bg-vermilion-50', border: 'border-vermilion-200' },
@@ -28,7 +28,7 @@ function EvidenceNodeRow({ node, depth }: { node: EvidenceNode; depth: number })
       >
         {/* Connector line */}
         {depth > 0 && (
-          <div className="absolute -ml-3 w-px h-full bg-ink-100" style={{ marginLeft: `${-12 + depth * 24}px` }} />
+          <div className="absolute -ml-3 w-px h-full bg-base-700" style={{ marginLeft: `${-12 + depth * 24}px` }} />
         )}
 
         <div className={`flex-1 flex items-center justify-between gap-4 ${style.bg} ${style.border} border rounded-sm px-3 py-2`}>
@@ -36,10 +36,10 @@ function EvidenceNodeRow({ node, depth }: { node: EvidenceNode; depth: number })
             <span className={`text-[10px] font-medium ${style.color} uppercase tracking-wide whitespace-nowrap`}>
               {node.level}
             </span>
-            <span className="text-sm text-ink-700 font-medium truncate">{node.label}</span>
+            <span className="text-sm text-ink-100 font-medium truncate">{node.label}</span>
           </div>
           {node.value && (
-            <span className="text-sm tabular-nums text-ink-800 font-semibold whitespace-nowrap">
+            <span className="text-sm tabular-nums text-ink-50 font-semibold whitespace-nowrap">
               {node.value}
             </span>
           )}
@@ -72,16 +72,16 @@ export function EvidenceDrawer({ open, onClose, title, root }: EvidenceDrawerPro
       />
 
       {/* Drawer */}
-      <div className="absolute right-0 top-0 h-full w-full max-w-[520px] bg-parchment-50 shadow-drawer animate-slide-in-right overflow-y-auto scrollbar-thin">
+      <div className="absolute right-0 top-0 h-full w-full max-w-[520px] bg-base-800 shadow-drawer animate-slide-in-right overflow-y-auto scrollbar-thin">
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-parchment-50/95 backdrop-blur-sm border-b rule px-6 py-5 flex items-center justify-between">
+        <div className="sticky top-0 z-10 bg-base-800/95 backdrop-blur-sm border-b rule px-6 py-5 flex items-center justify-between">
           <div>
             <div className="text-xs text-ink-400 font-medium mb-0.5">Evidence chain</div>
-            <h3 className="font-serif text-xl text-ink-800">{title}</h3>
+            <h3 className="font-serif text-xl text-ink-50">{title}</h3>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-md text-ink-400 hover:text-ink-700 hover:bg-parchment-100 transition-colors focus-ring"
+            className="w-8 h-8 flex items-center justify-center rounded-md text-ink-400 hover:text-ink-100 hover:bg-base-900 transition-colors focus-ring"
           >
             <X className="w-4 h-4" />
           </button>
@@ -99,7 +99,7 @@ export function EvidenceDrawer({ open, onClose, title, root }: EvidenceDrawerPro
         {/* Footer */}
         <div className="border-t rule px-6 py-4 mt-4">
           <div className="text-xs text-ink-400">
-            Levels: <span className="text-ink-600">Fact</span> ·{' '}
+            Levels: <span className="text-ink-200">Fact</span> ·{' '}
             <span className="text-brass-600">Calculation</span> ·{' '}
             <span className="text-slate-600">Model</span> ·{' '}
             <span className="text-vermilion-600">Recommendation</span>

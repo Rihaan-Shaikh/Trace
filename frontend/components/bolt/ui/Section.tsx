@@ -14,9 +14,9 @@ export function Section({ eyebrow, title, subtitle, children, className = '' }: 
       {eyebrow && (
         <div className="text-xs font-medium text-ink-400 mb-2 tracking-wide">{eyebrow}</div>
       )}
-      <h2 className="font-serif text-section text-ink-800 text-balance">{title}</h2>
+      <h2 className="font-serif text-section text-ink-50 text-balance">{title}</h2>
       {subtitle && (
-        <p className="mt-2 text-ink-500 text-base max-w-prose-doc">{subtitle}</p>
+        <p className="mt-2 text-ink-300 text-base max-w-prose-doc">{subtitle}</p>
       )}
       <div className="mt-8">{children}</div>
     </section>
@@ -70,7 +70,7 @@ export function VerdictBadge({ verdict, size = 'md' }: VerdictBadgeProps) {
           ? 'border-vermilion-300 text-vermilion-700 bg-vermilion-50'
           : isApproved
             ? 'border-brass-300 text-brass-700 bg-brass-50'
-            : 'border-ink-200 text-ink-600 bg-parchment-50'
+            : 'border-base-600 text-ink-200 bg-base-800'
       }`}
     >
       <span

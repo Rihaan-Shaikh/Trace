@@ -14,15 +14,15 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
   const pending = LEDGER_ENTRIES.filter((e) => e.outcome === 'Pending').length;
 
   return (
-    <div className="min-h-screen bg-parchment-100">
+    <div className="min-h-screen bg-base-900">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* Header */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">Loss history</div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
+          <h1 className="font-serif text-hero text-ink-50 text-balance">
             Loss history ledger
           </h1>
-          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
+          <p className="mt-3 text-ink-300 text-lg max-w-prose-doc leading-relaxed">
             TRACE remembers what happened. Every approved decision is recorded here with its
             predicted exposure and eventual outcome.
           </p>
@@ -36,7 +36,7 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-0 border-t border-b rule divide-y sm:divide-y-0 sm:divide-x rule mb-10">
           <div className="px-5 py-5">
             <div className="text-xs text-ink-400 mb-2">Decisions logged</div>
-            <div className="editorial-num text-2xl text-ink-800 tabular-nums">{totalDecisions}</div>
+            <div className="editorial-num text-2xl text-ink-50 tabular-nums">{totalDecisions}</div>
           </div>
           <div className="px-5 py-5">
             <div className="text-xs text-ink-400 mb-2">Within exposure</div>
@@ -48,7 +48,7 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
           </div>
           <div className="px-5 py-5">
             <div className="text-xs text-ink-400 mb-2">Premium adjustment</div>
-            <div className="editorial-num text-2xl text-ink-700 tabular-nums">+4%</div>
+            <div className="editorial-num text-2xl text-ink-100 tabular-nums">+4%</div>
           </div>
         </div>
 
@@ -67,23 +67,23 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
             </thead>
             <tbody className="divide-y rule">
               {LEDGER_ENTRIES.map((entry) => (
-                <tr key={entry.id} className="hover:bg-parchment-50/50 transition-colors">
+                <tr key={entry.id} className="hover:bg-base-800/50 transition-colors">
                   <td className="py-4 pr-4">
-                    <div className="text-sm text-ink-800 font-medium">{entry.decision}</div>
+                    <div className="text-sm text-ink-50 font-medium">{entry.decision}</div>
                     {entry.simulated && (
                       <div className="text-[10px] text-ink-300 mt-0.5">simulated</div>
                     )}
                   </td>
-                  <td className="py-4 px-4 text-right text-sm tabular-nums text-ink-700">
+                  <td className="py-4 px-4 text-right text-sm tabular-nums text-ink-100">
                     {entry.predictedPremium}
                   </td>
-                  <td className="py-4 px-4 text-right text-sm tabular-nums text-ink-500">
+                  <td className="py-4 px-4 text-right text-sm tabular-nums text-ink-300">
                     {entry.exposure}
                   </td>
                   <td className="py-4 px-4">
                     <OutcomeBadge outcome={entry.outcome} />
                   </td>
-                  <td className="py-4 px-4 text-right text-sm tabular-nums text-ink-700">
+                  <td className="py-4 px-4 text-right text-sm tabular-nums text-ink-100">
                     {entry.actualResult}
                   </td>
                   <td className="py-4 pl-4 text-right">
@@ -114,7 +114,7 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
 
                 return (
                   <div key={entry.id} className="flex items-center gap-4">
-                    <div className="w-40 text-xs text-ink-500 truncate flex-shrink-0">
+                    <div className="w-40 text-xs text-ink-300 truncate flex-shrink-0">
                       {entry.decision}
                     </div>
                     <div className="flex-1 relative h-5">
@@ -155,7 +155,7 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
           </div>
           <button
             onClick={() => onNavigate('home')}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-50 text-base-900 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             New decision
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

@@ -1,12 +1,4 @@
 import { type View } from '@/lib/bolt/types';
-import {
-  Scale,
-  Database,
-  BookOpen,
-  Sliders,
-  Store,
-  Settings,
-} from 'lucide-react';
 
 interface AppShellProps {
   currentView: View;
@@ -16,83 +8,73 @@ interface AppShellProps {
 
 interface NavItem {
   id: View;
+  num: string;
   label: string;
-  icon: typeof Scale;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { id: 'home', label: 'Decisions', icon: Scale },
-  { id: 'data', label: 'Data', icon: Database },
-  { id: 'ledger', label: 'Ledger', icon: BookOpen },
-  { id: 'rate-card', label: 'Rate card', icon: Sliders },
+  { id: 'home', num: '01', label: 'DECISIONS' },
+  { id: 'data', num: '02', label: 'EVIDENCE' },
+  { id: 'ledger', num: '03', label: 'LEDGER' },
+  { id: 'rate-card', num: '04', label: 'RATE CARD' },
 ];
 
 export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
   return (
-    <div className="flex min-h-screen bg-parchment-100">
-      {/* Left rail */}
-      <nav className="fixed left-0 top-0 h-screen w-[76px] z-30 flex flex-col items-center border-r rule bg-parchment-50">
-                  {/* Logo */}
-          <div className="pt-6 pb-8 select-none cursor-pointer flex flex-col items-center" onClick={() => onNavigate('home')}>
-            <div className="font-serif text-[18px] font-semibold text-ink-800 tracking-tight leading-none">
-              TRACE
+    <div className="flex min-h-screen bg-base-900 text-ink-50">
+      {/* Architectural Left Rail */}
+      <nav className="fixed left-0 top-0 h-screen w-48 z-30 flex flex-col justify-between border-r border-base-600 bg-base-900">
+        
+        <div>
+          {/* Logo */}
+          <div className="p-8 select-none cursor-pointer" onClick={() => onNavigate('home')}>
+            <div className="font-mono text-xl tracking-[0.2em] font-medium text-ink-50 mb-1">
+              T R A C E
             </div>
-            <div className="text-[7px] text-ink-400 tracking-widest mt-1 text-center uppercase leading-tight w-full px-1">
-              Decision<br/>Underwriting
+            <div className="text-[9px] tracking-[0.2em] uppercase text-ink-300">
+              Decision Underwriting
             </div>
-            <div className="w-[1px] h-4 bg-vermilion-500 mt-3"></div>
           </div>
 
-        {/* Nav items */}
-        <div className="flex flex-col gap-1 flex-1">
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const active = currentView === item.id ||
-              (item.id === 'home' && (currentView === 'decision-brief' || currentView === 'sandbox' || currentView === 'approval' || currentView === 'decision-record' || currentView === 'investigation' || currentView === 'semantic-map' || currentView === 'data-health'));
-            if (item.id === 'data' && (currentView === 'data' || currentView === 'semantic-map' || currentView === 'data-health')) {
-              // data is active
-            }
-            return (
-              <button
-                key={item.id}
-                onClick={() => onNavigate(item.id)}
-                className={`group relative flex flex-col items-center justify-center w-full h-14 rounded-none transition-colors focus-ring ${
-                  active ? 'text-ink-800' : 'text-ink-400 hover:text-ink-600'
-                }`}
-                title={item.label}
-              >
-                {active && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-7 bg-vermilion-500 rounded-r-full" />
-                )}
-                <Icon className="w-[18px] h-[18px]" strokeWidth={1.5} />
-                <span className="text-[9px] mt-1 font-medium tracking-wide">{item.label}</span>
-              </button>
-            );
-          })}
+          {/* Nav items */}
+          <div className="flex flex-col mt-8">
+            {NAV_ITEMS.map((item) => {
+              const active = currentView === item.id || 
+                (item.id === 'home' && ['decision-brief', 'sandbox', 'approval', 'decision-record', 'investigation'].includes(currentView)) ||
+                (item.id === 'data' && ['data-health', 'semantic-map'].includes(currentView));
+                
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onNavigate(item.id)}
+                  className={`group relative flex items-start px-8 py-4 transition-colors ${
+                    active ? 'text-ink-50' : 'text-ink-400 hover:text-ink-100'
+                  }`}
+                >
+                  {active && (
+                    <span className="absolute left-8 top-10 w-2 h-[1px] bg-vermilion-500" />
+                  )}
+                  <div className="flex flex-col items-start pl-4">
+                    <span className="font-mono text-xs opacity-50 mb-1">{item.num}</span>
+                    <span className="text-[10px] tracking-[0.15em] font-medium">{item.label}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Bottom */}
-        <div className="pb-6 flex flex-col items-center gap-4">
-          <button
-            className="flex items-center justify-center w-10 h-10 rounded-md text-ink-400 hover:text-ink-600 hover:bg-parchment-100 transition-colors focus-ring"
-            title="NovaMart"
-          >
-            <Store className="w-[18px] h-[18px]" strokeWidth={1.5} />
-          </button>
-          <button
-            className="flex items-center justify-center w-10 h-10 rounded-md text-ink-400 hover:text-ink-600 hover:bg-parchment-100 transition-colors focus-ring"
-            title="Settings"
-          >
-            <Settings className="w-[18px] h-[18px]" strokeWidth={1.5} />
-          </button>
+        {/* Bottom Metadata */}
+        <div className="p-8 text-[10px] tracking-widest text-ink-400 uppercase border-t border-base-600">
+          <div className="mb-1 text-ink-50">RK</div>
+          <div>NovaMart</div>
         </div>
       </nav>
 
-      {/* Main content */}
-      <main className="flex-1 ml-[76px] min-w-0">
+      {/* Main Content Area */}
+      <main className="flex-1 ml-48">
         {children}
       </main>
     </div>
   );
 }
-

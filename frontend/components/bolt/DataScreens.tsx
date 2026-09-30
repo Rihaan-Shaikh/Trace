@@ -34,19 +34,19 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
     setIsUploading(false);
   };
   return (
-    <div className="min-h-screen bg-parchment-100">
+    <div className="min-h-screen bg-base-900">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">NovaMart &#183; evidence</div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">Bring the evidence.</h1>
-          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
+          <h1 className="font-serif text-hero text-ink-50 text-balance">Bring the evidence.</h1>
+          <p className="mt-3 text-ink-300 text-lg max-w-prose-doc leading-relaxed">
             Upload the files behind the decision. TRACE will map the business before it evaluates the call.
           </p>
         </div>
 
         {/* Drop zone */}
-        <div className="border-2 border-dashed rule rounded-sm bg-parchment-50 px-8 py-12 text-center mb-8 cursor-pointer hover:bg-parchment-100 transition-colors" onClick={() => fileInputRef.current?.click()}>
+        <div className="border-2 border-dashed rule rounded-sm bg-base-800 px-8 py-12 text-center mb-8 cursor-pointer hover:bg-base-900 transition-colors" onClick={() => fileInputRef.current?.click()}>
           <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".csv,.xlsx,.json" />
           <div className="text-sm text-ink-400 mb-1">{isUploading ? 'Uploading...' : 'Drop files here or click to upload'}</div>
           <div className="text-xs text-ink-300">CSV, XLSX, JSON &#183; up to 50MB per file</div>
@@ -69,7 +69,7 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
           </div>
           <button
             onClick={() => api.datasets.seedNovaMart().then(() => onNavigate('semantic-map')).catch(() => onNavigate('semantic-map'))}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-50 text-base-900 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             Map the business
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -85,9 +85,9 @@ function FileRow({ file }: { file: DataFile }) {
     <div className="flex items-center gap-4 py-4 px-2">
       <StatusMark state={file.status === 'mapped' ? 'mapped' : 'pending'} />
       <div className="flex-1 min-w-0">
-        <div className="text-sm font-medium text-ink-800 font-mono">{file.name}</div>
+        <div className="text-sm font-medium text-ink-50 font-mono">{file.name}</div>
       </div>
-      <div className="text-sm tabular-nums text-ink-500">
+      <div className="text-sm tabular-nums text-ink-300">
         {file.rows} rows
       </div>
       <div className="text-sm tabular-nums text-ink-400 hidden sm:block">
@@ -123,15 +123,15 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-parchment-100">
+    <div className="min-h-screen bg-base-900">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">NovaMart &#183; business map</div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
+          <h1 className="font-serif text-hero text-ink-50 text-balance">
             TRACE is making sure we mean the same thing.
           </h1>
-          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
+          <p className="mt-3 text-ink-300 text-lg max-w-prose-doc leading-relaxed">
             Before reasoning begins, TRACE maps the business and confirms every metric definition.
           </p>
         </div>
@@ -199,7 +199,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
               {definitions.map((metric) => (
                 <div key={metric.id} className="py-4 px-1">
                   <div className="flex items-baseline justify-between gap-4 mb-1">
-                    <div className="text-sm font-medium text-ink-800">{metric.name}</div>
+                    <div className="text-sm font-medium text-ink-50">{metric.name}</div>
                     {metric.editable && (
                       <button
                         onClick={() => setEditing(editing === metric.id ? null : metric.id)}
@@ -218,10 +218,10 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
                       onBlur={() => setEditing(null)}
                       onKeyDown={(e) => e.key === 'Enter' && setEditing(null)}
                       autoFocus
-                      className="w-full text-sm text-ink-600 bg-parchment-100 border rule rounded-sm px-2 py-1 mt-1 focus:outline-none focus:border-vermilion-300"
+                      className="w-full text-sm text-ink-200 bg-base-900 border rule rounded-sm px-2 py-1 mt-1 focus:outline-none focus:border-vermilion-300"
                     />
                   ) : (
-                    <div className="text-sm text-ink-500 leading-relaxed">{metric.definition}</div>
+                    <div className="text-sm text-ink-300 leading-relaxed">{metric.definition}</div>
                   )}
                 </div>
               ))}
@@ -237,7 +237,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
           </div>
           <button
             onClick={() => onNavigate('data-health')}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-50 text-base-900 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             Check the evidence
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
