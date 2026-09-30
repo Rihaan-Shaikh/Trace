@@ -95,9 +95,12 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
         {/* Bottom philosophy / Acronym */}
         <div className="mt-24 text-center">
           <p className="text-[10px] uppercase tracking-[0.2em] text-ink-400">
-            Trust the data <span className="mx-2 opacity-50">·</span> Retrieve the evidence <span className="mx-2 opacity-50">·</span> Analyze the decision <span className="mx-2 opacity-50">·</span> Challenge the conclusion <span className="mx-2 opacity-50">·</span> Explain the outcome
+            Trust the data <span className="mx-2 opacity-50">&#183;</span> Retrieve the evidence <span className="mx-2 opacity-50">&#183;</span> Analyze the decision <span className="mx-2 opacity-50">&#183;</span> Challenge the conclusion <span className="mx-2 opacity-50">&#183;</span> Explain the outcome
           </p>
         </div>
       </div>
     </div>
 
+
+  );
+}

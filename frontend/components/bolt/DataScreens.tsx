@@ -38,7 +38,7 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
-          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · evidence</div>
+          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart &#183; evidence</div>
           <h1 className="font-serif text-hero text-ink-800 text-balance">Bring the evidence.</h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
             Upload the files behind the decision. TRACE will map the business before it evaluates the call.
@@ -49,7 +49,7 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
         <div className="border-2 border-dashed rule rounded-sm bg-parchment-50 px-8 py-12 text-center mb-8 cursor-pointer hover:bg-parchment-100 transition-colors" onClick={() => fileInputRef.current?.click()}>
           <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".csv,.xlsx,.json" />
           <div className="text-sm text-ink-400 mb-1">{isUploading ? 'Uploading...' : 'Drop files here or click to upload'}</div>
-          <div className="text-xs text-ink-300">CSV, XLSX, JSON · up to 50MB per file</div>
+          <div className="text-xs text-ink-300">CSV, XLSX, JSON &#183; up to 50MB per file</div>
         </div>
 
         {/* File list */}
@@ -65,7 +65,7 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
         {/* Action */}
         <div className="mt-10 flex items-center justify-between">
           <div className="text-xs text-ink-400">
-            5 files mapped · 215,762 rows total
+            5 files mapped &#183; 215,762 rows total
           </div>
           <button
             onClick={() => api.datasets.seedNovaMart().then(() => onNavigate('semantic-map')).catch(() => onNavigate('semantic-map'))}
@@ -106,7 +106,7 @@ function FileRow({ file }: { file: DataFile }) {
   );
 }
 
-// ── Semantic Map ─────────────────────────────────────────────────────────────
+// ââ Semantic Map âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 
 interface SemanticMapScreenProps {
   onNavigate: (view: View) => void;
@@ -127,7 +127,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
-          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · business map</div>
+          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart &#183; business map</div>
           <h1 className="font-serif text-hero text-ink-800 text-balance">
             TRACE is making sure we mean the same thing.
           </h1>
@@ -233,7 +233,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
         <Divider className="mt-12" />
         <div className="mt-8 flex items-center justify-between">
           <div className="text-xs text-ink-400">
-            7 metrics defined · 5 entities mapped
+            7 metrics defined &#183; 5 entities mapped
           </div>
           <button
             onClick={() => onNavigate('data-health')}

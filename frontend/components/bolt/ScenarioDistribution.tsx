@@ -33,7 +33,7 @@ export function ScenarioDistribution({ calc }: ScenarioDistributionProps) {
 
   return (
     <div className="mt-6">
-      <div className="text-xs text-ink-400 mb-3">Scenario distribution · 1,000 trials</div>
+      <div className="text-xs text-ink-400 mb-3">Scenario distribution &#183; 1,000 trials</div>
 
       {/* Distribution bars */}
       <div className="relative h-32 flex items-end gap-px">
