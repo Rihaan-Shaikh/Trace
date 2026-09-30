@@ -1,7 +1,7 @@
 import { type View, type DataFile } from '@/lib/bolt/types';
 import { NOVAMART_FILES, SEMANTIC_ENTITIES, METRIC_DEFINITIONS } from '@/lib/bolt/data';
 import { ArrowRight, Check, Pencil } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { api } from '@/lib/api-client';
 import { Section, Divider, StatusMark } from './ui/Section';
 
@@ -10,6 +10,29 @@ interface DataScreenProps {
 }
 
 export function DataScreen({ onNavigate }: DataScreenProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<any[]>(NOVAMART_FILES);
+  const [datasetId, setDatasetId] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    setIsUploading(true);
+    try {
+      let dId = datasetId;
+      if (!dId) {
+        const ds = await api.datasets.create({ name: 'Custom Dataset' });
+        dId = ds.id;
+        setDatasetId(dId);
+      }
+      await api.datasets.uploadFile(dId, file);
+      setFiles([{ name: file.name, rows: 'Calculating...', status: 'mapped' }, ...files]);
+    } catch (err) {
+      console.error(err);
+    }
+    setIsUploading(false);
+  };
   return (
     <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
@@ -23,8 +46,9 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
         </div>
 
         {/* Drop zone */}
-        <div className="border-2 border-dashed rule rounded-sm bg-parchment-50 px-8 py-12 text-center mb-8">
-          <div className="text-sm text-ink-400 mb-1">Drop files here or click to upload</div>
+        <div className="border-2 border-dashed rule rounded-sm bg-parchment-50 px-8 py-12 text-center mb-8 cursor-pointer hover:bg-parchment-100 transition-colors" onClick={() => fileInputRef.current?.click()}>
+          <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".csv,.xlsx,.json" />
+          <div className="text-sm text-ink-400 mb-1">{isUploading ? 'Uploading...' : 'Drop files here or click to upload'}</div>
           <div className="text-xs text-ink-300">CSV, XLSX, JSON · up to 50MB per file</div>
         </div>
 
@@ -32,8 +56,8 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
         <div>
           <div className="text-xs text-ink-400 font-medium mb-4">Uploaded files</div>
           <div className="divide-y rule border-t border-b rule">
-            {NOVAMART_FILES.map((file) => (
-              <FileRow key={file.name} file={file} />
+            {files.map((file, i) => (
+              <FileRow key={file.name + i} file={file} />
             ))}
           </div>
         </div>
@@ -223,3 +247,4 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
     </div>
   );
 }
+

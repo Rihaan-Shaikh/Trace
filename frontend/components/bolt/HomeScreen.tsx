@@ -36,80 +36,68 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
   };
 
   return (
-    <div className="min-h-screen bg-parchment-100">
-      <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-24 pb-16">
-        {/* Tagline */}
-        <div className="mb-16 animate-fade-in">
-          <div className="text-xs text-ink-400 font-medium tracking-wide mb-1">
-            NovaMart ¬∑ retail dataset
+        <div className="min-h-screen bg-parchment-100 flex flex-col justify-center">
+      <div className="max-w-3xl mx-auto px-8 w-full">
+        {/* Brand masthead */}
+        <div className="mb-12 animate-fade-in text-center">
+          <div className="font-serif text-4xl font-semibold text-ink-800 tracking-tight mb-2">
+            TRACE
           </div>
-          <div className="text-xs text-ink-300 italic">
-            Not confidence. Coverage.
+          <div className="flex items-center justify-center gap-2 text-ink-800">
+            <span className="italic text-ink-500">Not confidence.</span>
+            <span className="font-semibold">Coverage.</span>
+          </div>
+        </div>
+
+        {/* The TRACE Line Motif */}
+        <div className="relative mb-16 px-4">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[1px] bg-ink-300"></div>
+          <div className="relative flex justify-between text-[10px] uppercase tracking-widest text-ink-400 font-medium bg-parchment-100">
+            <span className="bg-parchment-100 pr-2">Evidence</span>
+            <span className="bg-parchment-100 pl-2">Decision</span>
           </div>
         </div>
 
         {/* Main headline */}
-        <h1 className="font-serif text-hero text-ink-800 text-balance max-w-3xl leading-[1.05]">
-          Which decision are you underwriting?
+        <h1 className="font-serif text-4xl lg:text-5xl text-ink-800 text-center text-balance leading-tight mb-10">
+          What are you willing to be wrong about?
         </h1>
 
         {/* Input surface */}
-        <div className="mt-10 max-w-3xl">
-          <div className="relative">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-xs text-ink-400 mb-2 text-center uppercase tracking-wide">
+            Describe the decision you need to make
+          </div>
+          <div className="relative group">
             <textarea
               value={decisionText}
               onChange={(e) => onSetDecision(e.target.value)}
-              placeholder="Describe the decision you need to make‚Ä¶"
-              className="w-full min-h-[120px] bg-parchment-50 border rule rounded-sm px-5 py-4 text-lg text-ink-800 placeholder:text-ink-300 resize-none focus:outline-none focus:border-vermilion-300 transition-colors"
+              placeholder="e.g. Should we stop discounts for low-margin customers?"
+              className="w-full min-h-[100px] bg-parchment-50 border border-ink-200 rounded-none px-5 py-4 text-lg text-ink-800 placeholder:text-ink-300 resize-none focus:outline-none focus:border-ink-500 transition-colors shadow-sm"
             />
-          </div>
-
-          {/* Example prompt */}
-          <div className="mt-3 px-1">
-            <div className="text-xs text-ink-400">
-              e.g. ‚ÄúShould we stop discounts for low-margin customers?‚Äù
-            </div>
-          </div>
-
-          {/* Start button */}
-          <div className="mt-6">
-            <button
-              onClick={handleStart}
-              className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
-            >
-              Start investigation
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </div>
-
-          {/* Example links */}
-          <div className="mt-12">
-            <div className="text-xs text-ink-400 mb-3">Or start from a common decision</div>
-            <div className="flex flex-wrap gap-x-6 gap-y-2">
-              {EXAMPLES.map((ex) => (
-                <button
-                  key={ex}
-                  onClick={() => handleExample(ex)}
-                  className="group inline-flex items-center gap-1 text-sm text-ink-500 hover:text-vermilion-600 transition-colors"
-                >
-                  {ex}
-                  <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </button>
-              ))}
+            
+            {/* Start button appended right below */}
+            <div className="mt-4 flex flex-col items-center gap-4">
+              <div className="text-xs text-ink-400 text-center">
+                TRACE will price the downside, challenge the recommendation and show where the answer breaks.
+              </div>
+              <button
+                onClick={handleStart}
+                className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-8 py-3 rounded-none text-sm font-medium hover:bg-ink-700 transition-colors"
+              >
+                Start investigation
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Bottom philosophy */}
-        <div className="mt-24 max-w-2xl border-t rule pt-8">
-          <p className="text-sm text-ink-500 leading-relaxed">
-            TRACE does not tell a business what it thinks. TRACE tells a business what a decision
-            costs if it is wrong, and exactly when that decision should no longer be trusted.
+        {/* Bottom philosophy / Acronym */}
+        <div className="mt-24 text-center">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-ink-400">
+            Trust the data <span className="mx-2 opacity-50">∑</span> Retrieve the evidence <span className="mx-2 opacity-50">∑</span> Analyze the decision <span className="mx-2 opacity-50">∑</span> Challenge the conclusion <span className="mx-2 opacity-50">∑</span> Explain the outcome
           </p>
         </div>
       </div>
     </div>
-  );
-}
-
 

@@ -32,15 +32,16 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
     <div className="flex min-h-screen bg-parchment-100">
       {/* Left rail */}
       <nav className="fixed left-0 top-0 h-screen w-[76px] z-30 flex flex-col items-center border-r rule bg-parchment-50">
-        {/* Logo */}
-        <div className="pt-6 pb-8 select-none cursor-pointer" onClick={() => onNavigate('home')}>
-          <div className="font-serif text-xl font-semibold text-ink-800 tracking-tight leading-none">
-            T
+                  {/* Logo */}
+          <div className="pt-6 pb-8 select-none cursor-pointer flex flex-col items-center" onClick={() => onNavigate('home')}>
+            <div className="font-serif text-[18px] font-semibold text-ink-800 tracking-tight leading-none">
+              TRACE
+            </div>
+            <div className="text-[7px] text-ink-400 tracking-widest mt-1 text-center uppercase leading-tight w-full px-1">
+              Decision<br/>Underwriting
+            </div>
+            <div className="w-[1px] h-4 bg-vermilion-500 mt-3"></div>
           </div>
-          <div className="font-serif text-[7px] font-medium text-ink-300 tracking-[0.15em] mt-0.5 text-center">
-            TRACE
-          </div>
-        </div>
 
         {/* Nav items */}
         <div className="flex flex-col gap-1 flex-1">
@@ -55,7 +56,7 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className={`group relative flex flex-col items-center justify-center w-12 h-12 rounded-md transition-colors focus-ring ${
+                className={`group relative flex flex-col items-center justify-center w-full h-14 rounded-none transition-colors focus-ring ${
                   active ? 'text-ink-800' : 'text-ink-400 hover:text-ink-600'
                 }`}
                 title={item.label}
@@ -94,3 +95,4 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
     </div>
   );
 }
+
