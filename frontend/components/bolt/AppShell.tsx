@@ -96,3 +96,4 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
   );
 }
 
+
