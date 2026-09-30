@@ -166,7 +166,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
                     <circle
                       cx={entity.x}
                       cy={entity.y}
-                      r="7"
+                      r="15"
                       fill="#f7f3ea"
                       stroke="rgba(28,27,24,0.2)"
                       strokeWidth="0.3"
@@ -175,7 +175,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
                       x={entity.x}
                       y={entity.y + 0.8}
                       textAnchor="middle"
-                      fontSize="3"
+                      fontSize="4"
                       fill="#1c1b18"
                       fontWeight="500"
                       fontFamily="Inter, sans-serif"
@@ -247,6 +247,8 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
     </div>
   );
 }
+
+
 
 
 

@@ -19,7 +19,7 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
       
       {/* Central Brand Mark (The "Logo" spanning across the split) */}
       {/* Left Block (Dark) - 40% width */}
-      <div className="md:w-[40%] bg-[#0A0A0C] relative flex flex-col justify-between overflow-hidden p-12 md:p-16">
+      <div className="md:w-1/2 bg-[#0A0A0C] relative flex flex-col justify-between overflow-hidden p-12 md:p-16">
         <div className="absolute inset-0">
           <RiskVisualizer currentPct={60} lapsePct={100} />
         </div>
@@ -31,13 +31,13 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
         <div className="relative z-10 mt-auto pointer-events-none">
           <h2 className="font-serif text-4xl md:text-5xl text-parchment-100 leading-[1.1] tracking-tight opacity-90">
             Not confidence. <br/>
-            <span className="text-vermilion-500 italic">Coverage.</span>
+            <span className="text-vermilion-500 italic block text-right mt-2">Coverage.</span>
           </h2>
         </div>
       </div>
 
       {/* Right Block (Input) - 60% width */}
-      <div className="md:w-[60%] bg-parchment-100 p-12 md:p-32 flex flex-col justify-center relative">
+      <div className="md:w-1/2 bg-parchment-100 p-12 md:p-32 flex flex-col justify-center relative">
         <div className="max-w-2xl w-full mx-auto pl-12">
           
           <h2 className="font-serif text-4xl md:text-6xl text-ink-900 mb-16 leading-tight">
@@ -68,3 +68,5 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
     </div>
   );
 }
+
+

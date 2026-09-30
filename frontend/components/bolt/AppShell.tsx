@@ -26,14 +26,6 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
   return (
     <div className={`flex flex-col min-h-screen selection:bg-vermilion-500/20 ${isHome ? '' : 'bg-parchment-100 relative'}`}>
       
-      {/* Dynamic Background Split for inner pages */}
-      {!isHome && (
-        <>
-          <div className="fixed top-0 right-0 w-[30%] h-screen bg-[#F0EBE1] z-0 pointer-events-none"></div>
-          <div className="fixed top-0 left-0 w-[5%] h-screen bg-[#0A0A0C] z-0 pointer-events-none"></div>
-        </>
-      )}
-
       {/* Top Header */}
       <header className={`fixed top-8 right-12 z-40 text-ink-900 font-sans text-[11px] tracking-wide font-normal mix-blend-darken ${isHome ? 'hidden' : ''}`}>
         RK &mdash; NovaMart
@@ -74,3 +66,4 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
     </div>
   );
 }
+
