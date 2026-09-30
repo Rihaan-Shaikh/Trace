@@ -46,7 +46,7 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
   };
 
   // Color Interpolation (Oxford Blue to Parchment)
-  const bgStart = [11, 16, 26]; // #0B101A
+  const bgStart = [10, 10, 12]; // #0A0A0C (ink-900)
   const bgEnd = [245, 245, 243]; // #F5F5F3 (parchment-100)
   
   const colorProgress = Math.max(0, (scrollProgress - 0.6) / 0.4);
@@ -152,7 +152,7 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
                 fontSize: `${fontSizeVW}vw`, 
                 lineHeight: 1,
                 letterSpacing: '-0.06em',
-                color: 'rgba(11, 16, 26, 0.08)',
+                color: 'rgba(10, 10, 12, 0.08)',
                 opacity: colorProgress,
                 filter: 'drop-shadow(4px 10px 15px rgba(0,0,0,0.05))'
               }}
@@ -196,6 +196,7 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
     </div>
   );
 }
+
 
 
 
