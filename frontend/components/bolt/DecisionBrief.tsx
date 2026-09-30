@@ -18,6 +18,7 @@ import { EvidenceDrawer, EvidenceLink } from './EvidenceDrawer';
 import { ThresholdTrack } from './ThresholdTrack';
 import { ScenarioDistribution } from './ScenarioDistribution';
 import { VerdictBadge, Divider, Section } from './ui/Section';
+import { CoverageRadar } from './CoverageRadar';
 
 interface DecisionBriefProps {
   onNavigate: (view: View) => void;
@@ -97,10 +98,11 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
               </div>
               <div className="text-xs text-ink-400 mt-1">
                 over 4 quarters
-              </div>
-            </div>
-          </div>
         </div>
+        <CoverageRadar />
+      </div>
+    </div>
+  </div>
 
         {/* ── Coverage Lapse Conditions ──────────────────────────────── */}
         <Section
@@ -316,4 +318,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
     </div>
   );
 }
+
+
+
 

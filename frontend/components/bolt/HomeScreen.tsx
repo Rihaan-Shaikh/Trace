@@ -1,5 +1,4 @@
 import { ArrowRight } from 'lucide-react';
-import { RiskVisualizer } from '@/components/bolt/RiskVisualizer';
 
 interface HomeScreenProps {
   onNavigate: (view: 'data' | 'investigation') => void;
@@ -15,32 +14,39 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row relative">
+    <div className="min-h-screen flex flex-col md:flex-row relative bg-parchment-100">
       
-      {/* Central Brand Mark (The "Logo" spanning across the split) */}
-      {/* Left Block (Dark) - 40% width */}
+      {/* Left Block (Dark) - 50% width */}
       <div className="md:w-1/2 bg-[#0A0A0C] relative flex flex-col justify-between overflow-hidden p-12 md:p-16">
-        <div className="absolute inset-0">
-          <RiskVisualizer currentPct={60} lapsePct={100} />
-        </div>
         
-        <div className="relative z-10 font-serif text-3xl text-parchment-50 pointer-events-none">
-          TRACE
-        </div>
+        {/* Abstract subtle texture/grid */}
+        <div className="absolute inset-0 opacity-[0.03]" 
+             style={{ backgroundImage: 'radial-gradient(#F5F5F3 1px, transparent 1px)', backgroundSize: '32px 32px' }} 
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0A0A0C]/50 to-[#0A0A0C]" />
+        
+        {/* Content */}
+        <div className="relative z-10 mt-auto pointer-events-none mb-12">
+          
+          {/* TRACE signature logo */}
+          <div className="mb-16 transform -rotate-6 origin-bottom-left mix-blend-difference">
+            <h1 className="font-serif text-[12vw] leading-none tracking-tighter text-parchment-100/90 italic">
+              TRACE
+            </h1>
+          </div>
 
-        <div className="relative z-10 mt-auto pointer-events-none">
-          <h2 className="font-serif text-4xl md:text-5xl text-parchment-100 leading-[1.1] tracking-tight opacity-90">
+          <h2 className="font-serif text-5xl md:text-6xl text-parchment-100 leading-[1.1] tracking-tight opacity-90">
             Not confidence. <br/>
-            <span className="text-vermilion-500 italic block text-right mt-2">Coverage.</span>
+            <span className="text-vermilion-500 italic block text-right mt-4 pr-8">Coverage.</span>
           </h2>
         </div>
       </div>
 
-      {/* Right Block (Input) - 60% width */}
-      <div className="md:w-1/2 bg-parchment-100 p-12 md:p-32 flex flex-col justify-center relative">
-        <div className="max-w-2xl w-full mx-auto pl-12">
+      {/* Right Block (Input) - 50% width */}
+      <div className="md:w-1/2 p-12 md:p-32 flex flex-col justify-center relative bg-parchment-100">
+        <div className="max-w-xl w-full mx-auto">
           
-          <h2 className="font-serif text-4xl md:text-6xl text-ink-900 mb-16 leading-tight">
+          <h2 className="font-serif text-4xl md:text-5xl text-ink-900 mb-16 leading-tight">
             What are you willing to be wrong about?
           </h2>
 
@@ -68,5 +74,3 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
     </div>
   );
 }
-
-

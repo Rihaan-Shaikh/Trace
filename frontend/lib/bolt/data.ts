@@ -26,11 +26,11 @@ export const NOVAMART_FILES: DataFile[] = [
 ];
 
 export const SEMANTIC_ENTITIES: SemanticEntity[] = [
-  { id: 'customer', name: 'Customer', x: 50, y: 22, connectedTo: ['transaction', 'region'] },
-  { id: 'product', name: 'Product', x: 82, y: 48, connectedTo: ['transaction'] },
-  { id: 'transaction', name: 'Transaction', x: 50, y: 52, connectedTo: ['customer', 'product', 'campaign'] },
-  { id: 'region', name: 'Region', x: 18, y: 48, connectedTo: ['customer'] },
-  { id: 'campaign', name: 'Campaign', x: 50, y: 82, connectedTo: ['transaction'] },
+  { id: 'customer', name: 'Customer', x: 50, y: 15, connectedTo: ['transaction', 'region'] },
+  { id: 'product', name: 'Product', x: 85, y: 50, connectedTo: ['transaction'] },
+  { id: 'transaction', name: 'Transaction', x: 50, y: 50, connectedTo: ['customer', 'product', 'campaign'] },
+  { id: 'region', name: 'Region', x: 15, y: 50, connectedTo: ['transaction'] },
+  { id: 'campaign', name: 'Campaign', x: 50, y: 85, connectedTo: ['transaction'] },
 ];
 
 export const METRIC_DEFINITIONS: MetricDefinition[] = [
@@ -426,3 +426,4 @@ export const DEFAULT_ASSUMPTIONS: SandboxAssumptions = {
 };
 
 export const BASELINE_CALC = computeDecision(DEFAULT_ASSUMPTIONS);
+
