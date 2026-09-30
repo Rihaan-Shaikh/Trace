@@ -1,76 +1,69 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { MeshDistortMaterial, Edges } from '@react-three/drei';
+import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-interface RiskVisualizerProps {
-  currentPct: number;
-  lapsePct: number;
+// Generate random points in a sphere
+function generatePoints(count: number, radius: number) {
+  const points = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const u = Math.random();
+    const v = Math.random();
+    const theta = u * 2.0 * Math.PI;
+    const phi = Math.acos(2.0 * v - 1.0);
+    const r = Math.cbrt(Math.random()) * radius;
+    const sinPhi = Math.sin(phi);
+    points[i * 3] = r * sinPhi * Math.cos(theta);
+    points[i * 3 + 1] = r * sinPhi * Math.sin(theta);
+    points[i * 3 + 2] = r * Math.cos(phi);
+  }
+  return points;
 }
 
-export function RiskVisualizer({ currentPct, lapsePct }: RiskVisualizerProps) {
+export function RiskVisualizer({ currentPct, lapsePct }: { currentPct: number, lapsePct: number }) {
   const isLapsed = currentPct >= lapsePct;
   const dangerLevel = Math.min(1, currentPct / lapsePct);
 
   return (
     <div className="w-full h-full bg-[#0A0A0C] relative overflow-hidden">
-      
-
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 10]} intensity={1} />
-        <directionalLight position={[-10, -10, -10]} intensity={0.2} color="#FA5A37" />
-        
-        <RiskScene dangerLevel={dangerLevel} isLapsed={isLapsed} />
+        <DataNetwork dangerLevel={dangerLevel} isLapsed={isLapsed} />
       </Canvas>
-      
-      {isLapsed && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 bg-[#0A0A0C]/50 backdrop-blur-[2px] transition-all duration-500">
-          <div className="text-vermilion-500 font-mono text-xl tracking-[0.3em] uppercase font-bold text-center animate-fade-in px-8 py-4 border border-vermilion-500/50 bg-[#0A0A0C]/90 shadow-[0_0_50px_rgba(250,90,55,0.2)]">
-            COVERAGE LAPSED
-          </div>
-        </div>
-      )}
     </div>
   );
 }
 
-function RiskScene({ dangerLevel, isLapsed }: { dangerLevel: number, isLapsed: boolean }) {
-  const blobRef = useRef<THREE.Mesh>(null!);
+function DataNetwork({ dangerLevel, isLapsed }: { dangerLevel: number, isLapsed: boolean }) {
+  const pointsRef = useRef<THREE.Points>(null!);
   const boxRef = useRef<THREE.Mesh>(null!);
   const [shattered, setShattered] = useState(false);
-  const [particles, setParticles] = useState<any[]>([]);
-
+  
+  // Data node constellation
+  const pointsData = useMemo(() => generatePoints(1000, 1.5), []);
+  
   useEffect(() => {
-    if (isLapsed && !shattered) {
-      setShattered(true);
-      // Explode the box into particles
-      const p = [];
-      for(let i=0; i<60; i++) {
-        p.push({
-          pos: new THREE.Vector3((Math.random()-0.5)*2.5, (Math.random()-0.5)*2.5, (Math.random()-0.5)*2.5),
-          vel: new THREE.Vector3((Math.random()-0.5)*15, (Math.random()-0.5)*15, (Math.random()-0.5)*15),
-          rot: new THREE.Vector3(Math.random(), Math.random(), Math.random())
-        });
-      }
-      setParticles(p);
-    } else if (!isLapsed && shattered) {
-      setShattered(false);
-    }
+    if (isLapsed && !shattered) setShattered(true);
+    else if (!isLapsed && shattered) setShattered(false);
   }, [isLapsed, shattered]);
 
   useFrame((state, delta) => {
-    if (blobRef.current) {
-      blobRef.current.rotation.x += delta * (0.2 + dangerLevel * 0.5);
-      blobRef.current.rotation.y += delta * (0.3 + dangerLevel * 0.5);
+    if (pointsRef.current) {
+      // Rotate the data cluster
+      pointsRef.current.rotation.y += delta * (0.1 + dangerLevel * 0.4);
+      pointsRef.current.rotation.x += delta * (0.05 + dangerLevel * 0.2);
       
-      const targetScale = 1 + (dangerLevel * 0.6); // swells to 1.6x size
-      blobRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+      // Pulse effect based on danger level
+      const scale = 1 + Math.sin(state.clock.elapsedTime * (2 + dangerLevel * 5)) * 0.05 * dangerLevel;
+      pointsRef.current.scale.set(scale, scale, scale);
     }
-
+    
     if (boxRef.current && !shattered) {
       boxRef.current.rotation.x += delta * 0.1;
       boxRef.current.rotation.y += delta * 0.15;
+      
+      // The box swells right before breaking
+      const boxScale = 1 + (dangerLevel > 0.8 ? (dangerLevel - 0.8) * 1.5 : 0);
+      boxRef.current.scale.set(boxScale, boxScale, boxScale);
     }
   });
 
@@ -80,69 +73,32 @@ function RiskScene({ dangerLevel, isLapsed }: { dangerLevel: number, isLapsed: b
 
   return (
     <group>
-      {/* The organic risk blob */}
-      <mesh ref={blobRef}>
-        <sphereGeometry args={[1, 64, 64]} />
-        <MeshDistortMaterial 
-          color={currentColor}
-          envMapIntensity={1} 
-          clearcoat={1} 
-          clearcoatRoughness={0} 
-          metalness={0.8}
-          roughness={0.2}
-          distort={0.2 + (dangerLevel * 0.7)} // Spikes aggressively when near threshold
-          speed={2 + (dangerLevel * 6)}       // Pulses faster when near threshold
+      {/* Data Constellation */}
+      <Points ref={pointsRef} positions={pointsData} stride={3} frustumCulled={false}>
+        <PointMaterial 
+          transparent 
+          color={currentColor} 
+          size={0.03} 
+          sizeAttenuation={true} 
+          depthWrite={false} 
         />
-      </mesh>
+      </Points>
 
-      {/* The wireframe coverage box */}
+      {/* The wireframe boundary (Coverage) */}
       {!shattered && (
         <mesh ref={boxRef}>
-          <boxGeometry args={[3, 3, 3]} />
-          <meshBasicMaterial visible={false} />
-          <Edges 
-            linewidth={dangerLevel > 0.9 ? 3 : 1} 
-            threshold={15} 
-            color={dangerLevel > 0.9 ? "#FA5A37" : "#A3A3A0"} 
-          />
+          <boxGeometry args={[3.2, 3.2, 3.2]} />
+          <meshBasicMaterial color={dangerLevel > 0.9 ? "#FA5A37" : "#525252"} wireframe wireframeLinewidth={dangerLevel > 0.9 ? 2 : 1} transparent opacity={0.3} />
         </mesh>
       )}
 
-      {/* Shatter particles */}
+      {/* Explosion effect if shattered */}
       {shattered && (
-        <ShatterParticles particles={particles} />
+        <Points positions={pointsData} stride={3} frustumCulled={false}>
+          <PointMaterial transparent color="#FA5A37" size={0.05} sizeAttenuation={true} depthWrite={false} />
+          {/* An exploding animation could be added here in useFrame */}
+        </Points>
       )}
-    </group>
-  );
-}
-
-function ShatterParticles({ particles }: { particles: any[] }) {
-  const groupRef = useRef<THREE.Group>(null!);
-  
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      groupRef.current.children.forEach((child, i) => {
-        const p = particles[i];
-        if (p) {
-          child.position.addScaledVector(p.vel, delta);
-          child.rotation.x += p.rot.x * delta * 5;
-          child.rotation.y += p.rot.y * delta * 5;
-          // Apply some gravity and drag
-          p.vel.y -= delta * 5;
-          p.vel.multiplyScalar(0.92); // drag
-        }
-      });
-    }
-  });
-
-  return (
-    <group ref={groupRef}>
-      {particles.map((p, i) => (
-        <mesh key={i} position={p.pos.clone()}>
-          <boxGeometry args={[0.05, 0.05, 0.5]} />
-          <meshBasicMaterial color="#FA5A37" />
-        </mesh>
-      ))}
     </group>
   );
 }
