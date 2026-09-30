@@ -1,0 +1,225 @@
+import { type View, type DataFile } from '@/lib/bolt/types';
+import { NOVAMART_FILES, SEMANTIC_ENTITIES, METRIC_DEFINITIONS } from '@/lib/bolt/data';
+import { ArrowRight, Check, Pencil } from 'lucide-react';
+import { useState } from 'react';
+import { api } from '@/lib/api-client';
+import { Section, Divider, StatusMark } from './ui/Section';
+
+interface DataScreenProps {
+  onNavigate: (view: View) => void;
+}
+
+export function DataScreen({ onNavigate }: DataScreenProps) {
+  return (
+    <div className="min-h-screen bg-parchment-100">
+      <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
+        {/* Header */}
+        <div className="mb-12">
+          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · evidence</div>
+          <h1 className="font-serif text-hero text-ink-800 text-balance">Bring the evidence.</h1>
+          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
+            Upload the files behind the decision. TRACE will map the business before it evaluates the call.
+          </p>
+        </div>
+
+        {/* Drop zone */}
+        <div className="border-2 border-dashed rule rounded-sm bg-parchment-50 px-8 py-12 text-center mb-8">
+          <div className="text-sm text-ink-400 mb-1">Drop files here or click to upload</div>
+          <div className="text-xs text-ink-300">CSV, XLSX, JSON · up to 50MB per file</div>
+        </div>
+
+        {/* File list */}
+        <div>
+          <div className="text-xs text-ink-400 font-medium mb-4">Uploaded files</div>
+          <div className="divide-y rule border-t border-b rule">
+            {NOVAMART_FILES.map((file) => (
+              <FileRow key={file.name} file={file} />
+            ))}
+          </div>
+        </div>
+
+        {/* Action */}
+        <div className="mt-10 flex items-center justify-between">
+          <div className="text-xs text-ink-400">
+            5 files mapped · 215,762 rows total
+          </div>
+          <button
+            onClick={() => api.datasets.seedNovaMart().then(() => onNavigate('semantic-map')).catch(() => onNavigate('semantic-map'))}
+            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+          >
+            Map the business
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FileRow({ file }: { file: DataFile }) {
+  return (
+    <div className="flex items-center gap-4 py-4 px-2">
+      <StatusMark state={file.status === 'mapped' ? 'mapped' : 'pending'} />
+      <div className="flex-1 min-w-0">
+        <div className="text-sm font-medium text-ink-800 font-mono">{file.name}</div>
+      </div>
+      <div className="text-sm tabular-nums text-ink-500">
+        {file.rows} rows
+      </div>
+      <div className="text-sm tabular-nums text-ink-400 hidden sm:block">
+        {file.fields} fields
+      </div>
+      <div className="text-xs text-brass-600 font-medium w-16 text-right">
+        {file.status === 'mapped' ? (
+          <span className="inline-flex items-center gap-1">
+            <Check className="w-3 h-3" /> mapped
+          </span>
+        ) : (
+          'pending'
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Semantic Map ─────────────────────────────────────────────────────────────
+
+interface SemanticMapScreenProps {
+  onNavigate: (view: View) => void;
+}
+
+export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
+  const [editing, setEditing] = useState<string | null>(null);
+  const [definitions, setDefinitions] = useState(METRIC_DEFINITIONS);
+
+  const handleEdit = (id: string, value: string) => {
+    setDefinitions((prev) =>
+      prev.map((d) => (d.id === id ? { ...d, definition: value } : d))
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-parchment-100">
+      <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
+        {/* Header */}
+        <div className="mb-12">
+          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · business map</div>
+          <h1 className="font-serif text-hero text-ink-800 text-balance">
+            TRACE is making sure we mean the same thing.
+          </h1>
+          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
+            Before reasoning begins, TRACE maps the business and confirms every metric definition.
+          </p>
+        </div>
+
+        {/* Entity map */}
+        <div className="grid lg:grid-cols-[1fr_1fr] gap-12">
+          <div>
+            <div className="text-xs text-ink-400 font-medium mb-6">Entities</div>
+            <div className="relative w-full aspect-square max-w-md surface border rule rounded-sm">
+              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                {/* Connections */}
+                {SEMANTIC_ENTITIES.map((entity) =>
+                  entity.connectedTo.map((targetId) => {
+                    const target = SEMANTIC_ENTITIES.find((e) => e.id === targetId);
+                    if (!target) return null;
+                    return (
+                      <line
+                        key={`${entity.id}-${targetId}`}
+                        x1={entity.x}
+                        y1={entity.y}
+                        x2={target.x}
+                        y2={target.y}
+                        stroke="rgba(28,27,24,0.12)"
+                        strokeWidth="0.3"
+                      />
+                    );
+                  })
+                )}
+                {/* Nodes */}
+                {SEMANTIC_ENTITIES.map((entity) => (
+                  <g key={entity.id}>
+                    <circle
+                      cx={entity.x}
+                      cy={entity.y}
+                      r="7"
+                      fill="#f7f3ea"
+                      stroke="rgba(28,27,24,0.2)"
+                      strokeWidth="0.3"
+                    />
+                    <text
+                      x={entity.x}
+                      y={entity.y + 0.8}
+                      textAnchor="middle"
+                      fontSize="3"
+                      fill="#1c1b18"
+                      fontWeight="500"
+                      fontFamily="Inter, sans-serif"
+                    >
+                      {entity.name}
+                    </text>
+                  </g>
+                ))}
+              </svg>
+            </div>
+            <div className="mt-4 text-xs text-ink-400 leading-relaxed max-w-md">
+              Five entities mapped from uploaded data. TRACE identified relationships between
+              customers, products, transactions, regions, and campaigns.
+            </div>
+          </div>
+
+          {/* Metric definitions */}
+          <div>
+            <div className="text-xs text-ink-400 font-medium mb-6">Metric definitions</div>
+            <div className="space-y-0 divide-y rule border-t border-b rule">
+              {definitions.map((metric) => (
+                <div key={metric.id} className="py-4 px-1">
+                  <div className="flex items-baseline justify-between gap-4 mb-1">
+                    <div className="text-sm font-medium text-ink-800">{metric.name}</div>
+                    {metric.editable && (
+                      <button
+                        onClick={() => setEditing(editing === metric.id ? null : metric.id)}
+                        className="text-xs text-ink-400 hover:text-vermilion-600 transition-colors inline-flex items-center gap-1"
+                      >
+                        <Pencil className="w-3 h-3" />
+                        edit
+                      </button>
+                    )}
+                  </div>
+                  {editing === metric.id ? (
+                    <input
+                      type="text"
+                      value={metric.definition}
+                      onChange={(e) => handleEdit(metric.id, e.target.value)}
+                      onBlur={() => setEditing(null)}
+                      onKeyDown={(e) => e.key === 'Enter' && setEditing(null)}
+                      autoFocus
+                      className="w-full text-sm text-ink-600 bg-parchment-100 border rule rounded-sm px-2 py-1 mt-1 focus:outline-none focus:border-vermilion-300"
+                    />
+                  ) : (
+                    <div className="text-sm text-ink-500 leading-relaxed">{metric.definition}</div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Action */}
+        <Divider className="mt-12" />
+        <div className="mt-8 flex items-center justify-between">
+          <div className="text-xs text-ink-400">
+            7 metrics defined · 5 entities mapped
+          </div>
+          <button
+            onClick={() => onNavigate('data-health')}
+            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+          >
+            Check the evidence
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -168,3 +168,5 @@ input, select, textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+@import './bolt.css';
