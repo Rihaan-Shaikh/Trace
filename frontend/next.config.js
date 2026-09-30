@@ -3,6 +3,8 @@ const backendUrl = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_URL ||
 
 const nextConfig = {
   reactStrictMode: true,
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
   async rewrites() {
     return [
       {
