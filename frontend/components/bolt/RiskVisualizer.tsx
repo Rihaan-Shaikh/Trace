@@ -13,14 +13,8 @@ export function RiskVisualizer({ currentPct, lapsePct }: RiskVisualizerProps) {
   const dangerLevel = Math.min(1, currentPct / lapsePct);
 
   return (
-    <div className="w-full h-96 bg-[#0A0A0C] border border-ink-200 relative overflow-hidden rounded-md mb-8">
-      {/* HUD overlay */}
-      <div className="absolute top-4 left-4 z-10 pointer-events-none">
-        <div className="text-[10px] tracking-widest text-ink-300 uppercase mb-1">Risk Topology</div>
-        <div className={`font-mono text-sm ${isLapsed ? 'text-vermilion-500' : 'text-ink-50'}`}>
-          {currentPct.toFixed(1)}% / {lapsePct.toFixed(1)}%
-        </div>
-      </div>
+    <div className="w-full h-full bg-[#0A0A0C] relative overflow-hidden">
+      
 
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={0.5} />
