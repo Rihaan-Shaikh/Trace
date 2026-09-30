@@ -93,7 +93,7 @@ export default function DecisionDetailPage() {
 
       try {
         const pData = await api.decisions.getPackage(id);
-        if (pData && (pData.decision?.status === 'underwritten' || pData.verdict)) {
+        if (pData && (['underwritten', 'approved', 'modified', 'rejected'].includes(pData.decision?.status) || Boolean(pData.verdict))) {
           if (!pData.brief) {
             try {
               const b = await api.approvals.getBrief(id);
@@ -183,10 +183,7 @@ export default function DecisionDetailPage() {
       setError(null);
       setNotification(null);
       await api.decisions.runInvestigation(id);
-      const refreshedPkg = await api.decisions.getPackage(id);
-      setPkg(refreshedPkg);
-      const refreshedDec = await api.decisions.get(id);
-      setDecision(refreshedDec);
+      await loadAll();
       setSelectedStage('contradiction_check');
       setNotification('Investigation executed across all 7 specialist stages. Underwriting dossier updated.');
     } catch (err: any) {
@@ -203,7 +200,7 @@ export default function DecisionDetailPage() {
   const isConfirmed = objective?.parameters?.user_confirmed === true;
   const isObjectiveReady = Boolean(objective);
   const isPlanReady = Boolean(plan);
-  const isUnderwritten = decision.status === 'underwritten' || pkg?.verdict !== undefined;
+  const isUnderwritten = ['underwritten', 'approved', 'modified', 'rejected'].includes(decision.status) || Boolean(pkg?.verdict);
 
   const canGeneratePlan = isObjectiveReady && isConfirmed;
   const canRunInvestigation = isPlanReady && plan?.sufficiency_verdict !== 'INSUFFICIENT' && !investigating;

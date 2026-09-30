@@ -4,9 +4,9 @@ Enforces human sign-off contracts and immutable DecisionRecord schemas.
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Any
 import uuid
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from backend.app.models.enums import ApprovalActionType
 
 
@@ -29,6 +29,20 @@ class ApprovalActionRequest(BaseModel):
     approver_role: str = Field(default="Decision Maker", max_length=128)
     notes: Optional[str] = None
     sandbox_modifications: dict = Field(default_factory=dict)
+
+    @field_validator("action", mode="before")
+    @classmethod
+    def normalize_action(cls, v: Any) -> Any:
+        if isinstance(v, str):
+            mapping = {
+                "approve": ApprovalActionType.APPROVE,
+                "modify": ApprovalActionType.MODIFY,
+                "reject": ApprovalActionType.REJECT,
+            }
+            clean = v.strip().lower()
+            if clean in mapping:
+                return mapping[clean]
+        return v
 
 
 class DecisionRecordResponse(BaseModel):

@@ -27,9 +27,29 @@ from backend.app.services.rate_card_service import RateCardService
 class ApprovalService:
     @staticmethod
     def get_brief(db: Session, decision_id: uuid.UUID) -> Optional[DecisionBrief]:
-        return db.scalar(
+        brief = db.scalar(
             select(DecisionBrief).where(DecisionBrief.decision_id == decision_id)
         )
+        if brief and brief.sections_json:
+            record = db.scalar(
+                select(DecisionRecord).where(DecisionRecord.decision_id == decision_id).order_by(desc(DecisionRecord.created_at))
+            )
+            if record:
+                sections = dict(brief.sections_json)
+                sec11 = dict(sections.get("approval_controls", {}))
+                sec11["is_bound"] = True
+                sec11["status"] = "APPROVED"
+                sec11["approved_record"] = {
+                    "record_id": str(record.id),
+                    "approver_name": record.approver_name,
+                    "approver_role": record.approver_role,
+                    "action": record.action_type.value,
+                    "timestamp": record.created_at.isoformat(),
+                    "snapshot_integrity_hash": record.snapshot_integrity_hash,
+                }
+                sections["approval_controls"] = sec11
+                brief.sections_json = sections
+        return brief
 
     @staticmethod
     def submit_action(

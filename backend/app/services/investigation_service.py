@@ -14,7 +14,7 @@ import re
 from datetime import datetime
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.attributes import flag_modified
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, func
 from backend.app.core.errors import (
     EntityNotFoundError,
     InvalidStateTransitionError,
@@ -49,7 +49,7 @@ from backend.app.models.evidence import (
     CounterFinding,
     EvidenceItem,
 )
-from backend.app.models.dataset import Dataset
+from backend.app.models.dataset import Dataset, DatasetTable
 from backend.app.models.enums import (
     DecisionStatus,
     DataSufficiencyVerdict,
@@ -71,7 +71,7 @@ from backend.app.agents.specialists import (
     ReasoningAgent,
     DecisionAgent,
 )
-from backend.app.models.approval import DecisionBrief
+from backend.app.models.approval import DecisionBrief, DecisionRecord
 from backend.app.services.semantic_service import SemanticService
 from backend.app.services.document_service import DocumentService
 from backend.app.services.rate_card_service import RateCardService
@@ -96,15 +96,9 @@ class InvestigationService:
 
     @classmethod
     def get_llm_provider(cls) -> LLMProvider:
-        """Returns the configured LLMProvider (OpenAI-compatible or Mock offline fallback)."""
-        if settings.LLM_API_KEY and settings.LLM_API_KEY.strip():
-            from backend.app.core.llm import OpenAILikeProvider
-            return OpenAILikeProvider(
-                api_key=settings.LLM_API_KEY,
-                model_name=settings.LLM_MODEL_NAME,
-                base_url=settings.LLM_BASE_URL,
-            )
-        return MockLLMProvider()
+        """Returns the configured LLMProvider via central factory."""
+        from backend.app.core.llm import get_llm_provider
+        return get_llm_provider()
 
     @classmethod
     def structure_decision_objective(
@@ -222,7 +216,8 @@ class InvestigationService:
         # 1. Fetch semantic mappings
         dataset_id = decision.dataset_id
         if not dataset_id:
-            first_ds = db.scalar(select(Dataset))
+            first_table = db.scalar(select(DatasetTable))
+            first_ds = db.get(Dataset, first_table.dataset_id) if first_table else None
             if first_ds:
                 decision.dataset_id = first_ds.id
                 dataset_id = first_ds.id
@@ -477,8 +472,9 @@ class InvestigationService:
 
         dataset_id = decision.dataset_id
         if not dataset_id:
-            # Try to associate first available benchmark dataset
-            first_ds = db.scalar(select(Dataset))
+            # Try to associate first available benchmark dataset with tables
+            first_table = db.scalar(select(DatasetTable))
+            first_ds = db.get(Dataset, first_table.dataset_id) if first_table else None
             if first_ds:
                 decision.dataset_id = first_ds.id
                 dataset_id = first_ds.id
@@ -1105,11 +1101,28 @@ class InvestigationService:
         brief_rec = db.scalar(select(DecisionBrief).where(DecisionBrief.decision_id == decision_id))
         brief_data = None
         if brief_rec:
+            sections = dict(brief_rec.sections_json or {})
+            record = db.scalar(
+                select(DecisionRecord).where(DecisionRecord.decision_id == decision_id).order_by(desc(DecisionRecord.created_at))
+            )
+            if record:
+                sec11 = dict(sections.get("approval_controls", {}))
+                sec11["is_bound"] = True
+                sec11["status"] = "APPROVED"
+                sec11["approved_record"] = {
+                    "record_id": str(record.id),
+                    "approver_name": record.approver_name,
+                    "approver_role": record.approver_role,
+                    "action": record.action_type.value,
+                    "timestamp": record.created_at.isoformat(),
+                    "snapshot_integrity_hash": record.snapshot_integrity_hash,
+                }
+                sections["approval_controls"] = sec11
             brief_data = {
                 "id": str(brief_rec.id),
                 "brief_title": brief_rec.brief_title,
                 "executive_summary": brief_rec.executive_summary,
-                "sections": brief_rec.sections_json,
+                "sections": sections,
                 "is_locked": brief_rec.is_locked,
             }
 

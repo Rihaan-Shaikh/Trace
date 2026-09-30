@@ -41,3 +41,33 @@ def get_system_health(db: Session = Depends(get_db)):
             table_count=table_count,
         ),
     )
+
+
+@router.get("/health/live")
+def get_liveness():
+    """Liveness probe: verifies application process is running. Fast, zero-dependency."""
+    return {
+        "status": "alive",
+        "product": "TRACE",
+        "version": settings.APP_VERSION,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+@router.get("/health/ready")
+def get_readiness(db: Session = Depends(get_db)):
+    """Readiness probe: verifies external infrastructure dependencies (PostgreSQL) are operational."""
+    try:
+        db.execute(text("SELECT 1;")).scalar()
+        return {
+            "status": "ready",
+            "database": "connected",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+    except Exception as e:
+        from fastapi import HTTPException, status
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={"status": "not_ready", "error": f"Database unreachable: {e}"},
+        )
+

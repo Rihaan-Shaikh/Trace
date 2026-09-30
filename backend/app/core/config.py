@@ -13,8 +13,9 @@ Rules:
 from pathlib import Path
 import os
 from typing import List, Optional
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 # Deterministically resolve repository root regardless of current working directory
 _CURRENT_DIR = Path(__file__).resolve().parent  # backend/app/core
@@ -59,6 +60,27 @@ class Settings(BaseSettings):
         "http://127.0.0.1:8000",
     ]
 
+    @field_validator("CORS_ORIGINS", mode="before")
+    @classmethod
+    def assemble_cors_origins(cls, v: Any) -> List[str]:
+        if isinstance(v, str):
+            if v.startswith("[") and v.endswith("]"):
+                import json
+                try:
+                    return json.loads(v)
+                except Exception:
+                    pass
+            return [i.strip() for i in v.split(",") if i.strip()]
+        elif isinstance(v, (list, tuple)):
+            return list(v)
+        return [
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:8000",
+            "http://127.0.0.1:8000",
+        ]
+
+
     # Database (PostgreSQL)
     DATABASE_URL: str = Field(
         default="postgresql://postgres:postgres@localhost:5432/trace_dev",
@@ -86,9 +108,16 @@ class Settings(BaseSettings):
     LLM_PROVIDER: str = Field(default="mock", description="mock, openai, anthropic, gemini")
     LLM_MODEL: str = Field(default="mock-trace-v1", description="Model name identifier")
     LLM_API_KEY: Optional[str] = Field(default=None, description="API key for selected LLM provider")
+    LLM_BASE_URL: Optional[str] = Field(default=None, description="Optional custom base URL for OpenAI-compatible LLM endpoints")
     LLM_TEMPERATURE: float = 0.1
     LLM_MAX_TOKENS: int = 4096
     LLM_TIMEOUT_SECONDS: int = 60
+
+    @property
+    def LLM_MODEL_NAME(self) -> str:
+        """Alias for backward compatibility with older references."""
+        return self.LLM_MODEL
+
 
     # Rate Card Default Policy Settings [DEFAULT]
     # Note from Bible: Weights & bands are product policy, shown openly to the user, never hidden.
