@@ -18,29 +18,21 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
     <div className="min-h-screen flex flex-col md:flex-row relative">
       
       {/* Central Brand Mark (The "Logo" spanning across the split) */}
-      <div className="absolute top-1/2 left-[40%] -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none transform -rotate-12 mix-blend-difference">
-        <h1 className="font-serif text-[12vw] text-white leading-none tracking-tighter opacity-90 select-none">
-          TRACE
-        </h1>
-      </div>
-
       {/* Left Block (Dark) - 40% width */}
-      <div className="md:w-[40%] bg-[#0A0A0C] relative flex flex-col justify-between overflow-hidden p-12 md:p-24">
+      <div className="md:w-[40%] bg-[#0A0A0C] relative flex flex-col justify-between overflow-hidden p-12 md:p-16">
         <div className="absolute inset-0">
           <RiskVisualizer currentPct={60} lapsePct={100} />
         </div>
         
-        <div className="relative z-10 flex flex-col h-full justify-between pointer-events-none">
-          <div>
-            <h2 className="font-serif text-4xl md:text-6xl text-parchment-100 leading-[0.9] tracking-tight opacity-90">
-              Not confidence.
-            </h2>
-          </div>
-          <div className="text-right mt-auto">
-            <h2 className="font-serif text-4xl md:text-6xl text-vermilion-500 leading-[0.9] tracking-tight italic opacity-90">
-              Coverage.
-            </h2>
-          </div>
+        <div className="relative z-10 font-serif text-3xl text-parchment-50 pointer-events-none">
+          TRACE
+        </div>
+
+        <div className="relative z-10 mt-auto pointer-events-none">
+          <h2 className="font-serif text-4xl md:text-5xl text-parchment-100 leading-[1.1] tracking-tight opacity-90">
+            Not confidence. <br/>
+            <span className="text-vermilion-500 italic">Coverage.</span>
+          </h2>
         </div>
       </div>
 

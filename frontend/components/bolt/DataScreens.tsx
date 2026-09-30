@@ -34,19 +34,19 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
     setIsUploading(false);
   };
   return (
-    <div className="min-h-screen bg-parchment-100">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">NovaMart &#183; evidence</div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">Bring the evidence.</h1>
+          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance">Bring the evidence.</h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
             Upload the files behind the decision. TRACE will map the business before it evaluates the call.
           </p>
         </div>
 
         {/* Drop zone */}
-        <div className="border-2 border-dashed rule rounded-sm bg-parchment-50 px-8 py-12 text-center mb-8 cursor-pointer hover:bg-parchment-100 transition-colors" onClick={() => fileInputRef.current?.click()}>
+        <div className="border-2 border-dashed rule rounded-sm bg-parchment-50 px-8 py-12 text-center mb-8 cursor-pointer hover:bg-transparent transition-colors" onClick={() => fileInputRef.current?.click()}>
           <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept=".csv,.xlsx,.json" />
           <div className="text-sm text-ink-400 mb-1">{isUploading ? 'Uploading...' : 'Drop files here or click to upload'}</div>
           <div className="text-xs text-ink-300">CSV, XLSX, JSON &#183; up to 50MB per file</div>
@@ -68,7 +68,7 @@ export function DataScreen({ onNavigate }: DataScreenProps) {
             5 files mapped &#183; 215,762 rows total
           </div>
           <button
-            onClick={() => api.datasets.seedNovaMart().then(() => onNavigate('semantic-map')).catch(() => onNavigate('semantic-map'))}
+            onClick={() => { onNavigate('semantic-map'); api.datasets.seedNovaMart().catch(() => {}); }}
             className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             Map the business
@@ -123,12 +123,12 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-parchment-100">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">NovaMart &#183; business map</div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
+          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance">
             TRACE is making sure we mean the same thing.
           </h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
@@ -218,7 +218,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
                       onBlur={() => setEditing(null)}
                       onKeyDown={(e) => e.key === 'Enter' && setEditing(null)}
                       autoFocus
-                      className="w-full text-sm text-ink-600 bg-parchment-100 border rule rounded-sm px-2 py-1 mt-1 focus:outline-none focus:border-vermilion-300"
+                      className="w-full text-sm text-ink-600 bg-transparent border rule rounded-sm px-2 py-1 mt-1 focus:outline-none focus:border-vermilion-300"
                     />
                   ) : (
                     <div className="text-sm text-ink-500 leading-relaxed">{metric.definition}</div>
@@ -247,4 +247,7 @@ export function SemanticMapScreen({ onNavigate }: SemanticMapScreenProps) {
     </div>
   );
 }
+
+
+
 

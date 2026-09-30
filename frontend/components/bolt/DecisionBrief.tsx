@@ -49,7 +49,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
           <div className="text-xs text-ink-400 font-medium mb-3">
             NovaMart · pricing decision
           </div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance leading-[1.05] max-w-4xl">
+          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance leading-[1.05] max-w-4xl">
             Stop blanket discounts for low-margin customers.
           </h1>
 
@@ -316,3 +316,4 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
     </div>
   );
 }
+
