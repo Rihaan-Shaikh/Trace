@@ -11,15 +11,15 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
   const totalWeight = RATE_DRIVERS.reduce((sum, d) => sum + d.weight, 0);
 
   return (
-    <div className="min-h-screen bg-base-900">
+    <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* Header */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">Configuration</div>
-          <h1 className="font-serif text-hero text-ink-50 text-balance">
+          <h1 className="font-serif text-hero text-ink-800 text-balance">
             Rate card
           </h1>
-          <p className="mt-3 text-ink-300 text-lg max-w-prose-doc leading-relaxed">
+          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
             The pricing logic, shown openly. No hidden AI magic. No model confidence.
             The Decision Premium is a transparent function of four risk drivers.
           </p>
@@ -30,11 +30,11 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
           <div className="flex items-baseline justify-between">
             <div>
               <div className="text-xs text-ink-400 mb-1">Total premium weight</div>
-              <div className="editorial-num text-2xl text-ink-50 tabular-nums">{totalWeight}%</div>
+              <div className="editorial-num text-2xl text-ink-800 tabular-nums">{totalWeight}%</div>
             </div>
             <div className="text-right">
               <div className="text-xs text-ink-400 mb-1">Drivers</div>
-              <div className="editorial-num text-2xl text-ink-100 tabular-nums">{RATE_DRIVERS.length}</div>
+              <div className="editorial-num text-2xl text-ink-700 tabular-nums">{RATE_DRIVERS.length}</div>
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
                       {driver.weight}%
                     </div>
                     {/* Weight bar */}
-                    <div className="mt-2 h-1 bg-base-700 rounded-full overflow-hidden">
+                    <div className="mt-2 h-1 bg-ink-100 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-brass-400 rounded-full"
                         style={{ width: `${(driver.weight / totalWeight) * 100}%` }}
@@ -62,8 +62,8 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
 
                   {/* Description */}
                   <div className="flex-1">
-                    <div className="text-base font-medium text-ink-50 mb-2">{driver.name}</div>
-                    <div className="text-sm text-ink-300 leading-relaxed max-w-lg">
+                    <div className="text-base font-medium text-ink-800 mb-2">{driver.name}</div>
+                    <div className="text-sm text-ink-500 leading-relaxed max-w-lg">
                       {driver.description}
                     </div>
                   </div>
@@ -71,7 +71,7 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
                   {/* Threshold */}
                   <div className="lg:text-right">
                     <div className="text-xs text-ink-400 mb-1">Threshold</div>
-                    <div className="text-sm font-medium text-ink-100 tabular-nums">
+                    <div className="text-sm font-medium text-ink-700 tabular-nums">
                       {driver.threshold}
                     </div>
                   </div>
@@ -89,12 +89,12 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
           subtitle="The Decision Premium is a transparent, auditable calculation — not a black-box confidence score."
         >
           <div className="border-t border-b rule py-8">
-            <div className="font-mono text-sm text-ink-200 leading-relaxed space-y-2">
+            <div className="font-mono text-sm text-ink-600 leading-relaxed space-y-2">
               <div>
                 <span className="text-ink-400">Decision Premium = </span>
-                <span className="text-ink-100">Expected Loss</span>
+                <span className="text-ink-700">Expected Loss</span>
                 <span className="text-ink-400"> × </span>
-                <span className="text-ink-100">Risk Multiplier</span>
+                <span className="text-ink-700">Risk Multiplier</span>
               </div>
               <div className="pl-4 text-xs text-ink-400">
                 where Risk Multiplier = Σ(driver weight × driver score)
@@ -121,7 +121,7 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
           </div>
           <button
             onClick={() => onNavigate('home')}
-            className="group inline-flex items-center gap-2 bg-ink-50 text-base-900 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             New decision
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

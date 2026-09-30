@@ -8,37 +8,38 @@ module.exports = {
         serif: ['Fraunces', 'Georgia', 'serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
-            colors: {
-        base: {
-          900: '#0A0A0C', // Deep graphite base
-          800: '#141416', // Primary surface
-          700: '#1E1E20', // Secondary surface
-          600: '#2A2A2D', // Borders
-          500: '#3F3F42',
+      colors: {
+        parchment: {
+          50: '#fbf9f4',
+          100: '#f7f3ea',
+          200: '#efe9d8',
+          300: '#e3dcc8',
+          400: '#d4cab0',
+          500: '#c2b596',
         },
         ink: {
-          50: '#F5F5F3',  // Warm white (Primary text)
-          100: '#E6E6E4', 
-          200: '#C7C7C5',
-          300: '#A3A3A0', // Muted stone (Secondary text)
-          400: '#737373',
-          500: '#525252',
-          600: '#404040',
-          700: '#262626',
-          800: '#171717',
-          900: '#0A0A0A',
+          50: '#f6f5f3',
+          100: '#e8e6e1',
+          200: '#cfccc4',
+          300: '#a8a49a',
+          400: '#7c776c',
+          500: '#5a564d',
+          600: '#3e3b34',
+          700: '#2b2924',
+          800: '#1c1b18',
+          900: '#131210',
         },
         vermilion: {
-          50: '#FFF5F3',
-          100: '#FFE7E1',
-          200: '#FFD1C6',
-          300: '#FFB19E',
-          400: '#FF876C',
-          500: '#FA5A37', // TRACE accent
-          600: '#E83E1A',
-          700: '#C32F10',
-          800: '#A12911',
-          900: '#852714',
+          50: '#fcf4f0',
+          100: '#f9e3d8',
+          200: '#f0c4ac',
+          300: '#e29d7c',
+          400: '#d17550',
+          500: '#b85a38',
+          600: '#9c4828',
+          700: '#7d3a20',
+          800: '#5e2c18',
+          900: '#3f1d10',
         },
         brass: {
           50: '#faf7ee',
@@ -106,4 +107,3 @@ module.exports = {
   },
   plugins: [],
 };
-

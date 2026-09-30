@@ -42,14 +42,14 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
   };
 
   return (
-    <div className="min-h-screen bg-base-900">
+    <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* ── Decision header ─────────────────────────────────────────── */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-3">
             NovaMart · pricing decision
           </div>
-          <h1 className="font-serif text-hero text-ink-50 text-balance leading-[1.05] max-w-4xl">
+          <h1 className="font-serif text-hero text-ink-800 text-balance leading-[1.05] max-w-4xl">
             Stop blanket discounts for low-margin customers.
           </h1>
 
@@ -73,7 +73,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
               <div className="text-xs text-ink-400 font-medium mb-3">Decision Premium</div>
               <div className="flex items-baseline gap-4">
                 <div className={`editorial-num text-display ${
-                  hasLapsed ? 'text-vermilion-600' : 'text-ink-50'
+                  hasLapsed ? 'text-vermilion-600' : 'text-ink-800'
                 }`}>
                   {formatCurrency(calc.premium)}
                 </div>
@@ -81,7 +81,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
                   Evidence
                 </EvidenceLink>
               </div>
-              <div className="mt-3 text-lg text-ink-300">
+              <div className="mt-3 text-lg text-ink-500">
                 <span className="tabular-nums font-medium text-brass-600">{calc.premiumRate.toFixed(1)}%</span>
                 {' '}of projected upside
               </div>
@@ -92,7 +92,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
 
             <div className="lg:text-right">
               <div className="text-xs text-ink-400 mb-1">Projected upside</div>
-              <div className="editorial-num text-2xl text-ink-100 tabular-nums">
+              <div className="editorial-num text-2xl text-ink-700 tabular-nums">
                 {formatCurrency(calc.projectedUpside)}
               </div>
               <div className="text-xs text-ink-400 mt-1">
@@ -144,7 +144,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
                 } ${idx >= 4 ? 'lg:border-l-0' : ''}`}
               >
                 <div className="text-xs text-ink-400 mb-2">{metric.label}</div>
-                <div className="editorial-num text-2xl text-ink-50 tabular-nums">
+                <div className="editorial-num text-2xl text-ink-800 tabular-nums">
                   {metric.value}
                 </div>
                 {metric.sublabel && (
@@ -177,7 +177,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
                 <div className="flex items-start gap-3">
                   <div className="w-1 h-1 rounded-full bg-vermilion-400 mt-2.5 flex-shrink-0" />
                   <div className="flex-1">
-                    <div className="text-base text-ink-100 leading-relaxed">
+                    <div className="text-base text-ink-700 leading-relaxed">
                       {finding.statement}
                     </div>
                     {finding.magnitude && (
@@ -200,7 +200,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
         {/* ── What survived scrutiny ─────────────────────────────────── */}
         <Section
           eyebrow="Red-team review"
-          title="What survived the challenge?" subtitle="What survived scrutiny"
+          title="What survived scrutiny"
           subtitle="How the recommendation changed after TRACE argued against itself."
         >
           <div className="max-w-2xl">
@@ -209,7 +209,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
                 <div className="flex flex-col items-center">
                   <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-medium ${
                     idx === 0
-                      ? 'bg-base-700 text-ink-300'
+                      ? 'bg-ink-100 text-ink-500'
                       : idx === 1
                         ? 'bg-vermilion-100 text-vermilion-600'
                         : 'bg-brass-100 text-brass-600'
@@ -217,12 +217,12 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
                     {idx + 1}
                   </div>
                   {idx < SCRUTINY_STEPS.length - 1 && (
-                    <div className="w-px h-10 bg-base-700 mt-1" />
+                    <div className="w-px h-10 bg-ink-100 mt-1" />
                   )}
                 </div>
                 <div className="flex-1 pb-3">
                   <div className="text-xs text-ink-400 mb-1">{step.stage}</div>
-                  <div className="text-base text-ink-100 leading-relaxed">
+                  <div className="text-base text-ink-700 leading-relaxed">
                     {step.content}
                   </div>
                 </div>
@@ -239,17 +239,17 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
           <div className="grid sm:grid-cols-3 gap-0 border-t border-b rule divide-y sm:divide-y-0 sm:divide-x rule">
             <div className="px-5 py-5">
               <div className="text-xs text-ink-400 mb-2">Margin erosion</div>
-              <div className="editorial-num text-2xl text-ink-100 tabular-nums">−$340K</div>
+              <div className="editorial-num text-2xl text-ink-700 tabular-nums">−$340K</div>
               <div className="text-xs text-ink-400 mt-1">over 4 quarters if discounts continue</div>
             </div>
             <div className="px-5 py-5">
               <div className="text-xs text-ink-400 mb-2">Competitor exposure</div>
-              <div className="editorial-num text-2xl text-ink-100 tabular-nums">Unknown</div>
+              <div className="editorial-num text-2xl text-ink-700 tabular-nums">Unknown</div>
               <div className="text-xs text-ink-400 mt-1">not observable from current data</div>
             </div>
             <div className="px-5 py-5">
               <div className="text-xs text-ink-400 mb-2">Churn acceleration</div>
-              <div className="editorial-num text-2xl text-ink-100 tabular-nums">+1.2pp</div>
+              <div className="editorial-num text-2xl text-ink-700 tabular-nums">+1.2pp</div>
               <div className="text-xs text-ink-400 mt-1">estimated if discount dependency continues</div>
             </div>
           </div>
@@ -264,7 +264,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
           <div className="grid sm:grid-cols-4 gap-0 border-t border-b rule divide-y sm:divide-y-0 sm:divide-x rule">
             <div className="px-5 py-5">
               <div className="text-xs text-ink-400 mb-2">Findings</div>
-              <div className="editorial-num text-xl text-ink-100">4</div>
+              <div className="editorial-num text-xl text-ink-700">4</div>
             </div>
             <div className="px-5 py-5">
               <div className="text-xs text-ink-400 mb-2">Data exposure</div>
@@ -276,7 +276,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
             </div>
             <div className="px-5 py-5">
               <div className="text-xs text-ink-400 mb-2">Source records</div>
-              <div className="text-sm font-medium text-ink-200">211,385 rows</div>
+              <div className="text-sm font-medium text-ink-600">211,385 rows</div>
             </div>
           </div>
         </Section>
@@ -290,14 +290,14 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions }: Decis
           <div className="flex items-center gap-3">
             <button
               onClick={() => onNavigate('sandbox')}
-              className="text-sm text-ink-200 hover:text-vermilion-600 transition-colors font-medium inline-flex items-center gap-1.5"
+              className="text-sm text-ink-600 hover:text-vermilion-600 transition-colors font-medium inline-flex items-center gap-1.5"
             >
               <Scale className="w-4 h-4" />
               Challenge the decision
             </button>
             <button
               onClick={() => onNavigate('approval')}
-              className="group inline-flex items-center gap-2 bg-ink-50 text-base-900 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+              className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
             >
               <FileText className="w-4 h-4" />
               Your decision

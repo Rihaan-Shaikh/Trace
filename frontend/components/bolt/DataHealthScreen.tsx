@@ -19,15 +19,15 @@ export function DataHealthScreen({ onNavigate }: DataHealthScreenProps) {
   };
 
   return (
-    <div className="min-h-screen bg-base-900">
+    <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · audit</div>
-          <h1 className="font-serif text-hero text-ink-50 text-balance">
+          <h1 className="font-serif text-hero text-ink-800 text-balance">
             Before the decision, check the evidence.
           </h1>
-          <p className="mt-3 text-ink-300 text-lg max-w-prose-doc leading-relaxed">
+          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
             TRACE inspected the data for problems that would distort the decision. Each finding
             is priced into the Decision Premium.
           </p>
@@ -50,11 +50,11 @@ export function DataHealthScreen({ onNavigate }: DataHealthScreenProps) {
                   {/* Content */}
                   <div className="flex-1">
                     <div className="text-sm text-ink-400 mb-1">{finding.metric}</div>
-                    <div className="text-base text-ink-100 leading-relaxed mb-2">
+                    <div className="text-base text-ink-700 leading-relaxed mb-2">
                       {finding.description}
                     </div>
                     <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
-                      <span className="text-ink-300">
+                      <span className="text-ink-500">
                         <span className="text-ink-400">TRACE did: </span>
                         {finding.action}
                       </span>
@@ -80,7 +80,7 @@ export function DataHealthScreen({ onNavigate }: DataHealthScreenProps) {
           <div className="grid sm:grid-cols-3 gap-8">
             <div>
               <div className="text-xs text-ink-400 mb-1">Findings</div>
-              <div className="editorial-num text-2xl text-ink-50">4</div>
+              <div className="editorial-num text-2xl text-ink-800">4</div>
             </div>
             <div>
               <div className="text-xs text-ink-400 mb-1">Data exposure</div>
@@ -106,7 +106,7 @@ export function DataHealthScreen({ onNavigate }: DataHealthScreenProps) {
           </div>
           <button
             onClick={() => onNavigate('investigation')}
-            className="group inline-flex items-center gap-2 bg-ink-50 text-base-900 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             Begin investigation
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

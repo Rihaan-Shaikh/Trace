@@ -67,7 +67,7 @@ export function ScenarioDistribution({ calc }: ScenarioDistributionProps) {
           <div className="text-[10px]">avg worst 10%</div>
         </div>
         <div className="text-right">
-          <div className="text-ink-300 font-medium">{formatCurrency(best)}</div>
+          <div className="text-ink-500 font-medium">{formatCurrency(best)}</div>
           <div className="text-[10px]">median outcome</div>
         </div>
       </div>
@@ -75,7 +75,7 @@ export function ScenarioDistribution({ calc }: ScenarioDistributionProps) {
       {/* Tail annotation */}
       <div className="mt-4 flex items-start gap-2">
         <div className="w-1 h-8 bg-vermilion-400 rounded-full mt-0.5" />
-        <div className="text-xs text-ink-300 leading-relaxed">
+        <div className="text-xs text-ink-500 leading-relaxed">
           The left tail represents the downside scenarios. TRACE prices the Decision Premium
           against this exposure, not against the median outcome.
         </div>

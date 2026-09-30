@@ -36,96 +36,71 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
   };
 
   return (
-            <div className="min-h-screen bg-base-900 flex flex-col justify-center items-center text-ink-50 selection:bg-vermilion-500/30">
-      <div className="w-full max-w-4xl px-8">
-        {/* Masthead */}
-        <div className="flex flex-col items-center mb-16 text-center animate-fade-in">
-          <h1 className="text-4xl tracking-[0.2em] font-medium text-ink-50 mb-4">
+        <div className="min-h-screen bg-parchment-100 flex flex-col justify-center">
+      <div className="max-w-3xl mx-auto px-8 w-full">
+        {/* Brand masthead */}
+        <div className="mb-12 animate-fade-in text-center">
+          <div className="font-serif text-4xl font-semibold text-ink-800 tracking-tight mb-2">
             TRACE
-          </h1>
-          <div className="flex flex-col items-center">
-            <span className="text-[10px] tracking-widest text-ink-300 uppercase mb-1">Not confidence.</span>
-            <div className="flex items-center gap-4">
-              <span className="text-[10px] tracking-widest text-ink-50 uppercase font-semibold">Coverage</span>
-              <div className="w-32 h-[1px] bg-base-600 relative">
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-vermilion-500"></div>
-              </div>
-            </div>
+          </div>
+          <div className="flex items-center justify-center gap-2 text-ink-800">
+            <span className="italic text-ink-500">Not confidence.</span>
+            <span className="font-semibold">Coverage.</span>
           </div>
         </div>
 
-        {/* The Instrument Canvas */}
-        <div className="border border-base-600 bg-base-800 p-8 md:p-12 w-full animate-fade-in" style={{ animationDelay: '0.1s' }}>
-          
-          <div className="text-[10px] tracking-widest text-ink-300 uppercase mb-4">
-            What decision are we pricing?
+        {/* The TRACE Line Motif */}
+        <div className="relative mb-16 px-4">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[1px] bg-ink-300"></div>
+          <div className="relative flex justify-between text-[10px] uppercase tracking-widest text-ink-400 font-medium bg-parchment-100">
+            <span className="bg-parchment-100 pr-2">Evidence</span>
+            <span className="bg-parchment-100 pl-2">Decision</span>
           </div>
-          
-          <div className="relative group mb-10">
+        </div>
+
+        {/* Main headline */}
+        <h1 className="font-serif text-4xl lg:text-5xl text-ink-800 text-center text-balance leading-tight mb-10">
+          What are you willing to be wrong about?
+        </h1>
+
+        {/* Input surface */}
+        <div className="max-w-2xl mx-auto">
+          <div className="text-xs text-ink-400 mb-2 text-center uppercase tracking-wide">
+            Describe the decision you need to make
+          </div>
+          <div className="relative group">
             <textarea
               value={decisionText}
               onChange={(e) => onSetDecision(e.target.value)}
-              placeholder="e.g. Stop blanket discounts for low-margin customers"
-              className="w-full bg-base-900 border border-base-600 px-6 py-5 text-xl text-ink-50 placeholder:text-base-500 resize-none focus:outline-none focus:border-ink-300 transition-colors"
-              rows={2}
+              placeholder="e.g. Should we stop discounts for low-margin customers?"
+              className="w-full min-h-[100px] bg-parchment-50 border border-ink-200 rounded-none px-5 py-4 text-lg text-ink-800 placeholder:text-ink-300 resize-none focus:outline-none focus:border-ink-500 transition-colors shadow-sm"
             />
-          </div>
-
-          <div className="w-full h-[1px] bg-base-600 mb-10"></div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Left Col: Cost */}
-            <div>
-              <div className="text-[10px] tracking-widest text-ink-300 uppercase mb-6">
-                Cost if wrong
+            
+            {/* Start button appended right below */}
+            <div className="mt-4 flex flex-col items-center gap-4">
+              <div className="text-xs text-ink-400 text-center">
+                TRACE will price the downside, challenge the recommendation and show where the answer breaks.
               </div>
-              <div className="mb-4">
-                <div className="text-4xl text-ink-50 tabular-nums font-light mb-1"></div>
-                <div className="text-xs text-ink-300">decision premium</div>
-              </div>
-              <div>
-                <div className="text-xl text-ink-50 tabular-nums font-light mb-1">8.0%</div>
-                <div className="text-xs text-ink-300">of projected upside</div>
-              </div>
-            </div>
-
-            {/* Right Col: Boundary */}
-            <div>
-              <div className="text-[10px] tracking-widest text-ink-300 uppercase mb-6">
-                Where it breaks
-              </div>
-              <div className="mb-8">
-                <div className="flex justify-between items-end mb-3">
-                  <div className="text-xl text-ink-50 tabular-nums font-light">6.2%</div>
-                  <div className="text-xs text-ink-300 text-right">churn threshold</div>
-                </div>
-                
-                {/* The instrument track */}
-                <div className="relative h-[2px] bg-base-600 w-full mb-3">
-                  <div className="absolute left-0 top-0 h-full bg-ink-300" style={{ width: '50%' }}></div>
-                  <div className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-vermilion-500" style={{ left: '50%' }}></div>
-                </div>
-                
-                <div className="flex justify-between text-xs text-ink-300">
-                  <span>3.1% current</span>
-                  <span>3.1 pts of room</span>
-                </div>
-              </div>
-
-              <div className="flex justify-end">
-                <button
-                  onClick={handleStart}
-                  className="bg-ink-50 text-base-900 px-6 py-3 text-xs font-semibold tracking-wider uppercase hover:bg-ink-300 transition-colors"
-                >
-                  Challenge the decision
-                </button>
-              </div>
+              <button
+                onClick={handleStart}
+                className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-8 py-3 rounded-none text-sm font-medium hover:bg-ink-700 transition-colors"
+              >
+                Start investigation
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
             </div>
           </div>
+        </div>
 
+        {/* Bottom philosophy / Acronym */}
+        <div className="mt-24 text-center">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-ink-400">
+            Trust the data <span className="mx-2 opacity-50">&#183;</span> Retrieve the evidence <span className="mx-2 opacity-50">&#183;</span> Analyze the decision <span className="mx-2 opacity-50">&#183;</span> Challenge the conclusion <span className="mx-2 opacity-50">&#183;</span> Explain the outcome
+          </p>
         </div>
       </div>
     </div>
+
 
   );
 }

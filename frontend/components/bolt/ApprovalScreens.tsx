@@ -25,27 +25,27 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove }: ApprovalS
 
   if (confirmed) {
     return (
-      <div className="min-h-screen bg-base-900 flex items-center justify-center">
+      <div className="min-h-screen bg-parchment-100 flex items-center justify-center">
         <div className="text-center animate-fade-in">
           <div className="w-12 h-12 rounded-full bg-brass-100 flex items-center justify-center mx-auto mb-4">
             <Check className="w-6 h-6 text-brass-600" strokeWidth={1.5} />
           </div>
-          <div className="text-sm text-ink-300">Writing decision record…</div>
+          <div className="text-sm text-ink-500">Writing decision record…</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-base-900">
+    <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* Header */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · approval</div>
-          <h1 className="font-serif text-hero text-ink-50 text-balance">
+          <h1 className="font-serif text-hero text-ink-800 text-balance">
             Your decision.
           </h1>
-          <p className="mt-3 text-ink-300 text-lg max-w-prose-doc leading-relaxed">
+          <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
             TRACE recommends and prices. You decide.
           </p>
         </div>
@@ -55,7 +55,7 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove }: ApprovalS
           <div className="grid lg:grid-cols-[1fr_auto] gap-8">
             <div>
               <div className="text-xs text-ink-400 mb-2">Recommendation</div>
-              <div className="text-xl text-ink-50 font-medium leading-relaxed max-w-2xl">
+              <div className="text-xl text-ink-800 font-medium leading-relaxed max-w-2xl">
                 Stop blanket discounts for low-margin customers.
               </div>
               <div className="mt-4 flex items-center gap-3">
@@ -65,7 +65,7 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove }: ApprovalS
             </div>
             <div className="lg:text-right">
               <div className="text-xs text-ink-400 mb-1">Decision Premium</div>
-              <div className="editorial-num text-3xl text-ink-50 tabular-nums">
+              <div className="editorial-num text-3xl text-ink-800 tabular-nums">
                 {formatCurrency(calc.premium)}
               </div>
               <div className="text-xs text-ink-400 mt-1 tabular-nums">
@@ -83,8 +83,8 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove }: ApprovalS
               onClick={() => setAction('approve')}
               className={`inline-flex items-center gap-2 px-6 py-3 rounded-sm text-sm font-medium transition-all border-2 ${
                 action === 'approve'
-                  ? 'bg-ink-50 text-base-900 border-ink-800'
-                  : 'bg-base-800 text-ink-100 border-rule hover:border-base-500'
+                  ? 'bg-ink-800 text-parchment-50 border-ink-800'
+                  : 'bg-parchment-50 text-ink-700 border-rule hover:border-ink-300'
               }`}
             >
               <Check className="w-4 h-4" />
@@ -94,8 +94,8 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove }: ApprovalS
               onClick={() => setAction('modify')}
               className={`inline-flex items-center gap-2 px-5 py-3 rounded-sm text-sm font-medium transition-all border-2 ${
                 action === 'modify'
-                  ? 'bg-ink-50 text-base-900 border-ink-800'
-                  : 'bg-base-800 text-ink-300 border-rule hover:border-base-500'
+                  ? 'bg-ink-800 text-parchment-50 border-ink-800'
+                  : 'bg-parchment-50 text-ink-500 border-rule hover:border-ink-300'
               }`}
             >
               <Pencil className="w-4 h-4" />
@@ -105,8 +105,8 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove }: ApprovalS
               onClick={() => setAction('reject')}
               className={`inline-flex items-center gap-2 px-5 py-3 rounded-sm text-sm font-medium transition-all border-2 ${
                 action === 'reject'
-                  ? 'bg-vermilion-600 text-base-900 border-vermilion-600'
-                  : 'bg-base-800 text-ink-300 border-rule hover:border-base-500'
+                  ? 'bg-vermilion-600 text-parchment-50 border-vermilion-600'
+                  : 'bg-parchment-50 text-ink-500 border-rule hover:border-ink-300'
               }`}
             >
               <X className="w-4 h-4" />
@@ -123,11 +123,11 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove }: ApprovalS
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Optional note for the decision record…"
-              className="w-full min-h-[80px] bg-base-800 border rule rounded-sm px-4 py-3 text-sm text-ink-100 placeholder:text-ink-300 resize-none focus:outline-none focus:border-vermilion-300 transition-colors"
+              className="w-full min-h-[80px] bg-parchment-50 border rule rounded-sm px-4 py-3 text-sm text-ink-700 placeholder:text-ink-300 resize-none focus:outline-none focus:border-vermilion-300 transition-colors"
             />
 
-            <div className="mt-4 px-5 py-3 bg-base-800 border rule rounded-sm">
-              <div className="text-xs text-ink-300 leading-relaxed">
+            <div className="mt-4 px-5 py-3 bg-parchment-50 border rule rounded-sm">
+              <div className="text-xs text-ink-500 leading-relaxed">
                 This {action} will create a Decision Record and write the prediction to the
                 Loss History Ledger.
               </div>
@@ -136,7 +136,7 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove }: ApprovalS
             <div className="mt-6">
               <button
                 onClick={handleConfirm}
-                className="group inline-flex items-center gap-2 bg-ink-50 text-base-900 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+                className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
               >
                 Confirm {action}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -185,23 +185,23 @@ export function DecisionRecordScreen({
   });
 
   return (
-    <div className="min-h-screen bg-base-900">
+    <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* Header */}
         <div className="mb-12">
           <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · record</div>
-          <h1 className="font-serif text-hero text-ink-50 text-balance">
+          <h1 className="font-serif text-hero text-ink-800 text-balance">
             Decision record
           </h1>
         </div>
 
         {/* Document */}
-        <div className="border-2 rule rounded-sm bg-base-800 px-8 lg:px-12 py-10 max-w-3xl">
+        <div className="border-2 rule rounded-sm bg-parchment-50 px-8 lg:px-12 py-10 max-w-3xl">
           {/* Record header */}
           <div className="flex items-center justify-between border-b rule pb-6 mb-8">
             <div>
               <div className="text-xs text-ink-400 mb-1">Record no.</div>
-              <div className="text-sm font-mono text-ink-100">DR-2026-09-30-001</div>
+              <div className="text-sm font-mono text-ink-700">DR-2026-09-30-001</div>
             </div>
             <div className="text-right">
               <div className="text-xs text-ink-400 mb-1">Status</div>
@@ -214,7 +214,7 @@ export function DecisionRecordScreen({
           {/* Decision */}
           <div className="mb-8">
             <div className="text-xs text-ink-400 mb-2">Decision</div>
-            <div className="text-lg text-ink-50 font-medium leading-relaxed">
+            <div className="text-lg text-ink-800 font-medium leading-relaxed">
               Stop blanket discounts for low-margin customers.
             </div>
           </div>
@@ -244,10 +244,10 @@ export function DecisionRecordScreen({
           <div className="border-t rule pt-6 mb-8">
             <div className="text-xs text-ink-400 mb-3">Coverage lapse conditions</div>
             <div className="space-y-2">
-              <div className="text-sm text-ink-200">Segment churn — 3.1% current, 6.2% lapse threshold</div>
-              <div className="text-sm text-ink-200">Top account concentration — 1 of 3 exposed, 2 of 3 lapse</div>
-              <div className="text-sm text-ink-200">Competitor price gap — unknown, {'>'}15% lapse</div>
-              <div className="text-sm text-ink-200">Low-margin definition — 18% cut-off, +3 points lapse</div>
+              <div className="text-sm text-ink-600">Segment churn — 3.1% current, 6.2% lapse threshold</div>
+              <div className="text-sm text-ink-600">Top account concentration — 1 of 3 exposed, 2 of 3 lapse</div>
+              <div className="text-sm text-ink-600">Competitor price gap — unknown, {'>'}15% lapse</div>
+              <div className="text-sm text-ink-600">Low-margin definition — 18% cut-off, +3 points lapse</div>
             </div>
           </div>
 
@@ -263,7 +263,7 @@ export function DecisionRecordScreen({
             {approvalNote && (
               <div className="mt-4">
                 <div className="text-xs text-ink-400 mb-1">Note</div>
-                <div className="text-sm text-ink-200 italic">“{approvalNote}”</div>
+                <div className="text-sm text-ink-600 italic">“{approvalNote}”</div>
               </div>
             )}
           </div>
@@ -273,12 +273,12 @@ export function DecisionRecordScreen({
             <div className="flex items-end justify-between">
               <div>
                 <div className="text-xs text-ink-400 mb-1">Signed</div>
-                <div className="font-serif text-lg text-ink-100 italic">{approverName}</div>
+                <div className="font-serif text-lg text-ink-700 italic">{approverName}</div>
                 <div className="text-xs text-ink-400 mt-1">{timestamp}</div>
               </div>
               <div className="text-right">
                 <div className="text-xs text-ink-400 mb-1">TRACE</div>
-                <div className="font-serif text-lg text-ink-100">Underwritten</div>
+                <div className="font-serif text-lg text-ink-700">Underwritten</div>
                 <div className="text-xs text-ink-400 mt-1">Not confidence. Coverage.</div>
               </div>
             </div>
@@ -292,7 +292,7 @@ export function DecisionRecordScreen({
           </div>
           <button
             onClick={() => onNavigate('ledger')}
-            className="group inline-flex items-center gap-2 bg-ink-50 text-base-900 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             View ledger
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -307,7 +307,7 @@ function RecordField({ label, value, mono, small }: { label: string; value: stri
   return (
     <div>
       <div className="text-xs text-ink-400 mb-1">{label}</div>
-      <div className={`${small ? 'text-sm' : 'text-base'} ${mono ? 'tabular-nums' : ''} text-ink-100 font-medium`}>
+      <div className={`${small ? 'text-sm' : 'text-base'} ${mono ? 'tabular-nums' : ''} text-ink-700 font-medium`}>
         {value}
       </div>
     </div>
