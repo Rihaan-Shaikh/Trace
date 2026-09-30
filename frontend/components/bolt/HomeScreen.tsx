@@ -49,21 +49,22 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
   const bgStart = [11, 16, 26]; // #0B101A
   const bgEnd = [245, 245, 243]; // #F5F5F3 (parchment-100)
   
-  const bgR = Math.round(bgStart[0] + (bgEnd[0] - bgStart[0]) * scrollProgress);
-  const bgG = Math.round(bgStart[1] + (bgEnd[1] - bgStart[1]) * scrollProgress);
-  const bgB = Math.round(bgStart[2] + (bgEnd[2] - bgStart[2]) * scrollProgress);
+  const colorProgress = Math.max(0, (scrollProgress - 0.6) / 0.4);
+  const bgR = Math.round(bgStart[0] + (bgEnd[0] - bgStart[0]) * colorProgress);
+  const bgG = Math.round(bgStart[1] + (bgEnd[1] - bgStart[1]) * colorProgress);
+  const bgB = Math.round(bgStart[2] + (bgEnd[2] - bgStart[2]) * colorProgress);
   const currentBgColor = `rgb(${bgR}, ${bgG}, ${bgB})`;
 
   // Tagline color goes from Parchment (245,245,243) to Oxford Blue (11,16,26)
-  const textR = Math.round(bgEnd[0] + (bgStart[0] - bgEnd[0]) * scrollProgress);
-  const textG = Math.round(bgEnd[1] + (bgStart[1] - bgEnd[1]) * scrollProgress);
-  const textB = Math.round(bgEnd[2] + (bgStart[2] - bgEnd[2]) * scrollProgress);
+  const textR = Math.round(bgEnd[0] + (bgStart[0] - bgEnd[0]) * colorProgress);
+  const textG = Math.round(bgEnd[1] + (bgStart[1] - bgEnd[1]) * colorProgress);
+  const textB = Math.round(bgEnd[2] + (bgStart[2] - bgEnd[2]) * colorProgress);
   const currentTextColor = `rgb(${textR}, ${textG}, ${textB})`;
 
   const leftWidth = 100 - (scrollProgress * 50);
   
   // TRACE font size stays massive. Shrinks from 30vw to 22vw
-  const fontSizeVW = 30 - (scrollProgress * 8);
+  const fontSizeVW = 32 - (scrollProgress * 18);
 
   return (
     <div className="h-[200vh] bg-parchment-100 relative">
@@ -110,7 +111,7 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
           {/* Grid texture fades out slightly as it gets lighter */}
           <div className="absolute inset-0 transition-opacity duration-75" 
                style={{ 
-                 backgroundImage: `radial-gradient(${scrollProgress > 0.5 ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.05)'} 1px, transparent 1px)`, 
+                 backgroundImage: `radial-gradient(${scrollProgress > 0.5 ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)'} 1px, transparent 1px)`, 
                  backgroundSize: '32px 32px' 
                }} 
           />
@@ -138,7 +139,7 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 filter: 'drop-shadow(8px 15px 25px rgba(0,0,0,0.9))',
-                opacity: 1 - scrollProgress
+                opacity: 1 - colorProgress
               }}
             >
               TRACE
@@ -151,9 +152,9 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
                 fontSize: `${fontSizeVW}vw`, 
                 lineHeight: 1,
                 letterSpacing: '-0.06em',
-                color: '#0B101A',
-                opacity: scrollProgress,
-                filter: 'drop-shadow(4px 10px 15px rgba(0,0,0,0.1))'
+                color: 'rgba(11, 16, 26, 0.08)',
+                opacity: colorProgress,
+                filter: 'drop-shadow(4px 10px 15px rgba(0,0,0,0.05))'
               }}
             >
               TRACE
@@ -170,8 +171,8 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
             }}
           >
             <h2 
-              className="font-serif text-3xl md:text-4xl lg:text-5xl whitespace-nowrap tracking-tight"
-              style={{ color: currentTextColor, textShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
+              className="font-serif text-2xl md:text-3xl lg:text-4xl whitespace-nowrap tracking-tight"
+              style={{ color: currentTextColor, textShadow: '0 4px 20px rgba(0,0,0,0.05)' }}
             >
               Not confidence. <span className="text-vermilion-500 italic ml-4 drop-shadow-sm">Coverage.</span>
             </h2>
@@ -195,3 +196,6 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
     </div>
   );
 }
+
+
+
