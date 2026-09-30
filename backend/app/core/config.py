@@ -91,8 +91,8 @@ class Settings(BaseSettings):
         description="Database URL for automated test runs",
     )
     DB_ECHO: bool = False
-    DB_POOL_SIZE: int = 10
-    DB_MAX_OVERFLOW: int = 20
+    DB_POOL_SIZE: int = 5
+    DB_MAX_OVERFLOW: int = 10
     USE_PGVECTOR: bool = Field(
         default=False,
         description="True if PostgreSQL has the pgvector extension compiled and enabled",
