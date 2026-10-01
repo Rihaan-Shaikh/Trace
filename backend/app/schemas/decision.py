@@ -24,6 +24,7 @@ class DecisionUpdateRequest(BaseModel):
     title: Optional[str] = Field(default=None, max_length=255)
     question_text: Optional[str] = None
     status: Optional[DecisionStatus] = None
+    dataset_id: Optional[uuid.UUID] = None
     primary_metric_name: Optional[str] = None
     horizon_days: Optional[int] = None
     validity_window_days: Optional[int] = None
@@ -106,3 +107,4 @@ class DecisionResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     objective: Optional[DecisionObjectiveResponse] = None
+

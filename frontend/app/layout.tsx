@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, DM_Serif_Display, JetBrains_Mono } from 'next/font/google';
 import '@/styles/globals.css';
@@ -8,7 +8,7 @@ const dmSerif = DM_Serif_Display({ weight: '400', subsets: ['latin'], variable: 
 const jbMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
-  title: 'TRACE | Decision Underwriting Engine',
+  title: 'Trace • Not confidence. Coverage.',
   description: 'Not confidence. Coverage.',
 };
 
@@ -19,3 +19,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
+

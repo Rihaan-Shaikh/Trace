@@ -61,7 +61,7 @@ export function DataHealthScreen({ onNavigate, datasetId }: DataHealthScreenProp
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center justify-between gap-4 mb-2">
-            <div className="text-xs text-ink-400 font-medium">NovaMart · audit</div>
+            <div className="text-xs text-ink-400 font-medium">NovaMart � audit</div>
             {isLive && (
               <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
                 <Database className="w-3.5 h-3.5" />

@@ -39,7 +39,7 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
               name: f.filename,
               rows: f.parse_metadata?.row_count
                 ? Number(f.parse_metadata.row_count).toLocaleString()
-                : f.filename.includes('transaction') ? '100,000'
+                : f.filename.includes('transaction') ? f.filename.includes('large') ? '50,000' : '100,000'
                 : f.filename.includes('customer') ? '25,008'
                 : f.filename.includes('product') ? '500'
                 : f.filename.includes('region') ? '6'
@@ -93,7 +93,7 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center justify-between gap-4 mb-2">
-            <div className="text-xs text-ink-400 font-medium">NovaMart · evidence</div>
+            <div className="text-xs text-ink-400 font-medium">NovaMart Ã‚ï¿½ evidence</div>
             {isLive && (
               <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
                 <Database className="w-3.5 h-3.5" />
@@ -109,10 +109,10 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
           </p>
         </div>
 
-        {/* Drop zone */}
+                {/* Drop zone */}
         <div
-          className="border-2 border-dashed rule rounded-sm bg-parchment-50 px-8 py-12 text-center mb-8 cursor-pointer hover:bg-transparent transition-colors group"
-          onClick={() => fileInputRef.current?.click()}
+          className="relative border-2 border-dashed rule rounded-sm bg-parchment-50 px-8 py-12 text-center mb-8 cursor-pointer hover:bg-transparent transition-colors group overflow-hidden"
+          onClick={() => !isUploading && fileInputRef.current?.click()}
         >
           <input
             type="file"
@@ -120,16 +120,46 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
             onChange={handleFileChange}
             className="hidden"
             accept=".csv,.xlsx,.json"
+            disabled={isUploading}
           />
-          <div className="w-10 h-10 rounded-full bg-parchment-100 flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform">
-            <UploadCloud className="w-5 h-5 text-ink-600" />
-          </div>
-          <div className="text-sm text-ink-600 font-medium mb-1">
-            {isUploading ? 'Ingesting and profiling dataset…' : 'Drop business CSV or click to upload'}
-          </div>
-          <div className="text-xs text-ink-400">
-            CSV, XLSX, JSON · Ingested directly into PostgreSQL with automatic health audits
-          </div>
+
+          {isUploading ? (
+            <div className="relative z-10 w-full flex flex-col items-center justify-center py-4">
+              <div className="flex items-end justify-center gap-[3px] mb-6 h-8">
+                {[...Array(9)].map((_, i) => (
+                  <div 
+                    key={i}
+                    className="w-1 bg-ink-900 rounded-sm animate-pulse"
+                    style={{ 
+                      height: `${12 + Math.random() * 20}px`,
+                      animationDelay: `${i * 0.15}s`,
+                      animationDuration: '0.6s'
+                    }}
+                  />
+                ))}
+              </div>
+              
+              <div className="text-sm font-mono tracking-widest text-ink-900 mb-1 uppercase font-semibold">
+                Ingesting & Profiling
+              </div>
+              <div className="text-[10px] font-mono text-ink-400 uppercase tracking-widest">
+                Reconciling entities...
+              </div>
+              <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brass-500 to-transparent opacity-40 blur-[1px] animate-pulse" />
+            </div>
+          ) : (
+            <div className="relative z-10">
+              <div className="w-10 h-10 rounded-full bg-parchment-100 flex items-center justify-center mx-auto mb-3 group-hover:scale-105 transition-transform shadow-sm border border-ink-100">
+                <UploadCloud className="w-5 h-5 text-ink-600" />
+              </div>
+              <div className="text-sm text-ink-700 font-medium mb-1">
+                Drop business CSV or click to upload
+              </div>
+              <div className="text-xs text-ink-400">
+                CSV, XLSX, JSON â€¢ Ingested directly into PostgreSQL with automatic health audits
+              </div>
+            </div>
+          )}
         </div>
 
         {/* File list */}
@@ -137,7 +167,7 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
           <div className="text-xs text-ink-400 font-medium mb-4">Ingested & Reconciled Tables</div>
           <div className="divide-y rule border-t border-b rule">
             {files.map((file, i) => (
-              <FileRow key={file.name + i} file={file} />
+              <FileRow key={file.name + i} file={file} isNew={isLive && i === 0} />
             ))}
           </div>
         </div>
@@ -145,7 +175,7 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
         {/* Action */}
         <div className="mt-10 flex items-center justify-between">
           <div className="text-xs text-ink-400">
-            {files.length} tables mapped · {totalRowsCount} reconciled rows
+            {files.length} tables mapped Ã‚ï¿½ {totalRowsCount} reconciled rows
           </div>
           <button
             onClick={() => onNavigate('semantic-map')}
@@ -160,9 +190,9 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
   );
 }
 
-function FileRow({ file }: { file: DataFile }) {
+function FileRow({ file, isNew }: { file: DataFile; isNew?: boolean }) {
   return (
-    <div className="flex items-center gap-4 py-4 px-2">
+    <div className={`flex items-center gap-4 py-4 px-2 ${isNew ? 'bg-brass-50/50' : ''}`}>
       <StatusMark state={file.status === 'mapped' ? 'mapped' : 'pending'} />
       <div className="flex-1 min-w-0">
         <div className="text-sm font-medium text-ink-800 font-mono">{file.name}</div>
@@ -186,7 +216,7 @@ function FileRow({ file }: { file: DataFile }) {
   );
 }
 
-// ── Semantic Map ──────────────────────────────────────────────────────────
+// Ã¢â€â‚¬Ã¢â€â‚¬ Semantic Map Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
 
 interface SemanticMapScreenProps {
   onNavigate: (view: View) => void;
@@ -208,7 +238,7 @@ export function SemanticMapScreen({ onNavigate, datasetId }: SemanticMapScreenPr
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
-          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · ontology</div>
+          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart Ã‚ï¿½ ontology</div>
           <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance">
             The semantic graph.
           </h1>
@@ -220,22 +250,23 @@ export function SemanticMapScreen({ onNavigate, datasetId }: SemanticMapScreenPr
         {/* Entity graph */}
         <div className="border rule rounded-sm bg-parchment-50 p-8 mb-12">
           <div className="text-xs text-ink-400 font-medium mb-6">Inferred entity graph</div>
-          <div className="relative h-64 w-full">
+          <div className="relative h-96 w-full my-8">
             <svg className="absolute inset-0 w-full h-full pointer-events-none">
-              <line x1="50%" y1="15%" x2="50%" y2="50%" stroke="var(--ink-200)" strokeWidth="1" strokeDasharray="4 4" />
-              <line x1="50%" y1="50%" x2="85%" y2="50%" stroke="var(--ink-200)" strokeWidth="1" strokeDasharray="4 4" />
-              <line x1="50%" y1="50%" x2="15%" y2="50%" stroke="var(--ink-200)" strokeWidth="1" strokeDasharray="4 4" />
-              <line x1="50%" y1="50%" x2="50%" y2="85%" stroke="var(--ink-200)" strokeWidth="1" strokeDasharray="4 4" />
-              <line x1="50%" y1="15%" x2="15%" y2="50%" stroke="var(--ink-200)" strokeWidth="1" strokeDasharray="4 4" />
+              <line x1="50%" y1="15%" x2="50%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
+              <line x1="50%" y1="50%" x2="85%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
+              <line x1="50%" y1="50%" x2="15%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
+              <line x1="50%" y1="50%" x2="50%" y2="85%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
+              <line x1="50%" y1="15%" x2="15%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
             </svg>
 
             {SEMANTIC_ENTITIES.map((entity) => (
               <div
                 key={entity.id}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2 px-4 py-2 bg-parchment-100 border rule rounded-sm shadow-sm"
+                className="absolute transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 flex flex-col items-center justify-center bg-white border border-ink-200 rounded-full shadow-sm hover:shadow-[0_0_30px_rgba(180,140,50,0.2)] hover:border-brass-300 transition-all duration-500 cursor-pointer group hover:scale-105 z-10"
                 style={{ left: `${entity.x}%`, top: `${entity.y}%` }}
               >
-                <div className="text-xs font-mono text-ink-400 uppercase tracking-wider">{entity.name}</div>
+                <div className="absolute inset-0 rounded-full border border-brass-400/0 group-hover:border-brass-400/50 group-hover:animate-ping opacity-20" />
+                  <div className="text-sm font-serif italic text-ink-800 capitalize transition-colors group-hover:text-brass-700">{entity.name}</div>
               </div>
             ))}
           </div>

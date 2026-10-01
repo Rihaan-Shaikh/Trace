@@ -114,7 +114,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
     ? secScrutiny.adverse_findings.map((f: any, idx: number) => ({
         id: `af-${idx}`,
         statement: f.finding_text || f.title,
-        magnitude: f.quantified_impact ? `≈${formatCurrency(f.quantified_impact)} impact` : undefined,
+        magnitude: f.quantified_impact ? `ï¿½${formatCurrency(f.quantified_impact)} impact` : undefined,
       }))
     : COUNTER_FINDINGS;
 
@@ -154,7 +154,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
   return (
     <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
-        {/* ── Decision header ─────────────────────────────────────────── */}
+        {/* â”€â”€ Decision header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="mb-12">
           <div className="flex items-center justify-between gap-4 mb-3">
             <div className="text-xs text-ink-400 font-medium">
@@ -184,7 +184,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </div>
 
-        {/* ── Decision Premium ───────────────────────────────────────── */}
+        {/* â”€â”€ Decision Premium â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="border-t border-b rule py-12">
           <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end">
             <div>
@@ -220,7 +220,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </div>
 
-        {/* ── Coverage Lapse Conditions ──────────────────────────────── */}
+        {/* â”€â”€ Coverage Lapse Conditions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <Section
           eyebrow="The signature"
           title="Coverage lapse conditions"
@@ -247,7 +247,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* ── Exposure Report ────────────────────────────────────────── */}
+        {/* â”€â”€ Exposure Report â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <Section
           eyebrow="Downside"
           title="Exposure report"
@@ -280,7 +280,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* ── Counter-Decision Underwriter ───────────────────────────── */}
+        {/* â”€â”€ Counter-Decision Underwriter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <Section
           eyebrow="The opposition file"
           title="Counter-decision underwriter"
@@ -312,7 +312,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* ── What survived scrutiny ─────────────────────────────────── */}
+        {/* â”€â”€ What survived scrutiny â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <Section
           eyebrow="Red-team review"
           title="What survived scrutiny"
@@ -346,7 +346,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* ── Cost of inaction ───────────────────────────────────────── */}
+        {/* â”€â”€ Cost of inaction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <Section
           eyebrow="The alternative"
           title="Cost of inaction"
@@ -354,7 +354,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           <div className="grid sm:grid-cols-3 gap-0 border-t border-b rule divide-y sm:divide-y-0 sm:divide-x rule">
             <div className="px-5 py-5">
               <div className="text-xs text-ink-400 mb-2">Margin erosion</div>
-              <div className="editorial-num text-2xl text-ink-700 tabular-nums">−$340K</div>
+              <div className="editorial-num text-2xl text-ink-700 tabular-nums">-$340K</div>
               <div className="text-xs text-ink-400 mt-1">over 4 quarters if discounts continue</div>
             </div>
             <div className="px-5 py-5">
@@ -370,7 +370,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* ── Data health summary ────────────────────────────────────── */}
+        {/* â”€â”€ Data health summary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <Section
           eyebrow="Verification"
           title="Data health and verification"
@@ -402,7 +402,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* ── Actions ─────────────────────────────────────────────────── */}
+        {/* â”€â”€ Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <Divider className="mt-12" />
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           <div className="text-xs text-ink-400">

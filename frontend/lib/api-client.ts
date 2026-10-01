@@ -116,7 +116,8 @@ export const api = {
         method: 'POST',
         body: JSON.stringify(data),
       }),
-    listTemplates: () => fetchJson<DecisionTemplate[]>('/decisions/templates'),
+    update: (id: string, data: any) => fetchJson<any>(/decisions/, { method: 'PATCH', body: JSON.stringify(data) }),
+      listTemplates: () => fetchJson<DecisionTemplate[]>('/decisions/templates'),
     suggestObjective: (id: string) =>
       fetchJson<DecisionObjective>(`/decisions/${id}/objective/suggest`, {
         method: 'POST',
@@ -251,3 +252,5 @@ export const api = {
       }),
   },
 };
+
+

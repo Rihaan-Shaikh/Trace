@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="0" fill="#0A0A0C" />
-  <circle cx="16" cy="16" r="8" fill="#FA5A37" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <g transform="translate(64, 64)">
+    <text x="-4" y="0" dy=".35em" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-weight="bold" font-size="120" fill="#9ca3af">T</text>
+  </g>
 </svg>
