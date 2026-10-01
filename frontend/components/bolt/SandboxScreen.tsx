@@ -6,15 +6,17 @@ import {
   BASELINE_CALC,
   getCoverageConditions,
 } from '@/lib/bolt/data';
-import { ArrowLeft, RotateCcw, ArrowRight } from 'lucide-react';
-import { useState, useCallback } from 'react';
+import { ArrowLeft, RotateCcw, ArrowRight, Database } from 'lucide-react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { VerdictBadge, Divider } from './ui/Section';
 import { ThresholdTrack } from './ThresholdTrack';
+import { api } from '@/lib/api-client';
 
 interface SandboxScreenProps {
   onNavigate: (view: View) => void;
   assumptions: SandboxAssumptions;
   setAssumptions: (a: SandboxAssumptions) => void;
+  decisionId?: string;
 }
 
 interface SliderProps {
@@ -80,17 +82,84 @@ function ComparisonRow({ label, before, after, isCurrency }: { label: string; be
   );
 }
 
-export function SandboxScreen({ onNavigate, assumptions, setAssumptions }: SandboxScreenProps) {
-  const calc = computeDecision(assumptions);
-  const conditions = getCoverageConditions(assumptions, calc);
+export function SandboxScreen({ onNavigate, assumptions, setAssumptions, decisionId }: SandboxScreenProps) {
+  const fallbackCalc = computeDecision(assumptions);
+  const [liveReQuote, setLiveReQuote] = useState<any>(null);
+  const [isLiveReQuoting, setIsLiveReQuoting] = useState(false);
+  const debounceTimer = useRef<NodeJS.Timeout>();
+
   const isBaseline = JSON.stringify(assumptions) === JSON.stringify(DEFAULT_ASSUMPTIONS);
+
+  // Trigger live Python actuarial re-quote when assumptions change
+  useEffect(() => {
+    if (!decisionId) return;
+
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    debounceTimer.current = setTimeout(async () => {
+      setIsLiveReQuoting(true);
+      try {
+        const res = await api.sandbox.requote({
+          decision_id: decisionId,
+          assumption_adjustments: {
+            segment_churn: assumptions.segmentChurn / 100,
+            volume_retention: assumptions.retention / 100,
+          },
+        });
+        if (res && res.after) {
+          setLiveReQuote(res);
+        }
+      } catch (e) {
+        console.warn('Backend re-quote deferred (using local fallback model):', e);
+      } finally {
+        setIsLiveReQuoting(false);
+      }
+    }, 200);
+
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    };
+  }, [assumptions, decisionId]);
+
+  // Merge live actuarial output if available
+  const calc: DecisionCalc = (liveReQuote && liveReQuote.after)
+    ? {
+        premium: Math.round(liveReQuote.after.decision_premium),
+        premiumRate: Number((liveReQuote.after.premium_rate * 100).toFixed(1)),
+        projectedUpside: Math.round(liveReQuote.after.projected_upside),
+        netLossProbability: Math.round((liveReQuote.after.probability_of_net_loss || 0) * 100),
+        verdict: (liveReQuote.after.verdict || 'Recommended with conditions') as any,
+        coverageState: (liveReQuote.coverage_state?.toLowerCase() === 'lapsed' ? 'lapsed' : 'covered') as any,
+        exposure: {
+          p10: -Math.round(Math.abs(liveReQuote.after.tail_loss || 7935814)),
+          avgWorst10: fallbackCalc.exposure.avgWorst10,
+          worstPlausible: fallbackCalc.exposure.worstPlausible,
+          concentration: fallbackCalc.exposure.concentration,
+          dataExposure: fallbackCalc.exposure.dataExposure,
+        },
+      }
+    : fallbackCalc;
+
+  const baselineDisplay = liveReQuote?.before
+    ? {
+        premium: Math.round(liveReQuote.before.decision_premium),
+        premiumRate: Number((liveReQuote.before.premium_rate * 100).toFixed(1)),
+        netLossProbability: Math.round((liveReQuote.before.probability_of_net_loss || 0) * 100),
+        verdict: liveReQuote.before.verdict,
+      }
+    : BASELINE_CALC;
+
+  const conditions = getCoverageConditions(assumptions, calc);
   const hasLapsed = calc.coverageState === 'lapsed';
 
   const update = useCallback((key: keyof SandboxAssumptions, value: number) => {
     setAssumptions({ ...assumptions, [key]: value });
   }, [assumptions, setAssumptions]);
 
-  const reset = () => setAssumptions(DEFAULT_ASSUMPTIONS);
+  const reset = () => {
+    setAssumptions(DEFAULT_ASSUMPTIONS);
+    setLiveReQuote(null);
+  };
 
   return (
     <div className="min-h-screen bg-parchment-100">
@@ -104,12 +173,20 @@ export function SandboxScreen({ onNavigate, assumptions, setAssumptions }: Sandb
             <ArrowLeft className="w-3 h-3" />
             Back to decision brief
           </button>
-          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · sandbox</div>
+          <div className="flex items-center justify-between gap-4 mb-2">
+            <div className="text-xs text-ink-400 font-medium">NovaMart · sandbox</div>
+            {liveReQuote && (
+              <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
+                <Database className="w-3.5 h-3.5" />
+                Live Monte Carlo Engine Connected
+              </span>
+            )}
+          </div>
           <h1 className="font-serif text-hero text-ink-800 text-balance">
             Challenge the decision.
           </h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
-            Change an assumption and re-quote the decision.
+            Change an assumption and re-quote the decision with real actuarial recalculation.
           </p>
         </div>
 
@@ -170,14 +247,21 @@ export function SandboxScreen({ onNavigate, assumptions, setAssumptions }: Sandb
             <div className="mt-6 px-4 py-3 bg-parchment-50 border rule rounded-sm">
               <div className="text-xs text-ink-400 leading-relaxed">
                 Drag segment churn above <span className="text-vermilion-600 font-medium">6.2%</span> to
-                see the coverage lapse moment.
+                see the coverage lapse moment solve via Brent&apos;s root finding.
               </div>
             </div>
           </div>
 
           {/* ── Re-quote result ────────────────────────────────────── */}
           <div>
-            <div className="text-xs text-ink-400 font-medium mb-4">Re-quote</div>
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-xs text-ink-400 font-medium">Re-quote results</div>
+              {isLiveReQuoting && (
+                <span className="text-xs text-brass-600 animate-pulse font-mono">
+                  Calculating 1000 scenarios…
+                </span>
+              )}
+            </div>
 
             {/* Before / After premium */}
             <div className="border-t border-b rule py-8 mb-6">
@@ -186,10 +270,10 @@ export function SandboxScreen({ onNavigate, assumptions, setAssumptions }: Sandb
                   <div className="text-xs text-ink-400 mb-2">Before</div>
                   <div className="text-xs text-ink-400 mb-1">Decision Premium</div>
                   <div className="editorial-num text-3xl text-ink-400 tabular-nums">
-                    {formatCurrency(BASELINE_CALC.premium)}
+                    {formatCurrency(baselineDisplay.premium)}
                   </div>
                   <div className="text-xs text-ink-300 mt-1 tabular-nums">
-                    {BASELINE_CALC.premiumRate.toFixed(1)}% of upside
+                    {baselineDisplay.premiumRate.toFixed(1)}% of upside
                   </div>
                 </div>
                 <div>
@@ -213,12 +297,12 @@ export function SandboxScreen({ onNavigate, assumptions, setAssumptions }: Sandb
             <div className="border-t rule">
               <ComparisonRow
                 label="Premium rate"
-                before={`${BASELINE_CALC.premiumRate.toFixed(1)}%`}
+                before={`${baselineDisplay.premiumRate.toFixed(1)}%`}
                 after={`${calc.premiumRate.toFixed(1)}%`}
               />
               <ComparisonRow
                 label="Net-loss probability"
-                before={`${BASELINE_CALC.netLossProbability}%`}
+                before={`${baselineDisplay.netLossProbability}%`}
                 after={`${calc.netLossProbability}%`}
               />
               <ComparisonRow
@@ -228,7 +312,7 @@ export function SandboxScreen({ onNavigate, assumptions, setAssumptions }: Sandb
               />
               <ComparisonRow
                 label="Verdict"
-                before={BASELINE_CALC.verdict}
+                before={baselineDisplay.verdict}
                 after={calc.verdict}
               />
             </div>

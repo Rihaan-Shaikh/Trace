@@ -1,27 +1,91 @@
-import { type View } from '@/lib/bolt/types';
+import { type View, type RateDriver } from '@/lib/bolt/types';
 import { RATE_DRIVERS } from '@/lib/bolt/data';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Database } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { Divider, Section } from './ui/Section';
+import { api } from '@/lib/api-client';
 
 interface RateCardScreenProps {
   onNavigate: (view: View) => void;
 }
 
 export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
-  const totalWeight = RATE_DRIVERS.reduce((sum, d) => sum + d.weight, 0);
+  const [drivers, setDrivers] = useState<RateDriver[]>(RATE_DRIVERS);
+  const [activeVersion, setActiveVersion] = useState<string>('1.0.0');
+  const [isLive, setIsLive] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadRateCard() {
+      try {
+        const rc = await api.rateCard.getActive();
+        if (isMounted && rc) {
+          setActiveVersion(rc.version_str || '1.0.0');
+          const updatedDrivers: RateDriver[] = [
+            {
+              id: 'contradiction',
+              name: 'Contradiction load',
+              weight: Math.round(rc.weight_contradiction * 100),
+              description: 'Applies when counter-evidence, contract clauses, or regional exceptions challenge the baseline model.',
+              threshold: 'Any material contradiction',
+            },
+            {
+              id: 'data-quality',
+              name: 'Data-quality load',
+              weight: Math.round(rc.weight_data_quality * 100),
+              description: 'Derived from missing fields, duplicate records, staleness, and unmapped entities in the underlying tables.',
+              threshold: '>2% missing or duplicate',
+            },
+            {
+              id: 'verification',
+              name: 'Verification load',
+              weight: Math.round(rc.weight_verification * 100),
+              description: 'Penalises unverified figures, calculation discrepancies, and figures that failed independent dual-method checks.',
+              threshold: 'Any unverified figure',
+            },
+            {
+              id: 'model-uncertainty',
+              name: 'Model uncertainty load',
+              weight: Math.round(rc.base_model_uncertainty_weight * 100),
+              description: 'Reflects variance across 1,000 Monte Carlo simulation runs and distance from the empirical distribution.',
+              threshold: 'P10/P90 spread > 3x',
+            },
+          ];
+          setDrivers(updatedDrivers);
+          setIsLive(true);
+        }
+      } catch (err) {
+        console.warn('Rate card API check deferred:', err);
+      }
+    }
+    loadRateCard();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const totalWeight = drivers.reduce((sum, d) => sum + d.weight, 0);
 
   return (
     <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* Header */}
         <div className="mb-12">
-          <div className="text-xs text-ink-400 font-medium mb-2">Configuration</div>
+          <div className="flex items-center justify-between gap-4 mb-2">
+            <div className="text-xs text-ink-400 font-medium">Configuration · Policy v{activeVersion}</div>
+            {isLive && (
+              <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
+                <Database className="w-3.5 h-3.5" />
+                Live Rate Card Policy Connected
+              </span>
+            )}
+          </div>
           <h1 className="font-serif text-hero text-ink-800 text-balance">
             Rate card
           </h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
             The pricing logic, shown openly. No hidden AI magic. No model confidence.
-            The Decision Premium is a transparent function of four risk drivers.
+            The Decision Premium is a transparent deterministic function of four risk drivers.
           </p>
         </div>
 
@@ -29,19 +93,19 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
         <div className="border-t border-b rule py-6 mb-10">
           <div className="flex items-baseline justify-between">
             <div>
-              <div className="text-xs text-ink-400 mb-1">Total premium weight</div>
+              <div className="text-xs text-ink-400 mb-1">Total premium weight baseline</div>
               <div className="editorial-num text-2xl text-ink-800 tabular-nums">{totalWeight}%</div>
             </div>
             <div className="text-right">
-              <div className="text-xs text-ink-400 mb-1">Drivers</div>
-              <div className="editorial-num text-2xl text-ink-700 tabular-nums">{RATE_DRIVERS.length}</div>
+              <div className="text-xs text-ink-400 mb-1">Risk drivers</div>
+              <div className="editorial-num text-2xl text-ink-700 tabular-nums">{drivers.length}</div>
             </div>
           </div>
         </div>
 
         {/* Risk drivers */}
         <div className="border-t rule">
-          {RATE_DRIVERS.map((driver, idx) => (
+          {drivers.map((driver) => (
             <div key={driver.id}>
               <div className="py-8">
                 <div className="grid lg:grid-cols-[auto_1fr_auto] gap-6 items-start">
@@ -55,7 +119,7 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
                     <div className="mt-2 h-1 bg-ink-100 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-brass-400 rounded-full"
-                        style={{ width: `${(driver.weight / totalWeight) * 100}%` }}
+                        style={{ width: `${Math.min(100, (driver.weight / totalWeight) * 100)}%` }}
                       />
                     </div>
                   </div>
@@ -77,53 +141,55 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
                   </div>
                 </div>
               </div>
-              {idx < RATE_DRIVERS.length - 1 && <Divider />}
+              <Divider />
             </div>
           ))}
         </div>
 
-        {/* Formula explanation */}
+        {/* Verdict bands */}
         <Section
-          eyebrow="How it works"
-          title="The premium formula"
-          subtitle="The Decision Premium is a transparent, auditable calculation — not a black-box confidence score."
+          eyebrow="Rules"
+          title="Verdict bands"
+          subtitle="How the premium rate determines the underwriting recommendation."
         >
-          <div className="border-t border-b rule py-8">
-            <div className="font-mono text-sm text-ink-600 leading-relaxed space-y-2">
-              <div>
-                <span className="text-ink-400">Decision Premium = </span>
-                <span className="text-ink-700">Expected Loss</span>
-                <span className="text-ink-400"> × </span>
-                <span className="text-ink-700">Risk Multiplier</span>
+          <div className="grid sm:grid-cols-3 gap-0 border-t border-b rule divide-y sm:divide-y-0 sm:divide-x rule">
+            <div className="px-5 py-5">
+              <div className="text-xs text-ink-400 mb-1">Premium rate &lt; 10%</div>
+              <div className="text-base font-medium text-brass-700 mb-2">Recommended</div>
+              <div className="text-xs text-ink-500 leading-relaxed">
+                Risk cost is modest relative to projected upside. Evidence is sound.
               </div>
-              <div className="pl-4 text-xs text-ink-400">
-                where Risk Multiplier = Σ(driver weight × driver score)
+            </div>
+            <div className="px-5 py-5">
+              <div className="text-xs text-ink-400 mb-1">Premium rate 10% – 25%</div>
+              <div className="text-base font-medium text-brass-600 mb-2">Recommended with conditions</div>
+              <div className="text-xs text-ink-500 leading-relaxed">
+                Material risks identified. Specific conditions and tripwires must be monitored.
               </div>
-              <div className="pt-2">
-                <span className="text-ink-400">Risk Multiplier = </span>
-                <span className="text-brass-600">0.25 × Data Quality</span>
-                <span className="text-ink-400"> + </span>
-                <span className="text-brass-600">0.20 × Verification</span>
-                <span className="text-ink-400"> + </span>
-                <span className="text-brass-600">0.30 × Contradiction</span>
-                <span className="text-ink-400"> + </span>
-                <span className="text-brass-600">0.25 × Model Uncertainty</span>
+            </div>
+            <div className="px-5 py-5">
+              <div className="text-xs text-ink-400 mb-1">Premium rate &gt; 25% or lapse</div>
+              <div className="text-base font-medium text-vermilion-600 mb-2">Refer</div>
+              <div className="text-xs text-ink-500 leading-relaxed">
+                Risk cost exceeds acceptable bounds or a coverage condition has lapsed.
               </div>
             </div>
           </div>
         </Section>
 
         {/* Actions */}
-        <Divider className="mt-12" />
         <div className="mt-8 flex items-center justify-between">
-          <div className="text-xs text-ink-400">
-            Transparent pricing policy · no hidden model confidence
-          </div>
           <button
             onClick={() => onNavigate('home')}
+            className="text-sm text-ink-500 hover:text-ink-700 transition-colors"
+          >
+            Back to home
+          </button>
+          <button
+            onClick={() => onNavigate('data')}
             className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
-            New decision
+            Bring new evidence
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
@@ -131,4 +197,3 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
     </div>
   );
 }
-

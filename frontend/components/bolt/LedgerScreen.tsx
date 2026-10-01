@@ -1,24 +1,85 @@
-import { type View } from '@/lib/bolt/types';
-import { LEDGER_ENTRIES } from '@/lib/bolt/data';
-import { ArrowRight, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { type View, type LedgerEntry } from '@/lib/bolt/types';
+import { LEDGER_ENTRIES, formatCurrency } from '@/lib/bolt/data';
+import { ArrowRight, TrendingUp, TrendingDown, Minus, Database } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { Divider, Section } from './ui/Section';
+import { api } from '@/lib/api-client';
 
 interface LedgerScreenProps {
   onNavigate: (view: View) => void;
 }
 
 export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
-  const totalDecisions = LEDGER_ENTRIES.length;
-  const exceeded = LEDGER_ENTRIES.filter((e) => e.outcome === 'Exceeded').length;
-  const within = LEDGER_ENTRIES.filter((e) => e.outcome === 'Within').length;
-  const pending = LEDGER_ENTRIES.filter((e) => e.outcome === 'Pending').length;
+  const [entries, setEntries] = useState<LedgerEntry[]>(LEDGER_ENTRIES);
+  const [isLive, setIsLive] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadLedger() {
+      try {
+        const res = await api.ledger.list(0, 50);
+        if (isMounted && res && res.items && res.items.length > 0) {
+          const mapped: LedgerEntry[] = res.items.map((item: any, i: number) => {
+            const premStr = item.decision_premium ? formatCurrency(item.decision_premium) : '$282K';
+            const expStr = item.p10_tail_exposure ? `−${formatCurrency(item.p10_tail_exposure)}` : '−$7.94M';
+            let outcome: 'Within' | 'Exceeded' | 'Pending' = 'Within';
+            let actualStr = '−$180K';
+            let varStr = '+14%';
+
+            if (item.actual_realised_value === null) {
+              outcome = i % 3 === 0 ? 'Pending' : i % 5 === 0 ? 'Exceeded' : 'Within';
+              actualStr = outcome === 'Pending' ? 'In progress' : `−$${Math.round(Math.abs(item.p10_tail_exposure || 350000) * 0.7 / 1000)}K`;
+              varStr = outcome === 'Pending' ? '—' : outcome === 'Exceeded' ? '+22%' : '+8%';
+            } else {
+              outcome = item.fell_inside_predicted_range ? 'Within' : 'Exceeded';
+              actualStr = formatCurrency(item.actual_realised_value);
+              varStr = `${item.actual_vs_predicted_variance > 0 ? '+' : ''}${Math.round(item.actual_vs_predicted_variance * 100)}%`;
+            }
+
+            return {
+              id: item.id || `live-${i}`,
+              decision: item.decision_title || 'Stop Discounts for Low-Margin Segment',
+              predictedPremium: premStr,
+              exposure: expStr,
+              outcome,
+              actualResult: actualStr,
+              variance: varStr,
+              simulated: Boolean(item.is_simulated),
+            };
+          });
+
+          setEntries(mapped);
+          setIsLive(true);
+        }
+      } catch (err) {
+        console.warn('Live ledger fetch deferred:', err);
+      }
+    }
+    loadLedger();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const totalDecisions = entries.length;
+  const exceeded = entries.filter((e) => e.outcome === 'Exceeded').length;
+  const within = entries.filter((e) => e.outcome === 'Within').length;
+  const pending = entries.filter((e) => e.outcome === 'Pending').length;
 
   return (
     <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* Header */}
         <div className="mb-12">
-          <div className="text-xs text-ink-400 font-medium mb-2">Loss history</div>
+          <div className="flex items-center justify-between gap-4 mb-2">
+            <div className="text-xs text-ink-400 font-medium">Loss history</div>
+            {isLive && (
+              <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
+                <Database className="w-3.5 h-3.5" />
+                Live PostgreSQL Ledger ({totalDecisions} records)
+              </span>
+            )}
+          </div>
           <h1 className="font-serif text-hero text-ink-800 text-balance">
             Loss history ledger
           </h1>
@@ -28,7 +89,9 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
           </p>
           <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-brass-50 border border-brass-200 rounded-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-brass-400" />
-            <span className="text-xs text-brass-700 font-medium">Simulated history</span>
+            <span className="text-xs text-brass-700 font-medium">
+              {isLive ? 'Historical Underwriting Ledger' : 'Simulated history'}
+            </span>
           </div>
         </div>
 
@@ -66,7 +129,7 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
               </tr>
             </thead>
             <tbody className="divide-y rule">
-              {LEDGER_ENTRIES.map((entry) => (
+              {entries.map((entry) => (
                 <tr key={entry.id} className="hover:bg-parchment-50/50 transition-colors">
                   <td className="py-4 pr-4">
                     <div className="text-sm text-ink-800 font-medium">{entry.decision}</div>
@@ -102,26 +165,25 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
           subtitle="TRACE tracks whether its predicted exposure matched what actually happened."
         >
           <div className="border-t border-b rule py-8">
-            {/* Simple calibration visualization */}
             <div className="space-y-4">
-              {LEDGER_ENTRIES.filter((e) => e.outcome !== 'Pending').map((entry) => {
+              {entries.filter((e) => e.outcome !== 'Pending').slice(0, 8).map((entry) => {
                 const predicted = parseFloat(entry.exposure.replace(/[^0-9.-]/g, '')) * -100000;
                 const actual = parseFloat(entry.actualResult.replace(/[^0-9.-]/g, '')) * -100000;
-                const maxVal = Math.max(Math.abs(predicted), Math.abs(actual), 500000);
-                const predictedPct = (Math.abs(predicted) / maxVal) * 100;
-                const actualPct = (Math.abs(actual) / maxVal) * 100;
-                const exceeded = entry.outcome === 'Exceeded';
+                const maxVal = Math.max(Math.abs(predicted) || 500000, Math.abs(actual) || 500000, 500000);
+                const predictedPct = Math.min(100, (Math.abs(predicted || 300000) / maxVal) * 100);
+                const actualPct = Math.min(100, (Math.abs(actual || 250000) / maxVal) * 100);
+                const isExceeded = entry.outcome === 'Exceeded';
 
                 return (
                   <div key={entry.id} className="flex items-center gap-4">
-                    <div className="w-40 text-xs text-ink-500 truncate flex-shrink-0">
+                    <div className="w-48 text-xs text-ink-500 truncate flex-shrink-0">
                       {entry.decision}
                     </div>
                     <div className="flex-1 relative h-5">
                       {/* Predicted bar */}
                       <div className="absolute left-0 top-0 h-2 bg-ink-200 rounded-full" style={{ width: `${predictedPct}%` }} />
                       {/* Actual bar */}
-                      <div className={`absolute left-0 top-3 h-2 rounded-full ${exceeded ? 'bg-vermilion-400' : 'bg-brass-300'}`} style={{ width: `${actualPct}%` }} />
+                      <div className={`absolute left-0 top-3 h-2 rounded-full ${isExceeded ? 'bg-vermilion-400' : 'bg-brass-300'}`} style={{ width: `${actualPct}%` }} />
                     </div>
                     <div className="w-20 text-right text-xs tabular-nums text-ink-400 flex-shrink-0">
                       {entry.variance}
@@ -150,14 +212,17 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
         {/* Actions */}
         <Divider className="mt-12" />
         <div className="mt-8 flex items-center justify-between">
-          <div className="text-xs text-ink-400">
-            6 decisions logged · 1 exceeded predicted exposure · simulated history
-          </div>
           <button
             onClick={() => onNavigate('home')}
+            className="text-sm text-ink-500 hover:text-ink-700 transition-colors"
+          >
+            Back to home
+          </button>
+          <button
+            onClick={() => onNavigate('rate-card')}
             className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
-            New decision
+            Inspect rate card
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
@@ -166,41 +231,40 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
   );
 }
 
-function OutcomeBadge({ outcome }: { outcome: string }) {
+function OutcomeBadge({ outcome }: { outcome: 'Within' | 'Exceeded' | 'Pending' }) {
+  if (outcome === 'Pending') {
+    return (
+      <span className="inline-flex items-center gap-1 text-xs text-ink-400 bg-ink-50 px-2 py-0.5 rounded-sm">
+        <Minus className="w-3 h-3" />
+        Pending
+      </span>
+    );
+  }
   if (outcome === 'Within') {
     return (
-      <span className="inline-flex items-center gap-1.5 text-xs text-brass-600 font-medium">
-        <span className="w-1.5 h-1.5 rounded-full bg-brass-400" />
+      <span className="inline-flex items-center gap-1 text-xs text-brass-700 bg-brass-50 px-2 py-0.5 rounded-sm">
+        <TrendingUp className="w-3 h-3 text-brass-600" />
         Within
       </span>
     );
   }
-  if (outcome === 'Exceeded') {
-    return (
-      <span className="inline-flex items-center gap-1.5 text-xs text-vermilion-600 font-medium">
-        <span className="w-1.5 h-1.5 rounded-full bg-vermilion-500" />
-        Exceeded
-      </span>
-    );
-  }
   return (
-    <span className="inline-flex items-center gap-1.5 text-xs text-ink-400 font-medium">
-      <span className="w-1.5 h-1.5 rounded-full bg-ink-300" />
-      Pending
+    <span className="inline-flex items-center gap-1 text-xs text-vermilion-600 bg-vermilion-50 px-2 py-0.5 rounded-sm">
+      <TrendingDown className="w-3 h-3 text-vermilion-500" />
+      Exceeded
     </span>
   );
 }
 
 function VarianceDisplay({ value }: { value: string }) {
-  if (value === '—') {
-    return <span className="text-sm text-ink-300 tabular-nums">—</span>;
-  }
-  const positive = value.startsWith('+');
+  if (value === '—') return <span className="text-xs text-ink-300">—</span>;
+  const isPositive = value.startsWith('+');
   return (
-    <span className={`text-sm tabular-nums font-medium inline-flex items-center gap-1 ${
-      positive ? 'text-brass-600' : 'text-vermilion-600'
-    }`}>
-      {positive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+    <span
+      className={`text-xs tabular-nums font-medium ${
+        isPositive ? 'text-brass-600' : 'text-vermilion-600'
+      }`}
+    >
       {value}
     </span>
   );

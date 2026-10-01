@@ -160,11 +160,16 @@ export const api = {
       decision_id: string;
       parent_run_id?: string | null;
       run_label?: string;
-      assumptions: Record<string, number>;
+      assumptions?: Record<string, number>;
+      assumption_adjustments?: Record<string, number>;
     }) =>
       fetchJson<SandboxReQuoteResponse>('/sandbox/re-quote', {
         method: 'POST',
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          assumption_adjustments: data.assumption_adjustments || data.assumptions || {},
+          assumptions: data.assumptions || data.assumption_adjustments || {},
+        }),
       }),
   },
   ledger: {

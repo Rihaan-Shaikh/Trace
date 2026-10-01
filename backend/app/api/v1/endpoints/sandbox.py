@@ -196,7 +196,7 @@ def sandbox_requote(request: ReQuoteRequest, db: Session = Depends(get_db)):
         select(ScenarioRun).where(
             ScenarioRun.decision_id == decision.id,
             ScenarioRun.is_baseline == True,
-        )
+        ).order_by(desc(ScenarioRun.created_at))
     )
     if not baseline_run or not baseline_run.decision_premium:
         raise HTTPException(

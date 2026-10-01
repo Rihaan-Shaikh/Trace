@@ -6,9 +6,10 @@ import { Divider } from './ui/Section';
 
 interface InvestigationScreenProps {
   onNavigate: (view: View) => void;
+  decisionId?: string;
 }
 
-export function InvestigationScreen({ onNavigate }: InvestigationScreenProps) {
+export function InvestigationScreen({ onNavigate, decisionId }: InvestigationScreenProps) {
   const [visibleCount, setVisibleCount] = useState(0);
 
   useEffect(() => {
