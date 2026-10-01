@@ -1,4 +1,4 @@
-import { type View } from '@/lib/bolt/types';
+﻿import { type View } from '@/lib/bolt/types';
 
 interface AppShellProps {
   currentView: View;
@@ -27,7 +27,7 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
     <div className={`flex flex-col min-h-screen selection:bg-vermilion-500/20 ${isHome ? '' : 'bg-parchment-100 relative'}`}>
       
       {/* Top Header */}
-      <header className={`fixed top-8 right-12 z-40 text-ink-900 font-sans text-[11px] tracking-wide font-normal mix-blend-darken ${isHome ? 'hidden' : ''}`}>
+      <header className={`fixed top-8 right-12 z-0 pointer-events-none text-ink-900 font-sans text-[11px] tracking-wide font-normal mix-blend-darken ${isHome ? 'hidden' : ''}`}>
         RK &mdash; NovaMart
       </header>
       <header className={`fixed top-8 left-12 z-40 text-parchment-50 font-serif text-2xl cursor-pointer mix-blend-difference ${isHome ? 'hidden' : ''}`} onClick={() => onNavigate('home')}>
