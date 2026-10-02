@@ -10,6 +10,7 @@ interface HomeScreenProps {
 
 export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScreenProps) {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isStarting, setIsStarting] = useState(false);
   
   const requestRef = useRef<number>();
   const targetProgress = useRef(0);
@@ -50,8 +51,10 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
   }, []);
 
   const handleStart = () => {
-    if (decisionText.trim()) {
+    if (decisionText.trim() && !isStarting) {
+      setIsStarting(true);
       onNavigate('data');
+      // We don't set it back to false because it will unmount anyway when onNavigate finishes
     }
   };
 
@@ -68,11 +71,11 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
         Fixed full-screen container that holds our zooming text.
         We'll use a simple CSS transform to perfectly center it without React hydration jitter.
       */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden bg-white">
+      <div className="sticky top-0 h-[100dvh] w-full flex items-center justify-center bg-white min-h-[500px]">
         
         {/* The massive background TRACE text, zooming into the user */}
         <div 
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
         >
           <svg className="w-full h-full" preserveAspectRatio="xMidYMid slice">
             <g style={{ transform: `translate(50vw, 50vh) scale(${scale}) rotate(-12deg)` }}>
@@ -97,15 +100,14 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
           className="fixed bottom-12 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-3 pointer-events-none transition-all duration-700"
           style={{ opacity: scrollProgress < 0.1 ? 1 : 0, transform: scrollProgress < 0.1 ? 'translateY(0)' : 'translateY(20px)' }}
         >
-          <div className="w-14 h-14 rounded-full bg-[#dfdcd1] shadow-sm flex items-center justify-center border border-ink-200/20">
+          <div className="w-8 h-12 rounded-full border-2 border-ink-400/30 flex justify-center p-1 relative overflow-hidden bg-white/50 backdrop-blur-sm">
             <motion.div
-              animate={{ y: [0, 4, 0] }}
-              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            >
-              <ArrowDown className="w-5 h-5 text-ink-600 stroke-[1.5]" />
-            </motion.div>
+              className="w-1 h-3 bg-ink-500 rounded-full"
+              animate={{ y: [0, 12, 0], opacity: [1, 0.5, 1] }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            />
           </div>
-          <div className="text-xl font-serif text-ink-900 mix-blend-multiply mt-1">Scroll down</div>
+          <div className="text-sm font-sans font-medium text-ink-500 mt-1">Scroll down</div>
         </div>
 
         {/* Foreground Input Area
@@ -133,10 +135,10 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
               <div className="mt-12 flex justify-start">
                 <button
                   onClick={handleStart}
-                  disabled={!decisionText.trim()}
+                  disabled={!decisionText.trim() || isStarting}
                   className="group flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-ink-900 text-parchment-50 disabled:bg-ink-200 disabled:text-ink-400 hover:scale-[1.02] transition-all duration-500 shadow-xl"
                 >
-                  <ArrowRight className="w-6 h-6 md:w-8 md:h-8 group-hover:translate-x-2 transition-transform" />
+                  {isStarting ? <div className="w-6 h-6 md:w-8 md:h-8 border-2 border-parchment-50 border-t-transparent rounded-full animate-spin" /> : <ArrowRight className="w-6 h-6 md:w-8 md:h-8 group-hover:translate-x-2 transition-transform" />}
                 </button>
               </div>
             </div>

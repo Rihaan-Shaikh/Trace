@@ -153,7 +153,11 @@ class T1AnalyticsEngine:
 
         # If files not on disk (e.g. in test env), check data/novamart fallback
         if "transactions" not in frames or frames["transactions"].empty:
-            fixture_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../data/novamart"))
+            current = os.path.dirname(os.path.abspath(__file__))
+            while os.path.basename(current) != "backend" and current != os.path.dirname(current):
+                current = os.path.dirname(current)
+            fixture_dir = os.path.join(os.path.dirname(current), "data", "novamart")
+            
             for table_key in ["customers", "products", "transactions", "regions", "discounts"]:
                 path = os.path.join(fixture_dir, f"{table_key}.csv")
                 if os.path.exists(path) and table_key not in frames:

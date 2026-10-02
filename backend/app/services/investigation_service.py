@@ -231,7 +231,12 @@ class InvestigationService:
                 pass
 
         if not confirmed_mappings:
-            fixture_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../data/novamart"))
+            # More robust resolution for fixture_dir
+            current = os.path.dirname(os.path.abspath(__file__))
+            while os.path.basename(current) != "backend" and current != os.path.dirname(current):
+                current = os.path.dirname(current)
+            fixture_dir = os.path.join(os.path.dirname(current), "data", "novamart")
+            
             if os.path.exists(os.path.join(fixture_dir, "transactions.csv")):
                 confirmed_mappings = {
                     "customer_id": "customer_id",
@@ -481,7 +486,11 @@ class InvestigationService:
                 db.commit()
             else:
                 # Check if novamart files exist on disk to associate a canonical benchmark dataset
-                fixture_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../data/novamart"))
+                current = os.path.dirname(os.path.abspath(__file__))
+                while os.path.basename(current) != "backend" and current != os.path.dirname(current):
+                    current = os.path.dirname(current)
+                fixture_dir = os.path.join(os.path.dirname(current), "data", "novamart")
+                
                 if os.path.exists(os.path.join(fixture_dir, "transactions.csv")):
                     bm_ds = Dataset(
                         name="NovaMart Commercial Operations Benchmark",

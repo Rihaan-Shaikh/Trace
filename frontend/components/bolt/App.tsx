@@ -39,12 +39,12 @@ function App() {
             (d) => d.id === CANONICAL_DECISION_ID || d.status === 'underwritten' || d.status === 'approved'
           );
           if (underwritten) {
-            setDecisionId(underwritten.id);
+            setDecisionId(prev => prev === CANONICAL_DECISION_ID ? underwritten.id : prev);
             if (underwritten.dataset_id) {
-              setDatasetId(underwritten.dataset_id);
+              setDatasetId(prev => prev === CANONICAL_DATASET_ID ? underwritten.dataset_id : prev);
             }
           } else {
-            setDecisionId(decisionsRes.items[0].id);
+            setDecisionId(prev => prev === CANONICAL_DECISION_ID ? decisionsRes.items[0].id : prev);
           }
         }
       } catch (err) {

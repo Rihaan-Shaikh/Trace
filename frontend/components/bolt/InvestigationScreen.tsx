@@ -19,6 +19,7 @@ export function InvestigationScreen({ onNavigate, decisionId }: InvestigationScr
     async function run() {
       if (!decisionId) { setIsInvestigating(false); return; }
       try {
+        await api.decisions.generatePlan(decisionId);
         await api.decisions.runInvestigation(decisionId);
       } catch (err) {
         

@@ -1,4 +1,4 @@
-﻿import { type View } from '@/lib/bolt/types';
+import { type View } from '@/lib/bolt/types';
 
 interface AppShellProps {
   currentView: View;
@@ -41,7 +41,7 @@ export function AppShell({ currentView, onNavigate, children, hasText }: AppShel
       </main>
 
       {/* Floating Pill Dock Navigation */}
-      <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${currentView === 'home' && !hasText ? 'opacity-0 pointer-events-none translate-y-8' : 'opacity-100 translate-y-0'}`}>
+      <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${currentView === 'home' ? 'opacity-0 pointer-events-none translate-y-8' : 'opacity-100 translate-y-0'}`}>
         <nav className="flex items-center gap-1 p-1.5 bg-[#0A0A0C] rounded-full shadow-2xl backdrop-blur-md">
           {NAV_ITEMS.map((item) => {
             const active = currentView === item.id || 

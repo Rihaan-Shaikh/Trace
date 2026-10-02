@@ -246,25 +246,25 @@ export function SemanticMapScreen({ onNavigate, datasetId }: SemanticMapScreenPr
         </div>
 
         {/* Entity graph */}
-        <div className="border rule rounded-sm bg-parchment-50 p-8 mb-12">
-          <div className="text-xs text-ink-400 font-medium mb-6">Inferred entity graph</div>
+        <div className="mb-12">
+          
           <div className="relative h-96 w-full my-8">
             <svg className="absolute inset-0 w-full h-full pointer-events-none">
               <line x1="50%" y1="15%" x2="50%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
-              <line x1="50%" y1="50%" x2="85%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
-              <line x1="50%" y1="50%" x2="15%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
+              <line x1="50%" y1="50%" x2="72%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
+              <line x1="50%" y1="50%" x2="28%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
               <line x1="50%" y1="50%" x2="50%" y2="85%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
-              <line x1="50%" y1="15%" x2="15%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
+              <line x1="50%" y1="15%" x2="28%" y2="50%" stroke="currentColor" strokeWidth="1.5" className="text-ink-300" />
             </svg>
 
             {SEMANTIC_ENTITIES.map((entity) => (
               <div
                 key={entity.id}
-                className="absolute transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 flex flex-col items-center justify-center bg-white border border-ink-200 rounded-full shadow-sm hover:shadow-[0_0_30px_rgba(180,140,50,0.2)] hover:border-brass-300 transition-all duration-500 cursor-pointer group hover:scale-105 z-10"
+                className="absolute transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 flex flex-col items-center justify-center bg-brass-700 border-none rounded-full shadow-md hover:shadow-[0_0_20px_rgba(122,99,48,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 z-10"
                 style={{ left: `${entity.x}%`, top: `${entity.y}%` }}
               >
                 <div className="absolute inset-0 rounded-full border border-brass-400/0 group-hover:border-brass-400/50 group-hover:animate-ping opacity-20" />
-                  <div className="text-sm font-serif italic text-ink-800 capitalize transition-colors group-hover:text-brass-700">{entity.name}</div>
+                  <div className="text-sm font-sans font-medium text-parchment-50 capitalize transition-colors">{entity.name}</div>
               </div>
             ))}
           </div>

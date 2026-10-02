@@ -27,9 +27,9 @@ export const NOVAMART_FILES: DataFile[] = [
 
 export const SEMANTIC_ENTITIES: SemanticEntity[] = [
   { id: 'customer', name: 'Customer', x: 50, y: 15, connectedTo: ['transaction', 'region'] },
-  { id: 'product', name: 'Product', x: 85, y: 50, connectedTo: ['transaction'] },
+  { id: 'product', name: 'Product', x: 72, y: 50, connectedTo: ['transaction'] },
   { id: 'transaction', name: 'Transaction', x: 50, y: 50, connectedTo: ['customer', 'product', 'campaign'] },
-  { id: 'region', name: 'Region', x: 15, y: 50, connectedTo: ['transaction'] },
+  { id: 'region', name: 'Region', x: 28, y: 50, connectedTo: ['transaction'] },
   { id: 'campaign', name: 'Campaign', x: 50, y: 85, connectedTo: ['transaction'] },
 ];
 
