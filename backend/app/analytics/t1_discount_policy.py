@@ -38,8 +38,8 @@ class T1DiscountPolicyTemplate:
         "net_sales",
         "unit_price",
         "quantity",
-        "margin",
-        "discount_depth",
+        "gross_margin",
+        "discount_pct",
     ]
     OPTIONAL_CONCEPTS = ["region_id", "segment", "contract_terms"]
     REQUIRED_METRICS = [

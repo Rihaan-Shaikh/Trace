@@ -245,8 +245,8 @@ class InvestigationService:
                     "net_sales": "net_sales",
                     "unit_price": "unit_price",
                     "quantity": "quantity",
-                    "margin": "margin",
-                    "discount_depth": "discount_pct",
+                    "gross_margin": "gross_margin",
+                    "discount_pct": "discount_pct",
                 }
 
         # 2. Evaluate Concept Availability by Template

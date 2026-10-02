@@ -227,26 +227,56 @@ export function DecisionRecordScreen({
   decisionId,
   decisionTitle,
 }: DecisionRecordScreenProps) {
-  const calc = computeDecision(assumptions);
+  const fallbackCalc = computeDecision(assumptions);
+  const isBaseline = JSON.stringify(assumptions) === JSON.stringify(DEFAULT_ASSUMPTIONS);
   const [liveRecord, setLiveRecord] = useState<any>(null);
+  const [liveBrief, setLiveBrief] = useState<any>(null);
 
   useEffect(() => {
     let isMounted = true;
-    async function loadRecord() {
+    async function loadData() {
       if (!decisionId) return;
-      try {
-        const rec = await api.approvals.getRecord(decisionId);
-        if (isMounted && rec) {
-          setLiveRecord(rec);
-        }
-      } catch (err) {
+      // Load both the record and the brief in parallel
+      const results = await Promise.allSettled([
+        api.approvals.getRecord(decisionId),
+        api.approvals.getBrief(decisionId),
+      ]);
+      if (!isMounted) return;
+      if (results[0].status === 'fulfilled' && results[0].value) {
+        setLiveRecord(results[0].value);
+      }
+      if (results[1].status === 'fulfilled' && results[1].value?.sections_json) {
+        setLiveBrief(results[1].value);
       }
     }
-    loadRecord();
+    loadData();
     return () => {
       isMounted = false;
     };
   }, [decisionId]);
+
+  // Use live brief data if available, otherwise sandbox calc
+  const secPrem = liveBrief?.sections_json?.decision_premium;
+  const secExp = liveBrief?.sections_json?.exposure_report;
+  const secVerd = liveBrief?.sections_json?.decision_and_verdict;
+  const secLapse = liveBrief?.sections_json?.coverage_lapse?.conditions;
+
+  const calc: DecisionCalc = (liveBrief && isBaseline && secPrem)
+    ? {
+        premium: Math.round(secPrem.total_decision_premium),
+        premiumRate: Number((secPrem.premium_rate * 100).toFixed(1)),
+        projectedUpside: Math.round(secPrem.projected_upside),
+        netLossProbability: Math.round((secExp?.probability_of_net_loss ?? 0.012) * 100),
+        verdict: secVerd?.verdict ?? fallbackCalc.verdict,
+        coverageState: secVerd?.coverage_state ?? fallbackCalc.coverageState,
+        exposure: {
+          p10: Math.round(secExp?.p10_tail_loss ?? fallbackCalc.exposure.p10),
+          avgWorst10: Math.round(secExp?.average_worst_10pct ?? fallbackCalc.exposure.avgWorst10),
+          worstPlausible: Math.round(secExp?.worst_plausible ?? fallbackCalc.exposure.worstPlausible),
+          dataExposure: Math.round(secExp?.data_exposure ?? (fallbackCalc.exposure.dataExposure ?? 0)),
+        },
+      }
+    : fallbackCalc;
 
   const timestamp = liveRecord?.created_at
     ? new Date(liveRecord.created_at).toLocaleString('en-GB', {
@@ -266,9 +296,9 @@ export function DecisionRecordScreen({
 
   const recordNo = liveRecord?.id
     ? `DR-${liveRecord.id.slice(0, 13).toUpperCase()}`
-    : 'DR-2026-09-30-001';
+    : `DR-${new Date().toISOString().slice(0, 10)}-${Math.floor(Math.random() * 900 + 100)}`;
 
-  const hash = liveRecord?.snapshot_integrity_hash || '703e74df28b51b37a8164e55fd9960afbebacd859811f8b41337ac87f2d38345';
+  const hash = liveRecord?.snapshot_integrity_hash || null;
 
   return (
     <div className="min-h-screen bg-parchment-100">
@@ -388,7 +418,7 @@ export function DecisionRecordScreen({
               <div className="text-xs text-ink-400 font-medium">Cryptographic seal</div>
             </div>
             <div className="font-mono text-xs text-ink-400 break-all bg-parchment-100 p-3 rounded-sm">
-              SHA-256: {hash}
+              {hash ? `SHA-256: ${hash}` : 'SHA-256: pending — record seal writes upon backend commit'}
             </div>
             <div className="text-[11px] text-ink-300 mt-2">
               This record is immutable and permanently written to the <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> Loss History Ledger.
