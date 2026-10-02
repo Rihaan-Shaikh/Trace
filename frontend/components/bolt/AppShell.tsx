@@ -4,6 +4,7 @@ interface AppShellProps {
   currentView: View;
   onNavigate: (view: View) => void;
   children: React.ReactNode;
+  hasText?: boolean;
 }
 
 interface NavItem {
@@ -19,7 +20,7 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'rate-card', label: 'Rate Card' },
 ];
 
-export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
+export function AppShell({ currentView, onNavigate, children, hasText }: AppShellProps) {
   // Only home screen has its own hard split, other screens use this subtle split
   const isHome = currentView === 'home';
 
@@ -40,7 +41,7 @@ export function AppShell({ currentView, onNavigate, children }: AppShellProps) {
       </main>
 
       {/* Floating Pill Dock Navigation */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
+      <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ${currentView === 'home' && !hasText ? 'opacity-0 pointer-events-none translate-y-8' : 'opacity-100 translate-y-0'}`}>
         <nav className="flex items-center gap-1 p-1.5 bg-[#0A0A0C] rounded-full shadow-2xl backdrop-blur-md">
           {NAV_ITEMS.map((item) => {
             const active = currentView === item.id || 

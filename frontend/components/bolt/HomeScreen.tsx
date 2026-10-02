@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 
 interface HomeScreenProps {
@@ -81,7 +82,24 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
           </svg>
         </div>
 
-        {/* Foreground Input Area that fades in as user scrolls through the door */}
+        
+        {/* Elite Scroll Down Indicator */}
+        <div 
+          className="fixed bottom-12 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-4 pointer-events-none transition-all duration-700"
+          style={{ opacity: scrollProgress < 0.1 ? 1 : 0, transform: scrollProgress < 0.1 ? 'translateY(0)' : 'translateY(20px)' }}
+        >
+          <div className="text-[9px] uppercase tracking-[0.4em] text-ink-400 font-semibold font-sans mix-blend-multiply">Scroll to enter</div>
+          <div className="w-5 h-9 border-[1.5px] border-ink-300/70 rounded-full flex justify-center p-1 relative shadow-[inset_0_2px_4px_rgba(0,0,0,0.05),_0_4px_12px_rgba(0,0,0,0.05)] bg-parchment-50/40 backdrop-blur-md">
+            <motion.div 
+              className="w-1 h-2.5 bg-ink-600 rounded-full shadow-[0_1px_3px_rgba(0,0,0,0.2)]"
+              animate={{ y: [0, 14, 0], opacity: [1, 0.5, 1] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+            />
+          </div>
+        </div>
+
+        {/* Foreground Input Area
+ that fades in as user scrolls through the door */}
         <div 
           className="relative z-50 w-full max-w-2xl px-6 pointer-events-auto mx-auto"
           style={{ 

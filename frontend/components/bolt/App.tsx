@@ -183,7 +183,7 @@ function App() {
   };
 
   return (
-    <AppShell currentView={view} onNavigate={handleNavigate}>
+    <AppShell currentView={view} onNavigate={handleNavigate} hasText={decisionText.trim().length > 0}>
       {renderView()}
     </AppShell>
   );
