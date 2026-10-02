@@ -12,6 +12,7 @@ interface LedgerScreenProps {
 export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
   const [entries, setEntries] = useState<LedgerEntry[]>(LEDGER_ENTRIES);
   const [isLive, setIsLive] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -52,7 +53,8 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
           setIsLive(true);
         }
       } catch (err) {
-        console.warn('Live ledger fetch deferred:', err);
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
     }
     loadLedger();
@@ -66,13 +68,25 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
   const within = entries.filter((e) => e.outcome === 'Within').length;
   const pending = entries.filter((e) => e.outcome === 'Pending').length;
 
-  return (
+  
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-parchment-100 flex flex-col items-center justify-center">
+        <div className="relative flex items-center justify-center">
+          <div className="w-16 h-16 border-2 border-ink-200 border-t-ink-600 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 border-2 border-brass-200 border-b-brass-600 rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
+        </div>
+        
+      </div>
+    );
+  }
+return (
     <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center justify-between gap-4 mb-2">
-            <div className="text-xs text-ink-400 font-medium">Loss history</div>
+            <div className="text-xs text-ink-400 font-medium">Historical Precedent</div>
             {isLive && (
               <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
                 <Database className="w-3.5 h-3.5" />
@@ -80,11 +94,11 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
               </span>
             )}
           </div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
-            Loss history ledger
+          <h1 className="font-serif text-hero text-ink-800 ">
+            Historical Precedent ledger
           </h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
-            TRACE remembers what happened. Every approved decision is recorded here with its
+            <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> remembers what happened. Every approved decision is recorded here with its
             predicted exposure and eventual outcome.
           </p>
           <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-brass-50 border border-brass-200 rounded-sm">
@@ -220,7 +234,7 @@ export function LedgerScreen({ onNavigate }: LedgerScreenProps) {
           </button>
           <button
             onClick={() => onNavigate('rate-card')}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             Inspect rate card
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

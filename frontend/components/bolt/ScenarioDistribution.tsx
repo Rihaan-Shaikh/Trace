@@ -76,7 +76,7 @@ export function ScenarioDistribution({ calc }: ScenarioDistributionProps) {
       <div className="mt-4 flex items-start gap-2">
         <div className="w-1 h-8 bg-vermilion-400 rounded-full mt-0.5" />
         <div className="text-xs text-ink-500 leading-relaxed">
-          The left tail represents the downside scenarios. TRACE prices the Decision Premium
+          The left tail represents the downside scenarios. <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> prices the Decision Premium
           against this exposure, not against the median outcome.
         </div>
       </div>

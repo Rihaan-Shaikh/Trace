@@ -90,7 +90,7 @@ export function EvidenceDrawer({ open, onClose, title, root }: EvidenceDrawerPro
         {/* Chain */}
         <div className="px-6 py-6">
           <div className="text-xs text-ink-400 mb-4 leading-relaxed">
-            Every number in TRACE traces back to source records, calculations, and model assumptions.
+            Every number in <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> traces back to source records, calculations, and model assumptions.
             Inspect each link in the chain.
           </div>
           <EvidenceNodeRow node={root} depth={0} />

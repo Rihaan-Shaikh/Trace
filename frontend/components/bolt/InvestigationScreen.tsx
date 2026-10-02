@@ -3,6 +3,7 @@ import { INVESTIGATION_STAGES } from '@/lib/bolt/data';
 import { ArrowRight, Check } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Divider } from './ui/Section';
+import { api } from '@/lib/api-client';
 
 interface InvestigationScreenProps {
   onNavigate: (view: View) => void;
@@ -11,6 +12,23 @@ interface InvestigationScreenProps {
 
 export function InvestigationScreen({ onNavigate, decisionId }: InvestigationScreenProps) {
   const [visibleCount, setVisibleCount] = useState(0);
+  const [isInvestigating, setIsInvestigating] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function run() {
+      if (!decisionId) { setIsInvestigating(false); return; }
+      try {
+        await api.decisions.runInvestigation(decisionId);
+      } catch (err) {
+        
+      } finally {
+        if (isMounted) setIsInvestigating(false);
+      }
+    }
+    run();
+    return () => { isMounted = false; };
+  }, [decisionId]);
 
   useEffect(() => {
     if (visibleCount >= INVESTIGATION_STAGES.length) return;
@@ -20,19 +38,19 @@ export function InvestigationScreen({ onNavigate, decisionId }: InvestigationScr
     return () => clearTimeout(timer);
   }, [visibleCount]);
 
-  const allComplete = visibleCount >= INVESTIGATION_STAGES.length;
+  const allComplete = visibleCount >= INVESTIGATION_STAGES.length && !isInvestigating;
 
   return (
     <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-16">
-          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · investigation</div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
+          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart - investigation</div>
+          <h1 className="font-serif text-hero text-ink-800 ">
             The investigation.
           </h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
-            TRACE investigates the decision in stages, leaving evidence behind at each step.
+            <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> investigates the decision in stages, leaving evidence behind at each step.
           </p>
         </div>
 
@@ -93,7 +111,7 @@ export function InvestigationScreen({ onNavigate, decisionId }: InvestigationScr
               </div>
               <button
                 onClick={() => onNavigate('decision-brief')}
-                className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+                className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
               >
                 Read the decision brief
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

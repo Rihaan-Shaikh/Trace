@@ -57,7 +57,6 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
           }
         }
       } catch (err) {
-        console.warn('Dataset files API check deferred:', err);
       }
     }
     loadDatasetFiles();
@@ -82,7 +81,6 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
       setFiles([{ name: file.name, rows: 'Reconciled', fields: 'Auto-detected', status: 'mapped' }, ...files]);
       setIsLive(true);
     } catch (err) {
-      console.error('File upload error:', err);
     }
     setIsUploading(false);
   };
@@ -93,19 +91,19 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center justify-between gap-4 mb-2">
-            <div className="text-xs text-ink-400 font-medium">NovaMart Ã‚ï¿½ evidence</div>
+            <div className="text-xs text-ink-400 font-medium">NovaMart - evidentiary baseline</div>
             {isLive && (
               <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
                 <Database className="w-3.5 h-3.5" />
-                Live Benchmark Tables Connected
+                Verified Corpus Active
               </span>
             )}
           </div>
-          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance">
+          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 ">
             Bring the evidence.
           </h1>
           <p className="mt-3 text-ink-500 text-lg w-full pr-8 leading-relaxed">
-            Upload the physical tables behind the decision. TRACE maps the commercial schema and reconciles every row.
+            Upload the physical tables behind the decision. <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> maps the commercial schema and reconciles every row.
           </p>
         </div>
 
@@ -164,7 +162,7 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
 
         {/* File list */}
         <div>
-          <div className="text-xs text-ink-400 font-medium mb-4">Ingested & Reconciled Tables</div>
+          <div className="text-xs text-ink-400 font-medium mb-4">Assembled Evidence</div>
           <div className="divide-y rule border-t border-b rule">
             {files.map((file, i) => (
               <FileRow key={file.name + i} file={file} isNew={isLive && i === 0} />
@@ -179,9 +177,9 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
           </div>
           <button
             onClick={() => onNavigate('semantic-map')}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
-            Map semantic entities
+            Synthesize Actuarial DNA
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
@@ -238,12 +236,12 @@ export function SemanticMapScreen({ onNavigate, datasetId }: SemanticMapScreenPr
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
-          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart Ã‚ï¿½ ontology</div>
-          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance">
-            The semantic graph.
+          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart - structural mapping</div>
+          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 ">
+            The anatomy of the decision.
           </h1>
           <p className="mt-3 text-ink-500 text-lg w-full pr-8 leading-relaxed">
-            TRACE understands business concepts, not just column headers. Review and lock definitions.
+            <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> understands business concepts, not just column headers. Review and lock definitions.
           </p>
         </div>
 
@@ -319,7 +317,7 @@ export function SemanticMapScreen({ onNavigate, datasetId }: SemanticMapScreenPr
           </button>
           <button
             onClick={() => onNavigate('data-health')}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             Review data health findings
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

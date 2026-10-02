@@ -25,9 +25,10 @@ interface DecisionBriefProps {
   assumptions: SandboxAssumptions;
   setAssumptions: (a: SandboxAssumptions) => void;
   decisionId?: string;
+  decisionTitle?: string;
 }
 
-export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisionId }: DecisionBriefProps) {
+export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisionId, decisionTitle }: DecisionBriefProps) {
   const [drawerState, setDrawerState] = useState<{ open: boolean; title: string; root: typeof EVIDENCE_CHAIN_PREMIUM }>({
     open: false,
     title: '',
@@ -151,14 +152,27 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
     setDrawerState({ open: true, title, root });
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-parchment-100 flex flex-col items-center justify-center">
+        <div className="relative flex items-center justify-center">
+          <div className="w-16 h-16 border-2 border-ink-200 border-t-ink-600 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 border-2 border-brass-200 border-b-brass-600 rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
+        </div>
+        
+      </div>
+    );
+  }
+
+
   return (
     <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
-        {/* â”€â”€ Decision header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        
         <div className="mb-12">
           <div className="flex items-center justify-between gap-4 mb-3">
             <div className="text-xs text-ink-400 font-medium">
-              NovaMart · pricing decision
+              NovaMart - pricing decision
             </div>
             {liveBrief && (
               <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
@@ -167,8 +181,8 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
               </span>
             )}
           </div>
-          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800 text-balance leading-[1.05] w-full pr-12">
-            {liveBrief?.brief_title || 'Stop blanket discounts for low-margin customers.'}
+          <h1 className="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-ink-800  leading-[1.05] w-full pr-12">
+            {liveBrief?.brief_title || decisionTitle || 'Pricing decision matrix'}
           </h1>
 
           <div className="mt-6 flex items-center gap-4">
@@ -184,7 +198,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </div>
 
-        {/* â”€â”€ Decision Premium â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        
         <div className="border-t border-b rule py-12">
           <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end">
             <div>
@@ -220,7 +234,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </div>
 
-        {/* â”€â”€ Coverage Lapse Conditions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        
         <Section
           eyebrow="The signature"
           title="Coverage lapse conditions"
@@ -247,7 +261,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* â”€â”€ Exposure Report â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        
         <Section
           eyebrow="Downside"
           title="Exposure report"
@@ -280,7 +294,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* â”€â”€ Counter-Decision Underwriter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        
         <Section
           eyebrow="The opposition file"
           title="Counter-decision underwriter"
@@ -312,11 +326,11 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* â”€â”€ What survived scrutiny â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        
         <Section
           eyebrow="Red-team review"
           title="What survived scrutiny"
-          subtitle="How the recommendation changed after TRACE argued against itself."
+          subtitle="How the recommendation changed after trace argued against itself."
         >
           <div className="w-full pr-12">
             {scrutinySteps.map((step, idx) => (
@@ -346,7 +360,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* â”€â”€ Cost of inaction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        
         <Section
           eyebrow="The alternative"
           title="Cost of inaction"
@@ -370,10 +384,10 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* â”€â”€ Data health summary â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        
         <Section
           eyebrow="Verification"
-          title="Data health and verification"
+          title="Integrity check and verification"
           subtitle="Real data-quality findings were priced into this premium."
         >
           <div className="grid sm:grid-cols-4 gap-0 border-t border-b rule divide-y sm:divide-y-0 sm:divide-x rule">
@@ -402,11 +416,11 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           </div>
         </Section>
 
-        {/* â”€â”€ Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        
         <Divider className="mt-12" />
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
           <div className="text-xs text-ink-400">
-            Decision brief · version 1.0 · NovaMart benchmark database
+            Decision brief - version 1.0 - NovaMart benchmark database
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -418,7 +432,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
             </button>
             <button
               onClick={() => onNavigate('approval')}
-              className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+              className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
             >
               <FileText className="w-4 h-4" />
               Your decision

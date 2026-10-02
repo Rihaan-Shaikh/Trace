@@ -64,7 +64,6 @@ function App() {
           }
         }
       } catch (err) {
-        console.warn('Dataset API check deferred:', err);
       }
     }
 
@@ -76,7 +75,7 @@ function App() {
 
   const handleNavigate = (next: View) => {
     if (next === 'investigation' && decisionId && datasetId) {
-      api.decisions.update(decisionId, { dataset_id: datasetId }).catch(console.warn);
+      api.decisions.update(decisionId, { dataset_id: datasetId }).catch(() => {});
     }
     setView(next);
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -97,9 +96,9 @@ function App() {
       });
       if (created && created.id) {
         setDecisionId(created.id);
-      }
+        try { await api.decisions.setObjective(created.id, { primary_goal: "Maximize retention", target_metric: "retention_rate" }); } catch (e) { }
+        }
     } catch (e) {
-      console.warn('Could not register decision in API, using existing decision:', e);
     }
     handleNavigate('data');
   };

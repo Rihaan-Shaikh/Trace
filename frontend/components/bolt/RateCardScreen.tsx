@@ -13,6 +13,7 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
   const [drivers, setDrivers] = useState<RateDriver[]>(RATE_DRIVERS);
   const [activeVersion, setActiveVersion] = useState<string>('1.0.0');
   const [isLive, setIsLive] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
@@ -55,7 +56,8 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
           setIsLive(true);
         }
       } catch (err) {
-        console.warn('Rate card API check deferred:', err);
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
     }
     loadRateCard();
@@ -66,7 +68,19 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
 
   const totalWeight = drivers.reduce((sum, d) => sum + d.weight, 0);
 
-  return (
+  
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-parchment-100 flex flex-col items-center justify-center">
+        <div className="relative flex items-center justify-center">
+          <div className="w-16 h-16 border-2 border-ink-200 border-t-ink-600 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 border-2 border-brass-200 border-b-brass-600 rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
+        </div>
+        
+      </div>
+    );
+  }
+return (
     <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* Header */}
@@ -80,7 +94,7 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
               </span>
             )}
           </div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
+          <h1 className="font-serif text-hero text-ink-800 ">
             Rate card
           </h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
@@ -187,7 +201,7 @@ export function RateCardScreen({ onNavigate }: RateCardScreenProps) {
           </button>
           <button
             onClick={() => onNavigate('data')}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             Bring new evidence
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

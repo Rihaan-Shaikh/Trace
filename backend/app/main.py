@@ -1,4 +1,4 @@
-"""TRACE Decision Underwriting Engine â Main FastAPI Application Entrypoint.
+﻿"""TRACE Decision Underwriting Engine Ã¢Â€Â” Main FastAPI Application Entrypoint.
 
 Architecture Principles:
 - ONE LLM + STRUCTURED SPECIALIST ROLES + DETERMINISTIC ANALYTICS
@@ -56,7 +56,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="TRACE â Decision Underwriting Engine",
+    title="TRACE Ã¢Â€Â” Decision Underwriting Engine",
     description=(
         "TRACE underwrites business decisions instead of guessing at them. "
         "Delivers Decision Premium, Exposure Report, Coverage Lapse Conditions, and an inspectable Evidence Chain."

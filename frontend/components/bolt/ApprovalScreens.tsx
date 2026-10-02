@@ -10,9 +10,10 @@ interface ApprovalScreenProps {
   assumptions: SandboxAssumptions;
   onApprove: (action: 'approve' | 'modify' | 'reject', note: string) => void;
   decisionId?: string;
+  decisionTitle?: string;
 }
 
-export function ApprovalScreen({ onNavigate, assumptions, onApprove, decisionId }: ApprovalScreenProps) {
+export function ApprovalScreen({ onNavigate, assumptions, onApprove, decisionId, decisionTitle }: ApprovalScreenProps) {
   const calc = computeDecision(assumptions);
   const [action, setAction] = useState<'approve' | 'modify' | 'reject' | null>(null);
   const [note, setNote] = useState('');
@@ -32,7 +33,6 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove, decisionId 
         });
       }
     } catch (e) {
-      console.warn('Backend approval submission check:', e);
     } finally {
       setIsSubmitting(false);
     }
@@ -60,12 +60,12 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove, decisionId 
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-20">
         {/* Header */}
         <div className="mb-12">
-          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart · approval</div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
+          <div className="text-xs text-ink-400 font-medium mb-2">NovaMart - approval</div>
+          <h1 className="font-serif text-hero text-ink-800 ">
             Your decision.
           </h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
-            TRACE recommends and prices. You decide. Human approval binds the record.
+            <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> recommends and prices. You decide. Human approval binds the record.
           </p>
         </div>
 
@@ -75,7 +75,7 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove, decisionId 
             <div>
               <div className="text-xs text-ink-400 mb-2">Recommendation</div>
               <div className="text-xl text-ink-800 font-medium leading-relaxed max-w-2xl">
-                Stop blanket discounts for low-margin customers.
+                {decisionTitle || 'Pricing decision matrix'}
               </div>
               <div className="mt-4 flex items-center gap-3">
                 <VerdictBadge verdict={calc.verdict} />
@@ -183,7 +183,7 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove, decisionId 
             <button
               onClick={handleConfirm}
               disabled={isSubmitting}
-              className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+              className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
             >
               {isSubmitting ? 'Signing…' : 'Confirm decision'}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -197,7 +197,7 @@ export function ApprovalScreen({ onNavigate, assumptions, onApprove, decisionId 
         {!action && (
           <div className="mt-8">
             <div className="text-sm text-ink-400 leading-relaxed max-w-prose-doc">
-              The human is the final authority. TRACE recommends and prices. The human decides.
+              The human is the final authority. <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> recommends and prices. The human decides.
             </div>
           </div>
         )}
@@ -215,6 +215,7 @@ interface DecisionRecordScreenProps {
   approvalNote: string;
   approverName: string;
   decisionId?: string;
+  decisionTitle?: string;
 }
 
 export function DecisionRecordScreen({
@@ -224,6 +225,7 @@ export function DecisionRecordScreen({
   approvalNote,
   approverName,
   decisionId,
+  decisionTitle,
 }: DecisionRecordScreenProps) {
   const calc = computeDecision(assumptions);
   const [liveRecord, setLiveRecord] = useState<any>(null);
@@ -238,7 +240,6 @@ export function DecisionRecordScreen({
           setLiveRecord(rec);
         }
       } catch (err) {
-        console.warn('Live record fetch check:', err);
       }
     }
     loadRecord();
@@ -275,7 +276,7 @@ export function DecisionRecordScreen({
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center justify-between gap-4 mb-2">
-            <div className="text-xs text-ink-400 font-medium">NovaMart · record</div>
+            <div className="text-xs text-ink-400 font-medium">NovaMart - record</div>
             {liveRecord && (
               <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
                 <Database className="w-3.5 h-3.5" />
@@ -283,7 +284,7 @@ export function DecisionRecordScreen({
               </span>
             )}
           </div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
+          <h1 className="font-serif text-hero text-ink-800 ">
             Decision record
           </h1>
         </div>
@@ -308,7 +309,7 @@ export function DecisionRecordScreen({
           <div className="mb-8">
             <div className="text-xs text-ink-400 mb-2">Decision</div>
             <div className="text-lg text-ink-800 font-medium leading-relaxed">
-              Stop blanket discounts for low-margin customers.
+              {decisionTitle || 'Pricing decision matrix'}
             </div>
           </div>
 
@@ -390,7 +391,7 @@ export function DecisionRecordScreen({
               SHA-256: {hash}
             </div>
             <div className="text-[11px] text-ink-300 mt-2">
-              This record is immutable and permanently written to the TRACE Loss History Ledger.
+              This record is immutable and permanently written to the <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> Loss History Ledger.
             </div>
           </div>
         </div>
@@ -399,7 +400,7 @@ export function DecisionRecordScreen({
         <div className="mt-8 flex items-center gap-4">
           <button
             onClick={() => onNavigate('ledger')}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             View loss history ledger
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

@@ -17,11 +17,12 @@ export function DataHealthScreen({ onNavigate, datasetId }: DataHealthScreenProp
   const [liveFindings, setLiveFindings] = useState<any[]>(DATA_FINDINGS);
   const [healthScore, setHealthScore] = useState<number>(94);
   const [isLive, setIsLive] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
     async function loadHealth() {
-      if (!datasetId) return;
+      if (!datasetId) { setIsLoading(false); return; }
       try {
         const res = await api.datasets.getDataHealth(datasetId);
         if (isMounted && res && res.findings && res.findings.length > 0) {
@@ -41,7 +42,8 @@ export function DataHealthScreen({ onNavigate, datasetId }: DataHealthScreenProp
           setIsLive(true);
         }
       } catch (err) {
-        console.warn('Data health API check deferred:', err);
+      } finally {
+        if (isMounted) setIsLoading(false);
       }
     }
     loadHealth();
@@ -55,13 +57,25 @@ export function DataHealthScreen({ onNavigate, datasetId }: DataHealthScreenProp
     setDrawerOpen(true);
   };
 
-  return (
+  
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-parchment-100 flex flex-col items-center justify-center">
+        <div className="relative flex items-center justify-center">
+          <div className="w-16 h-16 border-2 border-ink-200 border-t-ink-600 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 border-2 border-brass-200 border-b-brass-600 rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
+        </div>
+        
+      </div>
+    );
+  }
+return (
     <div className="min-h-screen bg-parchment-100">
       <div className="max-w-canvas mx-auto px-8 lg:px-16 pt-16 pb-16">
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center justify-between gap-4 mb-2">
-            <div className="text-xs text-ink-400 font-medium">NovaMart � audit</div>
+            <div className="text-xs text-ink-400 font-medium">NovaMart - audit</div>
             {isLive && (
               <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
                 <Database className="w-3.5 h-3.5" />
@@ -69,11 +83,11 @@ export function DataHealthScreen({ onNavigate, datasetId }: DataHealthScreenProp
               </span>
             )}
           </div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
+          <h1 className="font-serif text-hero text-ink-800 ">
             Before the decision, check the evidence.
           </h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
-            TRACE audited the underlying tables for schema defects and noise that would distort the decision.
+            <span className="font-serif italic font-medium lowercase tracking-wider text-ink-500">trace</span> audited the underlying tables for schema defects and noise that would distort the decision.
             Every detected finding is mathematically priced into the Decision Premium.
           </p>
         </div>
@@ -137,7 +151,7 @@ export function DataHealthScreen({ onNavigate, datasetId }: DataHealthScreenProp
           </button>
           <button
             onClick={() => onNavigate('investigation')}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             Launch underwriting investigation
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -148,7 +162,7 @@ export function DataHealthScreen({ onNavigate, datasetId }: DataHealthScreenProp
       <EvidenceDrawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        title={selectedFinding ? 'Data finding evidence' : 'Data health audit chain'}
+        title={selectedFinding ? 'Data finding evidence' : 'Integrity check audit chain'}
         root={EVIDENCE_CHAIN_PREMIUM}
       />
     </div>

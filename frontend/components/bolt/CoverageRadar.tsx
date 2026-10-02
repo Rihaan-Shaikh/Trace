@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { Reveal } from '@/components/Reveal';
 import { useCountUp } from '@/hooks/useCountUp';
 import { useInView } from '@/hooks/useInView';
@@ -119,7 +119,7 @@ export function CoverageRadar() {
         </Reveal>
 
         <Reveal delay={100}>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-parchment-100 mb-4 text-balance max-w-3xl">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-parchment-100 mb-4  max-w-3xl">
             Fourteen dimensions. One envelope.
           </h2>
         </Reveal>
@@ -140,7 +140,7 @@ export function CoverageRadar() {
                 <div className="flex items-center gap-2">
                   <Layers className="w-4 h-4 text-vermilion-400" />
                   <span className="font-mono text-xs text-ink-300 tracking-wider">
-                    RISK RADAR — 14 DIMENSIONS
+                    RISK RADAR â€” 14 DIMENSIONS
                   </span>
                 </div>
                 <span className="font-mono text-[10px] text-ink-500">LIVE</span>
@@ -207,7 +207,7 @@ export function CoverageRadar() {
               <div ref={ref} className="grid grid-cols-3 gap-px bg-ink-700/40 rounded-xl overflow-hidden border border-ink-700/60">
                 {[
                   { val: avgCoverage.toFixed(1) + '%', label: 'AVG COV', icon: Shield, iconColor: 'text-[#22c55e]' },
-                  { val: Math.floor(totalTraces).toLocaleString(), label: 'TRACES', icon: Activity, iconColor: 'text-[#06b6d4]' },
+                  { val: Math.floor(totalTraces).toLocaleString(), label: 'TRACEs', icon: Activity, iconColor: 'text-[#06b6d4]' },
                   { val: avgRisk.toFixed(3), label: 'AVG RISK', icon: TrendingDown, iconColor: 'text-vermilion-400' },
                 ].map((s) => (
                   <div key={s.label} className="bg-ink-900/60 p-4 text-center">
@@ -564,7 +564,7 @@ function DetailPanel({ dim }: { dim: Dimension }) {
         <div className="flex justify-between text-xs font-mono mb-3">
           <span className="text-ink-400">7-PERIOD TREND</span>
           <span className="text-ink-500">
-            {dim.trend[0].toFixed(2)} → {dim.trend[dim.trend.length - 1].toFixed(2)}
+            {dim.trend[0].toFixed(2)} â†’ {dim.trend[dim.trend.length - 1].toFixed(2)}
           </span>
         </div>
         <Sparkline data={dim.trend} color={color} width={240} height={50} full />

@@ -174,7 +174,7 @@ export function SandboxScreen({ onNavigate, assumptions, setAssumptions, decisio
             Back to decision brief
           </button>
           <div className="flex items-center justify-between gap-4 mb-2">
-            <div className="text-xs text-ink-400 font-medium">NovaMart · sandbox</div>
+            <div className="text-xs text-ink-400 font-medium">NovaMart - sandbox</div>
             {liveReQuote && (
               <span className="inline-flex items-center gap-1.5 text-xs text-brass-700 bg-brass-50 border border-brass-200 px-2.5 py-1 rounded-sm font-medium">
                 <Database className="w-3.5 h-3.5" />
@@ -182,7 +182,7 @@ export function SandboxScreen({ onNavigate, assumptions, setAssumptions, decisio
               </span>
             )}
           </div>
-          <h1 className="font-serif text-hero text-ink-800 text-balance">
+          <h1 className="font-serif text-hero text-ink-800 ">
             Challenge the decision.
           </h1>
           <p className="mt-3 text-ink-500 text-lg max-w-prose-doc leading-relaxed">
@@ -362,7 +362,7 @@ export function SandboxScreen({ onNavigate, assumptions, setAssumptions, decisio
           </button>
           <button
             onClick={() => onNavigate('approval')}
-            className="group inline-flex items-center gap-2 bg-ink-800 text-parchment-50 px-6 py-3 rounded-sm text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
+            className="group inline-flex items-center gap-2 bg-ink-900 text-parchment-50 px-6 py-3 rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)] transition-all duration-300 text-sm font-medium hover:bg-ink-700 transition-colors focus-ring"
           >
             Proceed to approval
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />

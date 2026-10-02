@@ -1,0 +1,6 @@
+transaction_id,customer_id,product_id,region_id,date,amount,discount_applied,status
+TXN-1001,CUST-9821,PROD-092,REG-East,2026-09-01,129.99,0.00,completed
+TXN-1002,CUST-4512,PROD-145,REG-West,2026-09-01,45.50,5.00,completed
+TXN-1003,CUST-9821,PROD-011,REG-East,2026-09-02,899.00,50.00,completed
+TXN-1004,CUST-1044,PROD-145,REG-North,2026-09-02,45.50,0.00,refunded
+TXN-1005,CUST-3392,PROD-033,REG-South,2026-09-03,210.00,10.00,completed
