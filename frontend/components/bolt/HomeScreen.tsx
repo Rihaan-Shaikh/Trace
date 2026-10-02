@@ -16,6 +16,15 @@ export function HomeScreen({ onNavigate, onSetDecision, decisionText }: HomeScre
   const currentProgress = useRef(0);
 
   useEffect(() => {
+    if (decisionText.trim().length > 0) {
+      window.scrollTo({ top: window.innerHeight, behavior: 'instant' });
+      targetProgress.current = 1;
+      currentProgress.current = 1;
+      setScrollProgress(1);
+    }
+  }, []);
+
+  useEffect(() => {
     let isMounted = true;
     const handleScroll = () => {
       const rawProgress = window.scrollY / window.innerHeight;
