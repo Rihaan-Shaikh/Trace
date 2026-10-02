@@ -97,7 +97,28 @@ export function InvestigationScreen({ onNavigate, decisionId }: InvestigationScr
           {!allComplete && (
             <div className="flex items-start gap-5 opacity-30">
               <div className="w-7 h-7 rounded-full border border-ink-200 bg-parchment-50" />
-              <div className="text-sm text-ink-400 pt-1.5">…</div>
+              <div className="text-sm text-ink-400 pt-1.5">...</div>
+            </div>
+          )}
+
+          {/* Horizontal loading bar — shown after all 7 stages appear but API still pending */}
+          {visibleCount >= INVESTIGATION_STAGES.length && isInvestigating && (
+            <div className="mt-8 max-w-2xl">
+              <div className="h-[2px] w-full bg-ink-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-brass-600 rounded-full"
+                  style={{
+                    animation: 'investigationSweep 2s ease-in-out infinite',
+                  }}
+                />
+              </div>
+              <style>{`
+                @keyframes investigationSweep {
+                  0% { width: 0%; margin-left: 0%; }
+                  50% { width: 60%; margin-left: 20%; }
+                  100% { width: 0%; margin-left: 100%; }
+                }
+              `}</style>
             </div>
           )}
         </div>
@@ -108,7 +129,7 @@ export function InvestigationScreen({ onNavigate, decisionId }: InvestigationScr
             <Divider className="mb-8" />
             <div className="flex items-center justify-between">
               <div className="text-xs text-ink-400">
-                7 stages completed · Decision Premium calculated
+                7 stages completed &middot; Decision Premium calculated
               </div>
               <button
                 onClick={() => onNavigate('decision-brief')}

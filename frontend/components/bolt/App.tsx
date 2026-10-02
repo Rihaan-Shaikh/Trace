@@ -41,7 +41,7 @@ function App() {
           if (underwritten) {
             setDecisionId(prev => prev === CANONICAL_DECISION_ID ? underwritten.id : prev);
             if (underwritten.dataset_id) {
-              setDatasetId(prev => prev === CANONICAL_DATASET_ID ? underwritten.dataset_id : prev);
+              setDatasetId(prev => prev === CANONICAL_DATASET_ID ? (underwritten.dataset_id as string) : prev);
             }
           } else {
             setDecisionId(prev => prev === CANONICAL_DECISION_ID ? decisionsRes.items[0].id : prev);

@@ -173,7 +173,7 @@ export function DataScreen({ onNavigate, datasetId, setDatasetId }: DataScreenPr
         {/* Action */}
         <div className="mt-10 flex items-center justify-between">
           <div className="text-xs text-ink-400">
-            {files.length} tables mapped Ã‚ï¿½ {totalRowsCount} reconciled rows
+            {files.length} tables mapped &middot; {totalRowsCount} reconciled rows
           </div>
           <button
             onClick={() => onNavigate('semantic-map')}

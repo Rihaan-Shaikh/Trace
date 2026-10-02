@@ -26,7 +26,7 @@ export function DataHealthScreen({ onNavigate, datasetId }: DataHealthScreenProp
       try {
         const res = await api.datasets.getDataHealth(datasetId);
         if (isMounted && res && res.findings && res.findings.length > 0) {
-          setHealthScore(Math.round(res.overall_health_score * 100));
+          setHealthScore(Math.round((res.overall_health_score || 1.0) * 100));
           const mapped = res.findings.map((f: any, i: number) => ({
             id: f.id || `f-${i}`,
             metric: f.finding_type === 'missing' ? 'missing attribute values' : 'external coverage lapse',

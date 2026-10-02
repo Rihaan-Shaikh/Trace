@@ -106,7 +106,7 @@ export function SandboxScreen({ onNavigate, assumptions, setAssumptions, decisio
             volume_retention: assumptions.retention / 100,
           },
         });
-        if (res && res.after) {
+        if (res && (res as any).after) {
           setLiveReQuote(res);
         }
       } catch (e) {

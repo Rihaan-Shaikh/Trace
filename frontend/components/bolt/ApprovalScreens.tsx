@@ -14,10 +14,44 @@ interface ApprovalScreenProps {
 }
 
 export function ApprovalScreen({ onNavigate, assumptions, onApprove, decisionId, decisionTitle }: ApprovalScreenProps) {
-  const calc = computeDecision(assumptions);
+  const fallbackCalc = computeDecision(assumptions);
+  const isBaseline = JSON.stringify(assumptions) === JSON.stringify(DEFAULT_ASSUMPTIONS);
+  const [liveBrief, setLiveBrief] = useState<any>(null);
   const [action, setAction] = useState<'approve' | 'modify' | 'reject' | null>(null);
   const [note, setNote] = useState('');
   const [confirmed, setConfirmed] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (!decisionId) return;
+    api.approvals.getBrief(decisionId)
+      .then((data) => { if (isMounted && data?.sections_json) setLiveBrief(data); })
+      .catch(() => {});
+    return () => { isMounted = false; };
+  }, [decisionId]);
+
+  const secPrem = liveBrief?.sections_json?.decision_premium;
+  const secExp = liveBrief?.sections_json?.exposure_report;
+  const secVerd = liveBrief?.sections_json?.decision_and_verdict;
+
+  const calc: DecisionCalc = (liveBrief && isBaseline && secPrem)
+    ? {
+        premium: Math.round(secPrem.total_decision_premium),
+        premiumRate: Number((secPrem.premium_rate * 100).toFixed(1)),
+        projectedUpside: Math.round(secPrem.projected_upside),
+        netLossProbability: Math.round((secExp?.probability_of_net_loss ?? 0.012) * 100),
+        verdict: secVerd?.verdict ?? fallbackCalc.verdict,
+        coverageState: secVerd?.coverage_state ?? fallbackCalc.coverageState,
+        exposure: {
+          p10: Math.round(secExp?.p10_tail_loss ?? fallbackCalc.exposure.p10),
+          avgWorst10: Math.round(secExp?.average_worst_10pct ?? fallbackCalc.exposure.avgWorst10),
+          worstPlausible: Math.round(secExp?.worst_plausible ?? fallbackCalc.exposure.worstPlausible),
+          concentration: fallbackCalc.exposure.concentration,
+          dataExposure: Math.round(secExp?.data_exposure ?? (fallbackCalc.exposure.dataExposure ?? 0)),
+        },
+      }
+    : fallbackCalc;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleConfirm = async () => {
@@ -273,6 +307,7 @@ export function DecisionRecordScreen({
           p10: Math.round(secExp?.p10_tail_loss ?? fallbackCalc.exposure.p10),
           avgWorst10: Math.round(secExp?.average_worst_10pct ?? fallbackCalc.exposure.avgWorst10),
           worstPlausible: Math.round(secExp?.worst_plausible ?? fallbackCalc.exposure.worstPlausible),
+          concentration: fallbackCalc.exposure.concentration,
           dataExposure: Math.round(secExp?.data_exposure ?? (fallbackCalc.exposure.dataExposure ?? 0)),
         },
       }

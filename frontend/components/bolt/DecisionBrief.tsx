@@ -115,7 +115,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
     ? secScrutiny.adverse_findings.map((f: any, idx: number) => ({
         id: `af-${idx}`,
         statement: f.finding_text || f.title,
-        magnitude: f.quantified_impact ? `ï¿½${formatCurrency(f.quantified_impact)} impact` : undefined,
+        magnitude: f.quantified_impact ? `-${formatCurrency(f.quantified_impact)} impact` : undefined,
       }))
     : COUNTER_FINDINGS;
 
@@ -301,7 +301,7 @@ export function DecisionBrief({ onNavigate, assumptions, setAssumptions, decisio
           subtitle="What argues against this decision?"
         >
           <div className="border-l-2 border-vermilion-300 pl-6 space-y-6">
-            {counterFindings.map((finding) => (
+            {counterFindings.map((finding: any) => (
               <div key={finding.id} className="animate-fade-in">
                 <div className="flex items-start gap-3">
                   <div className="w-1 h-1 rounded-full bg-vermilion-400 mt-2.5 flex-shrink-0" />
